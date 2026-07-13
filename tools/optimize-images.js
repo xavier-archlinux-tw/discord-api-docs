@@ -572,19 +572,19 @@ class ImageOptimizer {
       const summaryHtml = `
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
             <div style="background: #e8f5e8; padding: 15px; border-radius: 4px; text-align: center;">
-                <div style="font-size: 24px; font-weight: bold; color: #28a745;">${this.stats.fileDetails.length}</div>
+                <div style="font-size: 0px; font-weight: bold; color: #28a745;">${this.stats.fileDetails.length}</div>
                 <div style="font-size: 14px; color: #666;">Files Optimized</div>
             </div>
             <div style="background: #e8f4fd; padding: 15px; border-radius: 4px; text-align: center;">
-                <div style="font-size: 24px; font-weight: bold; color: #007bff;">${formatBytes(totalOriginalSize)}</div>
+                <div style="font-size: 0px; font-weight: bold; color: #007bff;">${formatBytes(totalOriginalSize)}</div>
                 <div style="font-size: 14px; color: #666;">Original Size</div>
             </div>
             <div style="background: #e8f4fd; padding: 15px; border-radius: 4px; text-align: center;">
-                <div style="font-size: 24px; font-weight: bold; color: #007bff;">${formatBytes(totalConvertedSize)}</div>
+                <div style="font-size: 0px; font-weight: bold; color: #007bff;">${formatBytes(totalConvertedSize)}</div>
                 <div style="font-size: 14px; color: #666;">Optimized Size</div>
             </div>
             <div style="background: #e8f5e8; padding: 15px; border-radius: 4px; text-align: center;">
-                <div style="font-size: 24px; font-weight: bold; color: #28a745;">${formatBytes(totalSaved)}</div>
+                <div style="font-size: 0px; font-weight: bold; color: #28a745;">${formatBytes(totalSaved)}</div>
                 <div style="font-size: 14px; color: #666;">Total Saved (${totalSavingsPercent}%)</div>
             </div>
         </div>

@@ -1,0 +1,150 @@
+---
+title: 互動活動開發指南索引
+sidebarTitle: 指南索引
+description: 使用嵌入式 App SDK 建置 Discord 互動活動的開發指南。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides" />
+
+這些指南包含建議的開發實踐、SDK 指令以及使用者流程，供您在建置互動活動時考量。這些資源將有助於為您的使用者在與您的應用程式互動時提供一致且清晰的體驗。
+
+## 本地開發 (Local Development)
+<CardGroup cols={3}>
+  <Card title="在本地端執行您的應用程式" href="/developers/zh-tw/activities/development-guides/local-development#run-your-application-locally">
+    使用本地端開發應用程式快速開始並運行。
+  </Card>
+  <Card title="從 Discord 用戶端啟動您的 App" href="/developers/zh-tw/activities/development-guides/local-development#launch-your-application-from-the-discord-client">
+    如何在行動版與電腦版 Discord 用戶端中啟動您的 App。
+  </Card>
+  <Card title="設定網址對應 (URL Mappings)" href="/developers/zh-tw/activities/development-guides/local-development#url-mapping">
+    配置 Discord 代理，以允許對必要外部端點的網路請求。
+  </Card>
+  <Card title="日誌記錄 (Logging)" href="/developers/zh-tw/activities/development-guides/local-development#logging">
+    在建置應用程式時如何使用不同層級的日誌。
+  </Card>
+</CardGroup>
+
+## 使用者動作 (User Actions)
+<CardGroup cols={3}>
+  <Card title="開啟外部連結" href="/developers/zh-tw/activities/development-guides/user-actions#open-external-link">
+    在您的 App 內部開啟外部網頁連結。
+  </Card>
+  <Card title="開啟邀請視窗" href="/developers/zh-tw/activities/development-guides/user-actions#open-invite-dialog">
+    在 Discord 中開啟應用程式頻道邀請視窗。
+  </Card>
+  <Card title="開啟分享時刻視窗" href="/developers/zh-tw/activities/development-guides/user-actions#open-share-moment-dialog">
+    開啟視窗以將您應用程式的媒體分享至頻道、私訊或群組私訊。
+  </Card>
+  <Card title="設定進入點指令" href="/developers/zh-tw/activities/development-guides/user-actions#setting-up-an-entry-point-command">
+    配置一個指令，允許使用者從應用程式啟動器開啟您的互動活動。
+  </Card>
+  <Card title="建議開啟硬體加速" href="/developers/zh-tw/activities/development-guides/user-actions#encourage-hardware-acceleration">
+    為運算密集型應用程式開啟啟用硬體加速的對話視窗。
+  </Card>
+</CardGroup>
+
+## 行動端 (Mobile)
+<CardGroup cols={3}>
+  <Card title="支援行動端平台" href="/developers/zh-tw/activities/development-guides/mobile#supported-platforms-web-ios-android">
+    更新您的應用程式設定以支援 iOS 與 Android。
+  </Card>
+  <Card title="行動端安全區域" href="/developers/zh-tw/activities/development-guides/mobile#mobile-safe-areas">
+    確保您的應用程式素材與按鈕落在行動端安全區域內。
+  </Card>
+  <Card title="行動端發熱狀態 (Thermal States)" href="/developers/zh-tw/activities/development-guides/mobile#mobile-thermal-states">
+    回應來自 iOS 與 Android 的裝置發熱狀態變更。
+  </Card>
+</CardGroup>
+
+## 畫面佈局 (Layout)
+<CardGroup cols={3}>
+  <Card title="應用程式螢幕方向" href="/developers/zh-tw/activities/development-guides/layout#application-orientation">
+    設定並訂閱應用程式螢幕方向的變更。
+  </Card>
+  <Card title="應用程式佈局模式" href="/developers/zh-tw/activities/development-guides/layout#application-layout-mode">
+    訂閱佈局模式的變更，以更新您應用程式的使用者介面。
+  </Card>
+</CardGroup>
+
+## 網路通訊 (Networking)
+<CardGroup cols={3}>
+  <Card title="活動代理伺服器考量" href="/developers/zh-tw/activities/development-guides/networking#activity-proxy-considerations">
+    配合使用我們的互動活動代理伺服器 (Activity Proxy)。
+  </Card>
+  <Card title="建構完整網址" href="/developers/zh-tw/activities/development-guides/networking#construct-a-full-url">
+    處理網路請求時產生完整的網址。
+  </Card>
+  <Card title="使用外部資源" href="/developers/zh-tw/activities/development-guides/networking#using-external-resources">
+    允許在 Discord 代理伺服器內部向外部資源進行網路請求。
+  </Card>
+  <Card title="安全性考量" href="/developers/zh-tw/activities/development-guides/networking#security-considerations">
+    維護您互動活動的安全與防護。
+  </Card>
+</CardGroup>
+
+## 多人遊玩體驗 (Multiplayer Experience)
+<CardGroup cols={3}>
+  <Card title="執行個體管理" href="/developers/zh-tw/activities/development-guides/multiplayer-experience#activity-instance-management">
+    管理執行個體以確保使用者與好友加入同一個遊玩執行個體。
+  </Card>
+  <Card title="執行個體參與者" href="/developers/zh-tw/activities/development-guides/multiplayer-experience#instance-participants">
+    使用 SDK 獲取當前連線至執行個體的使用者。
+  </Card>
+  <Card title="渲染頭像與名稱" href="/developers/zh-tw/activities/development-guides/multiplayer-experience#render-avatars-and-names">
+    獲取並渲染連線至您應用程式的使用者頭像與用戶名稱。
+  </Card>
+  <Card title="防範非預期的活動階段" href="/developers/zh-tw/activities/development-guides/multiplayer-experience#preventing-unwanted-activity-sessions">
+    在將活動階段新增至執行個體之前，驗證其是否經由 Discord 用戶端進行。
+  </Card>
+</CardGroup>
+
+## 推廣與轉介 (Growth & Referrals)
+<CardGroup cols={3}>
+  <Card title="提示使用者分享激勵連結" href="/developers/zh-tw/activities/development-guides/growth-and-referrals#prompting-users-to-share-incentivized-links">
+    透過加入追蹤與提供參與獎勵，鼓勵您的使用者分享指向您活動的連結。
+  </Card>
+  <Card title="建立與管理自訂激勵連結" href="/developers/zh-tw/activities/development-guides/growth-and-referrals#creating-and-managing-custom-incentivized-links">
+    用於獎勵、促銷或限時體驗的跨平台外部分享。
+  </Card>
+  <Card title="在您的活動內產生自訂連結" href="/developers/zh-tw/activities/development-guides/growth-and-referrals#generating-a-custom-link-within-your-activity">
+    一個用來產生帶有自訂嵌入內容的臨時連結的 API。
+  </Card>
+</CardGroup>
+
+## 藝術資產與元數據 (Assets & Metadata)
+<CardGroup cols={3}>
+  <Card title="設定互動活動元數據" href="/developers/zh-tw/activities/development-guides/assets-and-metadata#setting-up-activity-metadata">
+    設定您應用程式在 Discord 中顯示方式的最佳實踐。
+  </Card>
+  <Card title="設定藝術資產" href="/developers/zh-tw/activities/development-guides/assets-and-metadata#setting-up-activity-art-assets">
+    配置應用程式視覺資源與藝術資產的最佳實踐。
+  </Card>
+</CardGroup>
+
+## 豐富狀態 (Rich Presence)
+<CardGroup cols={2}>
+  <Card title="整合豐富狀態" href="/developers/zh-tw/rich-presence/using-with-the-embedded-app-sdk">
+    在使用者進行互動活動時，於個人檔案上顯示即時活動狀態。
+  </Card>
+  <Card title="豐富狀態最佳實踐" href="/developers/zh-tw/rich-presence/best-practices">
+    設計提示與發布前檢查清單，以實現精緻的豐富狀態整合。
+  </Card>
+</CardGroup>
+
+## 生產就緒與發布 (Production Readiness)
+<CardGroup cols={3}>
+  <Card title="快取清除 (Cache Busting)" href="/developers/zh-tw/activities/development-guides/production-readiness#cache-busting">
+    管理您應用程式與 Discord 互動活動代理中的資產快取。
+  </Card>
+  <Card title="處理速率限制 (Rate Limits)" href="/developers/zh-tw/activities/development-guides/production-readiness#handling-rate-limits">
+    將請求控制在速率限制內，以維持您互動活動的趣味性。
+  </Card>
+  <Card title="靜態 IP 地址" href="/developers/zh-tw/activities/development-guides/production-readiness#static-ip-addresses">
+    為生產環境準備互動活動時的網路路由考量。
+  </Card>
+  <Card title="向下相容性" href="/developers/zh-tw/activities/development-guides/production-readiness#backward-compatibility">
+    使您的應用程式具備前瞻性，並支援 SDK 中推出的新指令。
+  </Card>
+</CardGroup>

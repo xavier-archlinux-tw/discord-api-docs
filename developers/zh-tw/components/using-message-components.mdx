@@ -1,0 +1,119 @@
+---
+
+title: 使用訊息元件
+sidebarTitle: 使用訊息元件
+description: 學習如何傳送互動式訊息元件
+---
+
+<div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', fontSize: '14px', marginBottom: '20px', borderBottom: '1px solid var(--border-color, #e5e7eb)', paddingBottom: '10px' }}>
+  <a href="/developers/components/using-message-components">🇬🇧 English</a>
+  <span>|</span>
+  <span>🇹🇼 繁體中文</span>
+  <span>|</span>
+  <a href="/developers/bilingual/components/using-message-components">📖 雙語對照</a>
+</div>
+
+## 總覽
+
+訊息元件是為訊息增添互動性的強大方式。它們讓您能夠為使用者建立豐富、互動的體驗，讓他們更容易與您的內容互動。
+
+<Info>
+如果您要將元件作為 [webhook](/developers/resources/webhook) 的一部分傳送，您需要使用 [`?with_components=true`](/developers/resources/webhook#execute-webhook-query-string-params) 查詢參數，否則它們將會被忽略。
+</Info>
+
+### 先決條件
+
+- 您必須擁有 Discord 帳號，並且是 Discord 開發者入口網站的成員。
+- 您必須在 Discord 開發者入口網站中建立一個 Discord 應用程式。
+- 您必須擁有在您想使用元件的頻道中傳送訊息的必要權限。
+
+---
+
+## 傳送帶有元件的訊息
+
+若要傳送帶有元件的訊息，您需要在訊息的 `flags` 欄位中設定 `IS_COMPONENTS_V2` 旗標 (`1<<15`)。這可以在使用 [建立訊息](/developers/resources/message#create-message)、[執行 Webhook](/developers/resources/webhook#execute-webhook) 或 [回應互動](/developers/interactions/receiving-and-responding#create-followup-message) 時完成。
+
+<Warning>
+設定 `IS_COMPONENTS_V2` 訊息旗標後無法復原：一旦訊息傳送，編輯訊息時便無法從訊息中移除該旗標。
+</Warning>
+
+此旗標表示訊息包含元件，並停用傳統的內容和嵌入。
+
+所有內容都必須以元件形式傳送，而非使用標準訊息格式。
+
+```json
+{
+  "flags": 32768,
+  "components": [
+    {
+      "type": 10,
+      "content": "這是一個使用文字顯示元件的訊息"
+    }
+  ]
+}
+```
+
+## 傳送帶有多個元件的訊息
+
+若要傳送帶有多個元件的訊息，您可以在訊息的 `components` 欄位中包含多個元件物件。此欄位允許您指定一個元件陣列，這些元件將會包含在訊息中。
+
+```json
+{
+  "flags": 32768,
+  "components": [
+    {
+      "type": 10,
+      "content": "這是一個文字顯示元件。"
+    },
+    {
+      "type": 10,
+      "content": "這是另一個文字顯示元件！"
+    }
+  ]
+}
+```
+
+## 使用版面配置元件巢狀化元件
+
+您也可以在版面配置元件中巢狀化元件。這讓您在向使用者顯示資訊、圖片和互動式元件時擁有更大的彈性。請查閱 [元件列表](/developers/components/reference#component-object-component-types) 以取得所有可用版面配置元件的完整列表。
+
+例如，您可以建立一個包含多個按鈕元件的動作列元件訊息。
+
+```json
+{
+  "flags": 32768,
+  "components": [
+    {
+      "type": 10,
+      "content": "這是一個帶有 v2 元件的訊息"
+    },
+    {
+      "type": 1,
+      "components": [
+        {
+          "type": 2,
+          "style": 1,
+          "label": "點我",
+          "custom_id": "click_me_1"
+        },
+        {
+          "type": 2,
+          "style": 2,
+          "label": "也點我",
+          "custom_id": "click_me_2"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## 將訊息元件與互動搭配使用
+
+當使用者與互動式訊息元件互動時，您的應用程式將會 [收到一個互動事件](/developers/interactions/overview)。此事件包含有關互動的資訊，包括互動類型以及被互動的元件。
+
+請參閱 [支援的元件類型列表](/developers/components/reference#component-object-component-types)，以取得互動式訊息元件及其互動事件酬載的列表。
+
+您可以使用此資訊來回應互動、更新訊息，或執行其他動作，例如根據使用者的輸入顯示一個對話框。
+
+請查閱 [互動說明文件](/developers/interactions/overview)，以取得更多關於處理互動以及回應來自互動式元件的使用者輸入的資訊。

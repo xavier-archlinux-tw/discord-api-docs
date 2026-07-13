@@ -1,0 +1,98 @@
+---
+title: "Multiplayer Experience (雙語/Bilingual)"
+description: Design and implement engaging multiplayer experiences in Discord Activities.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/multiplayer-experience" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Activity Instance Management
+
+When a user clicks "Join Application", they expect to enter the same application that their friends are participating in. The `instanceId` is the key for your application to identify which unique instance it is talking to.
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+const instanceId = discordSdk.instanceId; // available immediately
+```
+
+**Instance ID Semantics:** Generated when a user launches an application. All joining users receive the same `instanceId`. Ends when all users leave.
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 活動實例管理 (Activity Instance Management)
+
+當使用者點擊「加入應用程式」時，他們期望進入與朋友相同的應用程式實例。`instanceId` 是識別特定實例不可或缺的依據。
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+const instanceId = discordSdk.instanceId; // 立即可用
+```
+
+**instanceId 的語義**：在使用者啟動應用程式時生成。所有加入的使用者收到相同的 `instanceId`。所有使用者離開後，該實例即結束。
+
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+
+## Instance Participants
+
+```javascript
+// Fetch
+const participants = await discordSdk.commands.getInstanceConnectedParticipants();
+
+// Subscribe
+discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
+```
+
+## Render Avatars and Names
+
+```javascript
+const {user} = await discordSdk.commands.authenticate({ access_token: accessToken });
+
+let avatarSrc = user.avatar
+  ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
+  : `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`;
+
+const username = user.global_name ?? `${user.username}#${user.discriminator}`;
+```
+
+  </div>
+  <div>
+
+## 實例參與者 (Instance Participants)
+
+```javascript
+// 主動查詢
+const participants = await discordSdk.commands.getInstanceConnectedParticipants();
+
+// 訂閱事件
+discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
+```
+
+## 渲染大頭貼與名稱 (Render Avatars and Names)
+
+```javascript
+const {user} = await discordSdk.commands.authenticate({ access_token: accessToken });
+
+let avatarSrc = user.avatar
+  ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
+  : `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`;
+
+const username = user.global_name ?? `${user.username}#${user.discriminator}`;
+```
+
+  </div>
+</div>

@@ -1,0 +1,73 @@
+---
+title: "Discord 社交 SDK 開發指南"
+sidebarTitle: "社交 SDK"
+description: "將 Discord 社交 SDK 整合至您的遊戲中的開發指南。"
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/guides/social-sdk" />
+
+import {ImageCard} from '/snippets/imagecard.jsx'
+import {UserPlusIcon} from '/snippets/icons/UserPlusIcon.jsx'
+import {ListViewIcon} from '/snippets/icons/ListViewIcon.jsx'
+import {UserStatusIcon} from '/snippets/icons/UserStatusIcon.jsx'
+import {InboxIcon} from '/snippets/icons/InboxIcon.jsx'
+import {ChatIcon} from '/snippets/icons/ChatIcon.jsx'
+import {DoorEnterIcon} from '/snippets/icons/DoorEnterIcon.jsx'
+import {TextControllerIcon} from '/snippets/icons/TextControllerIcon.jsx'
+import {VoiceNormalIcon} from '/snippets/icons/VoiceNormalIcon.jsx'
+import {MagicWandIcon} from '/snippets/icons/MagicWandIcon.jsx'
+
+<Note>
+  造訪 [Discord 社交 SDK](/developers/zh-tw/discord-social-sdk/overview) 以了解更多關於將遊戲與 Discord 社交 SDK 整合的資訊，包含如何開始、最佳實踐等。
+</Note>
+
+## 開始使用
+
+<ImageCard title="社交 SDK 開始使用" href="/developers/zh-tw/discord-social-sdk/getting-started" img="/images/headers/docs-sdk-hero.png" >
+  將您的遊戲與 Discord 社交 SDK 整合的引導指南。
+</ImageCard>
+
+## 開發指南
+
+<CardGroup cols={3}>
+  <Card title="與 Discord 進行帳戶連結" href="/developers/zh-tw/discord-social-sdk/development-guides/account-linking-with-discord" icon={<UserPlusIcon/>}>
+    了解如何使用 OAuth2 通過使用者的 Discord 帳戶進行驗證。
+  </Card>
+  <Card title="建立統一的好友名單" href="/developers/zh-tw/discord-social-sdk/development-guides/creating-a-unified-friends-list" icon={<ListViewIcon/>}>
+    在單一檢視中合併 Discord 與遊戲特定的好友。
+  </Card>
+  <Card title="設定豐富狀態" href="/developers/zh-tw/discord-social-sdk/development-guides/setting-rich-presence" icon={<UserStatusIcon/>}>
+    在 Discord 個人檔案中顯示詳細的遊戲狀態。
+  </Card>
+  <Card title="管理遊戲邀請" href="/developers/zh-tw/discord-social-sdk/development-guides/managing-game-invites" icon={<InboxIcon/>}>
+    允許玩家邀請好友加入其遊戲工作階段或隊伍。
+  </Card>
+  <Card title="傳送私訊" href="/developers/zh-tw/discord-social-sdk/development-guides/sending-direct-messages" icon={<ChatIcon/>}>
+    啟用玩家之間的私人通訊。
+  </Card>
+  <Card title="管理大廳" href="/developers/zh-tw/discord-social-sdk/development-guides/managing-lobbies" icon={<DoorEnterIcon/>}>
+    透過邀請、文字聊天和語音通訊將玩家聚集在共享大廳中。
+  </Card>
+  <Card title="已連結的頻道" href="/developers/zh-tw/discord-social-sdk/development-guides/linked-channels" icon={<TextControllerIcon/>}>
+    將遊戲大廳與 Discord 文字頻道相連結。
+  </Card>
+  <Card title="管理語音聊天" href="/developers/zh-tw/discord-social-sdk/development-guides/managing-voice-chat" icon={<VoiceNormalIcon/>}>
+    加入遊戲內語音通訊。
+  </Card>
+  <Card title="使用臨時帳戶" href="/developers/zh-tw/discord-social-sdk/development-guides/using-provisional-accounts" icon={<MagicWandIcon/>}>
+    透過臨時帳戶為您的使用者提供無縫的帳戶體驗。
+  </Card>
+</CardGroup>
+
+## 遊戲開發指南
+
+<CardGroup cols={2}>
+  <ImageCard title="我該如何讓我的遊戲被看見？" href="/developers/zh-tw/game-development/how-to-get-your-game-seen" img="/images/game-development/how-to-get-your-game-seen/banner-how-to-get-your-game-seen.webp" >
+    使用社交 SDK 實作包含遊戲詳細資訊、加入大廳、啟動遊戲與商店連結的豐富狀態。
+  </ImageCard>
+  <ImageCard title="我該如何在遊戲中加入鄰近語音聊天？" href="/developers/zh-tw/game-development/how-to-add-proximity-voice-chat-to-my-game" img="/images/game-development/how-to-add-proximity-voice-chat-to-your-game/banner-proximity-voice-chat.webp" >
+    了解如何搭配使用社交 SDK 的語音聊天與 Unity 的 3D 音訊系統，為多人遊戲建置鄰近語音聊天。
+  </ImageCard>
+</CardGroup>

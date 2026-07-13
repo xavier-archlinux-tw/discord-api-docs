@@ -1,0 +1,35 @@
+{
+  "completed_pages": {
+    "developers/en-us/intro": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/discord-social-sdk/design-guidelines/principles": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/overview": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/discord-social-sdk/getting-started": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/tutorials/using-community-invites": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/components/using-message-components": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/quick-start/overview-of-apps": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    }
+  },
+  "failed_pages": {
+    "developers/en-us/resources/emoji": "翻譯失敗，已達到最大重試次數。"
+  }
+}

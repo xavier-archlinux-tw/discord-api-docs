@@ -1,0 +1,82 @@
+---
+title: 版面配置
+description: 為 Discord 互動活動設計有效的版面配置與使用者介面。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/layout" />
+
+## 應用程式方向鎖定 (Application Orientation)
+
+#### 鎖定應用程式方向 (Locking Application Orientation)
+
+SDK 提供了鎖定應用程式至特定方向的 API。可能的鎖定狀態包括 `UNLOCKED`（不鎖定）、`PORTRAIT`（直向）和 `LANDSCAPE`（橫向）。
+
+- `lock_state`：預設鎖定狀態，影響應用程式聚焦時的方向
+- `picture_in_picture_lock_state`：決定子母畫面 (PIP) 的寬高比；未設定時回退至 `lock_state`
+- `grid_lock_state`：決定格狀磚片的寬高比；未設定時回退至 `picture_in_picture_lock_state`，若後者也未設定則使用 `lock_state`
+
+```javascript
+import {DiscordSDK, Common} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+
+// 設定預設鎖定狀態
+discordSdk.commands.setOrientationLockState({lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE});
+
+// 或同時設定預設鎖定狀態和子母畫面鎖定狀態
+discordSdk.commands.setOrientationLockState({
+  lock_state: Common.OrientationLockStateTypeObject.PORTRAIT,
+  picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+  grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+});
+```
+
+#### 透過開發者入口網站設定預設方向鎖定狀態
+
+您也可以透過開發者入口網站設定預設方向鎖定狀態。使用此方法，Discord App 將在應用程式啟動時、SDK 初始化之前即套用方向鎖定，可讓應用程式從一開始就以正確方向啟動，而不是在 SDK 請求方向鎖定後才切換。
+
+![default-orientation-lock-state](/images/activities/default_orientation_lock_state.png)
+
+#### 訂閱螢幕方向更新 (Subscribing to Screen Orientation Updates)
+
+若要監聽螢幕方向（有時與實體裝置方向不同），請訂閱 `ORIENTATION_UPDATE` 事件：
+
+```javascript
+const handleOrientationUpdate = (update: {screen_orientation: number}) => {
+  switch (update.screen_orientation) {
+      case Common.OrientationTypeObject.PORTRAIT:
+        ...
+      case Common.OrientationTypeObject.LANDSCAPE:
+        ...
+      default:
+        ...
+    }
+}
+
+discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
+```
+
+---
+
+## 應用程式版面模式 (Application Layout Mode)
+
+應用程式可處於三種版面模式：聚焦 (focused)、子母畫面 (picture-in-picture, PIP) 或格狀模式 (grid mode)。互動活動可訂閱版面模式更新，以便在不同模式下調整版面以獲得最佳體驗。
+
+舊版 Discord 用戶端僅支援 `ACTIVITY_PIP_MODE_UPDATE` 事件，而新版用戶端同時支援 `ACTIVITY_PIP_MODE_UPDATE` 和 `ACTIVITY_LAYOUT_MODE_UPDATE`。請使用 `subscribeToLayoutModeUpdatesCompat` 和 `unsubscribeFromLayoutModeUpdatesCompat` 以向後相容的方式訂閱兩個事件：
+
+```javascript
+export default function LayoutMode() {
+  const handleLayoutModeUpdate = React.useCallback((update: {layout_mode: number}) => {
+       ...
+  }, []);
+
+  React.useEffect(() => {
+    discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+    return () => {
+      discordSdk.unsubscribeFromLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+    };
+  }, [handleLayoutModeUpdate]);
+}
+```

@@ -1,0 +1,65 @@
+---
+title: "Growth and Referrals (雙語/Bilingual)"
+description: Implement growth strategies and referral systems in Discord Activities.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/growth-and-referrals" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Prompting Users to Share Incentivized Links
+
+Use links for referrals, promotions, social deep-links, turn-based deep-links, affiliate marketing, and source attribution.
+
+```javascript
+const { success } = await discordSdk.commands.shareLink({
+    message: 'Click this link to redeem 5 free coins!',
+    custom_id: customId,
+});
+```
+
+## Generating a Custom Link
+
+```javascript
+const linkIdResponse = await fetch(`${env.discordAPI}/applications/${env.applicationId}/quick-links/`, {
+  method: 'POST',
+  headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+  body: { custom_id: 'user_123/game_456', title: 'Check out my high score!', image }
+});
+const {link_id} = await linkIdResponse.json();
+await discordSdk.commands.shareLink({ message: 'Check out my high score!', link_id });
+```
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 引導使用者分享獎勵連結 (Prompting Users to Share Incentivized Links)
+
+連結可用於推薦機制、促銷活動、社群深層連結、回合制深層連結、聯盟行銷和來源歸因。
+
+```javascript
+const { success } = await discordSdk.commands.shareLink({
+    message: '點擊此連結以領取 5 個免費金幣！',
+    custom_id: customId,
+});
+```
+
+## 在活動中生成自訂連結 (Generating a Custom Link)
+
+```javascript
+const linkIdResponse = await fetch(`${env.discordAPI}/applications/${env.applicationId}/quick-links/`, {
+  method: 'POST',
+  headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+  body: { custom_id: 'user_123/game_456', title: '來看我的最高分！', image }
+});
+const {link_id} = await linkIdResponse.json();
+await discordSdk.commands.shareLink({ message: '來看我的最高分！', link_id });
+```
+
+  </div>
+</div>

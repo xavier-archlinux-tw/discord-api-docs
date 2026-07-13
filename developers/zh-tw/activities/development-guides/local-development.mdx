@@ -1,0 +1,132 @@
+---
+title: 本機開發
+sidebarTitle: 本機開發
+description: 為 Discord 互動活動設定本機開發環境。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/local-development" />
+
+## 在本機執行您的應用程式 (Run Your Application Locally)
+
+您可以透過 localhost 埠或其他唯一 URL 載入您的應用程式。此 URL 在網頁/桌面版 Discord 上必須支援 HTTPS 連線（行動版不要求 HTTPS）。此方式的缺點是應用程式的網路流量不會通過 Discord 的代理伺服器，因此所有請求都需要使用完整 URL 而非「映射 (Mapped)」URL。
+
+### 透過網路隧道執行 (Running Through A Network Tunnel)
+
+我們建議透過 Discord 代理伺服器進行開發和測試，以確保所有 URL 行為在生產環境中如預期運作。您可以使用網路隧道工具（例如 [cloudflared](https://github.com/cloudflare/cloudflared#installing-cloudflared)）來達到此目的：
+
+1. 在 Discord 開發者入口網站建立新應用程式
+2. 為您的 App 啟用互動活動
+3. 設定應用程式的 [URL 映射](/developers/activities/development-guides/local-development#url-mapping)
+4. 在本機啟動您的網頁伺服器
+5. 安裝並執行隧道工具，指向本機伺服器
+
+<Info>
+您的網頁伺服器可以使用 HTTP，由網路隧道工具升級為 HTTPS。
+</Info>
+
+若使用 cloudflared，請執行以下指令（將 `3000` 替換為您的伺服器埠號）：
+
+```
+cloudflared tunnel --url http://localhost:3000
+```
+
+執行後，您將獲得可公開存取的隧道位址：
+
+```
+Your quick Tunnel has been created! Visit it at (it may take some time to be reachable):
+https://funky-jogging-bunny.trycloudflare.com
+```
+
+在 Discord 開發者入口網站中，將應用程式 URL 映射的 `/` 路徑更新為您的隧道位址並儲存。
+
+![Configuring your URL Mapping](/images/activities/url-mapping-tutorial.png)
+
+<Warning>
+若您使用不屬於自己的 URL（例如 ngrok 免費方案），他人可能宣告該網域並架設惡意網站。請務必在使用完隧道後重置您的 URL 映射。
+</Warning>
+
+---
+
+### 從 Discord 用戶端啟動您的應用程式 (Launch from Discord Client)
+
+所有由您或您所在的團隊擁有的互動活動，都可透過開發者互動活動書架看到並啟動。
+
+#### 網頁版/桌面版
+
+1. 前往 ⚙️ 使用者設定 > App 設定 > 進階，開啟 `開發者模式 (Developer Mode)`
+2. 關閉設定視窗並進入語音頻道
+3. 在 RTC 面板或中央控制列中，點擊「火箭按鈕」開啟互動活動書架
+4. 點擊互動活動以啟動！
+
+#### 行動版
+
+1. 從您的使用者資料，選擇外觀 (Appearance)，然後開啟 `開發者模式`
+2. 進入語音頻道
+3. 點擊互動活動以啟動！
+
+---
+
+### URL 映射 (URL Mapping)
+
+Discord 中的互動活動透過代理伺服器進行「沙盒化 (sandboxed)」，用以隱藏使用者和應用程式的 IP 位址，並封鎖已知的惡意端點。您可以設定代理伺服器，允許對外部端點的網路請求。
+
+#### 如何設定 URL 映射
+
+前往 [Activities -> URL Mappings](https://discord.com/developers/applications/select/embedded/url-mappings)，設定每個映射的前綴 (PREFIX) 和目標 (TARGET) 值。
+
+例如，若您想存取 `https://some-api.com`，可將 `PREFIX` 設為 `/api`，`TARGET` 設為 `some-api.com`。之後應用程式對 `/api` 的請求都會透過 Discord 代理轉發至 `some-api.com`。
+
+#### 前綴/目標格式規則
+
+- 目標不應包含協定（不要填 `https://your-url.com`，應填 `your-url.com`）
+- 可使用參數匹配處理多個子網域，例如：
+  | PREFIX                | TARGET                   |
+  |-----------------------|--------------------------|
+  | `/google/{subdomain}` | `{subdomain}.google.com` |
+- 目標必須指向目錄，不支援指向特定檔案（例如 `example.com/index.html`）
+
+---
+
+### 日誌記錄 (Logging)
+
+SDK 預設會將您的 App 觸發的所有 `log`、`warn`、`error`、`info` 和 `debug` 事件轉發至 Discord 應用程式。
+
+#### 在桌面版檢視日誌
+
+桌面版日誌可透過瀏覽器開發者工具的 Console 分頁查看。Discord 的 PTB 用戶端也可從 `View -> Developer -> Toggle Developer Tools` 選單查看。
+
+#### 在行動版檢視日誌
+
+行動版日誌可透過使用者設定中的 `除錯日誌 (Debug Logs)` 選項查看（需開啟開發者模式）：
+
+1. 點擊您的頭像再點擊齒輪圖示以開啟使用者設定
+2. 點擊外觀 (Appearance)
+3. 開啟開發者模式
+4. `DEV ONLY` 區塊下會出現 `Debug Logs` 選項
+
+#### 停用日誌記錄 (Disabling Logging)
+
+若不希望日誌被轉發至瀏覽器，可透過設定物件停用：
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId, {
+  disableConsoleLogOverride: true,
+});
+```
+
+#### 轉發日誌訊息 (Forwarding Log Messages)
+
+您也可以使用 SDK 指令 `captureLog` 主動轉發特定日誌訊息：
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+discordSdk.commands.captureLog({
+  level: 'log',
+  message: '這是我的日誌訊息！',
+});
+```

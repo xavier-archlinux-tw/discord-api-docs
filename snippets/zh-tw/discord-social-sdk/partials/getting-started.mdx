@@ -1,0 +1,35 @@
+## 步驟 1: 建立 Discord 開發者團隊
+
+在您開始之前，您需要在 Discord 開發者入口網站上建立一個開發者團隊。此團隊將用於管理您的 Discord 應用程式與 SDK 整合。
+
+如果您已經配置了團隊，可以跳過此步驟。
+
+1. 在 [Discord 開發者入口網站](https://discord.com/developers/teams) 上建立開發者團隊。
+
+稍後，您可以邀請您的團隊成員加入您新建立的團隊以協作進行整合。
+
+---
+
+## 步驟 2: 建立 Discord 應用程式
+
+1. 在 [Discord 開發者入口網站](https://discord.com/developers/applications) 上建立一個新的應用程式，並將其指派給您的團隊。
+3. 在 [OAuth2 標籤頁](https://discord.com/developers/applications/select/oauth2) 中加入重新導向 URL：
+   - 針對桌面應用程式：`http://127.0.0.1/callback`（這可以在稍後修改）。
+   - 關於設置更進階重新導向 URI 的更多細節，請參閱 [`discordpp::Client::Authorize`](https://discord.com/developers/docs/social-sdk/classdiscordpp_1_1Client.html#ace94a58e27545a933d79db32b387a468)。
+4. 在 [OAuth2 標籤頁](https://discord.com/developers/applications/select/oauth2) 中啟用 **公開用戶端 (Public Client)** 切換開關。
+
+<Warning>
+本指南需要啟用 **公開用戶端** 以允許您快速開始使用 SDK。大多數遊戲在發布時不會希望將其作為公開用戶端。您的團隊應該在發布遊戲之前審查此設定。[深入了解公開用戶端](/developers/zh-tw/discord-social-sdk/core-concepts/oauth2-scopes#oauth2-client-types)。
+</Warning>
+
+---
+
+## 步驟 3: 為您的 App 啟用 Discord 社交 SDK
+
+一旦您建立了 Discord 應用程式，您將需要為其啟用 Discord 社交 SDK。
+
+1. 從 [Discord 開發者入口網站](https://discord.com/developers/applications) 選擇您在步驟 2 中新建立的應用程式。
+2. 在您應用程式的左側側邊欄中，找到並點選 `Discord Social SDK` 底下的 [開始使用 (Getting Started)](https://discord.com/developers/applications/select/social-sdk/getting-started) 連結。
+3. 填寫表單以分享有關您的遊戲的詳細資訊。
+4. 點選 `Submit` 提交，社交 SDK 將會為您的應用程式啟用。
+5. 啟用後，您將能在 [下載 (Downloads)](https://discord.com/developers/applications/select/social-sdk/downloads) 底下找到社交 SDK 的二進位檔。

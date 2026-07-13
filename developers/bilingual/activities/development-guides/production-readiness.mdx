@@ -1,0 +1,71 @@
+---
+title: "Production Readiness (雙語/Bilingual)"
+description: Prepare your Discord Activity for production deployment.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/production-readiness" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Cache Busting
+
+All assets will respect cache headers. Discord's proxy removes cache headers for `text/html` content. For all non-HTML content, ensure you have a cache-busting strategy (e.g., [webpack dynamic file names](https://webpack.js.org/guides/caching/)).
+
+## Handling Rate Limits
+
+Ensure your app can handle Discord API's rate limiting. Respect the `retry_after` header when you receive a 429 error.
+
+## Static IP Addresses
+
+Mitigate inheriting banned IP addresses by setting up a static IP address for all your server's egress traffic.
+
+## Backward Compatibility
+
+Handle `INVALID_COMMAND` errors when new SDK commands aren't supported by older Discord clients.
+
+```javascript
+try {
+  const {permissions} = await discordSdk.commands.getChannelPermissions();
+} catch (error) {
+  if (error.code == RPCErrorCodes.INVALID_COMMAND) {
+    // Expected: old client doesn't support this command
+  }
+}
+```
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 快取清除 (Cache Busting)
+
+所有資源都會遵循快取標頭設定。Discord 的代理伺服器會移除 `text/html` 內容的快取標頭。對於所有非 HTML 內容，請確保具備快取清除策略（例如 [webpack 動態檔名](https://webpack.js.org/guides/caching/)）。
+
+## 處理速率限制 (Handling Rate Limits)
+
+確保您的應用程式能夠遵守 Discord API 的速率限制。收到 429 錯誤時，請遵守 `retry_after` 標頭的值。
+
+## 靜態 IP 位址 (Static IP Addresses)
+
+為所有伺服器對外流量設定靜態 IP 位址，以避免繼承被 Cloudflare 封鎖的 IP。
+
+## 向後相容性 (Backward Compatibility)
+
+當 SDK 新指令不被舊版 Discord 用戶端支援時，處理 `INVALID_COMMAND` 錯誤。
+
+```javascript
+try {
+  const {permissions} = await discordSdk.commands.getChannelPermissions();
+} catch (error) {
+  if (error.code == RPCErrorCodes.INVALID_COMMAND) {
+    // 預期的錯誤：舊版用戶端不支援此指令
+  }
+}
+```
+
+  </div>
+</div>

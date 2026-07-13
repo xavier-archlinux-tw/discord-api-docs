@@ -1,0 +1,59 @@
+---
+title: 使用者動作
+description: 在 Discord 互動活動中實作使用者互動與動作。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/user-actions" />
+
+## 開啟外部連結 (Open External Link)
+
+由於互動活動運行在沙盒環境中，您的 App 需要執行特定指令才能讓使用者開啟任何外部連結。使用者會在 Discord 內部收到是否要開啟外部連結的提示。
+
+#### 使用方式
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+
+// 一旦 SDK 與 Discord 用戶端建立連線，即可開啟外部連結
+discordSdk.commands.openExternalLink({
+  url: 'https://google.com',
+});
+```
+
+#### 使用者體驗
+
+![external-link-modal](/images/activities/external-link-modal.png)
+
+使用者將在 Discord 內部看到一個提示框，詢問他們是否繼續。點擊 **_信任此網域 (Trust this Domain)_** 後，使用者將不再收到針對該特定網域的提示框。
+
+---
+
+## 開啟邀請視窗 (Open Invite Dialog)
+
+在 SDK 中提供了 `openInviteDialog` 指令。此指令可在 Discord 用戶端內開啟應用程式頻道邀請 UI，而不需要額外的 OAuth 權限範圍。
+
+此指令在私訊 (DM) 上下文中呼叫時會返回錯誤，因此僅應在伺服器語音或文字頻道中呼叫。
+
+#### 使用方式
+
+```javascript
+import {DiscordSDK, Permissions, PermissionUtils} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+
+try {
+  const {permissions} = await discordSdk.commands.getChannelPermissions();
+  if (PermissionUtils.can(Permissions.CREATE_INSTANT_INVITE, permissions)) {
+    await discordSdk.commands.openInviteDialog();
+    // 成功開啟對話框
+  } else {
+    console.warn('使用者沒有 CREATE_INSTANT_INVITE 權限');
+  }
+} catch (err) {
+  console.warn(err.message);
+}
+```

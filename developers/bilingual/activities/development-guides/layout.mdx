@@ -1,0 +1,71 @@
+---
+title: "Layout (雙語/Bilingual)"
+description: Design effective layouts and user interfaces for Discord Activities.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/layout" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Application Orientation
+
+Lock states: `UNLOCKED`, `PORTRAIT`, `LANDSCAPE`
+
+```javascript
+discordSdk.commands.setOrientationLockState({
+  lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+  picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+  grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+});
+```
+
+Subscribe to orientation updates:
+
+```javascript
+discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
+```
+
+## Application Layout Mode
+
+Three modes: focused, picture-in-picture (PIP), grid. Use `subscribeToLayoutModeUpdatesCompat` for backward compatibility.
+
+```javascript
+discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+```
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 應用程式方向鎖定 (Application Orientation)
+
+鎖定狀態：`UNLOCKED`（不鎖定）、`PORTRAIT`（直向）、`LANDSCAPE`（橫向）
+
+```javascript
+discordSdk.commands.setOrientationLockState({
+  lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+  picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+  grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+});
+```
+
+訂閱方向更新：
+
+```javascript
+discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
+```
+
+## 應用程式版面模式 (Application Layout Mode)
+
+三種模式：聚焦 (focused)、子母畫面 (PIP)、格狀 (grid)。使用 `subscribeToLayoutModeUpdatesCompat` 以向後相容的方式訂閱。
+
+```javascript
+discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+```
+
+  </div>
+</div>

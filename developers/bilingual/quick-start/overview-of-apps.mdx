@@ -1,0 +1,237 @@
+---
+title: "Overview of Discord Apps (雙語/Bilingual)"
+description: Build Discord apps to customize, extend, and enhance Discord for millions of users.
+sidebarTitle: Overview of Apps (雙語)
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/quick-start/overview-of-apps" />
+
+import { RobotIcon } from "/snippets/icons/RobotIcon.jsx";
+import { ShapesIcon } from "/snippets/icons/ShapesIcon.jsx";
+import { GameControllerIcon } from "/snippets/icons/GameControllerIcon.jsx";
+import { AppsIcon } from "/snippets/icons/AppsIcon.jsx";
+import { WrenchIcon } from "/snippets/icons/WrenchIcon.jsx";
+
+一個 **Discord 應用程式** 是代表您與 Discord 平台整合的核心實體。
+A **Discord application** is the core entity that represents your integration with the Discord platform. Every bot, Activity, and Social SDK integration is backed by an application registered in the [Discord Developer Portal](https://discord.com/developers/applications).
+
+<iframe
+  className="w-full aspect-video rounded-3xl"
+  src="https://www.youtube-nocookie.com/embed/CFxo5w3SY2w?si=AFrLSog_hjC-xiV7"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "0px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## The Three Types of Discord Apps
+
+### Bots
+
+Bots are automated user accounts operated by application code. They appear in servers with an `APP` tag and can respond to events, slash commands, and user actions.
+
+Use bots when you want to:
+
+- Add commands, moderation tools, or utilities to a server
+- React to events (messages, joins, reactions) in real time
+- Build interactive experiences with buttons, menus, and modals
+- Post automated updates from external systems
+
+Bots can be **guild-installed** (added to a specific server) or **user-installed** (available everywhere the user goes, without requiring server permissions).
+
+### Activities
+
+Activities are embedded web applications that run inside Discord channels. They're built with the [Embedded App SDK](/developers/en-us/developer-tools/embedded-app-sdk) and can be launched by any user in a channel or from a bot with the `LAUNCH_ACTIVITY` interaction callback.
+
+Use Activities when you want to:
+
+- Build a game or interactive experience that runs inside Discord
+- Create collaborative tools (watch parties, drawing apps, trivia games)
+- Leverage Discord's existing social context: voice, friends, servers
+
+### Social Layer for Games
+
+The [Discord Social SDK](/developers/en-us/discord-social-sdk/overview) lets you add Discord-powered social features to your game across PC, mobile, and console. You can integrate individual features alongside your existing social systems or build out a more complete Discord-powered experience.
+
+Use the Social SDK when you want to:
+
+- Add rich presence, friends lists, and voice chat to your game
+- Support cross-platform social features with Discord account linking
+- Let players interact through Discord without leaving your game
+
+## Where Apps Install
+
+| App Type              | Install Target | What It Unlocks                              |
+| --------------------- | -------------- | -------------------------------------------- |
+| Bot (guild-installed) | A server       | Access to server channels, members, events   |
+| Bot (user-installed)  | A user         | Available in DMs, group DMs, and any server  |
+| Activity              | An application | Launchable from any voice channel            |
+| Social SDK            | Your game      | Social features embedded in your game client |
+
+## What APIs Can Apps Use?
+
+There are a handful of different APIs that you can pick and choose from based on your app's functionality and which Discord features you want to access. Below is a quick overview of the main APIs on the Discord developer platform, but you can read more details and information about API usage in the [API reference](/developers/en-us/reference).
+
+### HTTP API
+
+The **HTTP API** is a REST API that lets you interact and modify core Discord resources like [channels](/developers/en-us/resources/channel), [servers (or guilds)](/developers/en-us/resources/guild), [users](/developers/en-us/resources/user), and [messages](/developers/en-us/resources/message#message-object).
+
+Use the HTTP API to:
+
+- Retrieve information about a resource
+- Create, update, or delete a resource
+
+Read details about using the HTTP API in the [API reference](/developers/en-us/reference#http-api).
+
+### Gateway API
+
+The **Gateway API** is a WebSocket connection between your app and Discord. While it's most commonly used to receive a real-time stream of events from Discord, the connection is bidirectional. Your app can also send events to Discord over the same connection.
+
+Use the Gateway API to:
+
+- Receive real-time events from Discord (messages, member joins, reactions, voice state changes, and more)
+- Update your bot's presence and status
+- Manage voice state and connect to voice channels
+- Perform the connection handshake and manage the lifecycle of your Gateway connection
+
+Read details about using the Gateway API in the [API reference](/developers/en-us/reference#gateway-websocket-api).
+
+## Start Building
+
+<CardGroup cols={1}>
+  <Card
+    title="Bots & Companion Apps"
+    href="/developers/en-us/bots/overview"
+    icon={<RobotIcon />}
+  >
+    Build a bot that responds to events, commands, and user interactions in
+    Discord servers.
+  </Card>
+  <Card
+    title="Social Layer for Games"
+    href="/developers/en-us/discord-social-sdk/overview"
+    icon={<GameControllerIcon />}
+  >
+    Add Discord-powered social features to your game using the Discord Social
+    SDK.
+  </Card>
+  <Card
+    title="Activities"
+    href="/developers/en-us/activities/overview"
+    icon={<ShapesIcon />}
+  >
+    Build an embedded web app or game that runs inside Discord voice channels.
+  </Card>
+</CardGroup>
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "0px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## Discord 應用程式的三種類型
+
+### 機器人 (Bots)
+
+機器人是由應用程式程式碼控制的自動化使用者帳戶。它們會帶有 `APP` 標籤出現在伺服器中，並能回應事件、斜線指令 (Slash Commands) 以及使用者動作。
+
+在以下情況使用機器人：
+
+- 為伺服器加入指令、管理工具或公用程式
+- 即時對事件（訊息、成員加入、反應）做出回應
+- 使用按鈕、選單與互動視窗 (Modals) 來建置互動式體驗
+- 從外部系統發布自動化更新
+
+機器人可以是 **伺服器安裝 (guild-installed)**（加入到特定伺服器）或 **使用者安裝 (user-installed)**（隨使用者走到哪用到哪，不需要伺服器權限）。
+
+### 互動活動 (Activities)
+
+互動活動是嵌入在 Discord 頻道中執行的網頁應用程式。它們是使用 [嵌入式 App SDK (Embedded App SDK)](/developers/zh-tw/developer-tools/embedded-app-sdk) 建置，並可由任何使用者在語音頻道中啟動，或者由帶有 `LAUNCH_ACTIVITY` 互動回呼的機器人來啟動。
+
+在以下情況使用互動活動：
+
+- 建置在 Discord 內部執行的遊戲或互動式體驗
+- 建立協作工具（觀影派對、畫畫應用程式、問答遊戲）
+- 利用 Discord 現有的社交背景資訊：語音、好友、伺服器
+
+### 遊戲社交層 (Social Layer for Games)
+
+[Discord 社交 SDK (Social SDK)](/developers/zh-tw/discord-social-sdk/overview) 可讓您將 Discord 驅動的社交功能加入到您的 PC、行動裝置與主機遊戲中。您可以將個別功能與您現有的社交系統整合，或是建置一個更完整、由 Discord 驅動的遊戲體驗。
+
+在以下情況使用社交 SDK：
+
+- 將豐富狀態、好友名單與語音聊天加入到您的遊戲中
+- 透過 Discord 帳戶連結支援跨平台的社交功能
+- 讓玩家能直接透過 Discord 互動而無需離開您的遊戲
+
+## 應用程式安裝於何處
+
+| 應用程式類型         | 安裝目標       | 解鎖的功能                                  |
+| -------------------- | -------------- | ------------------------------------------- |
+| 機器人（伺服器安裝） | 伺服器 (Guild) | 存取伺服器頻道、成員、事件                  |
+| 機器人（使用者安裝） | 使用者 (User)  | 可在私訊 (DM)、群組私訊以及任何伺服器中使用 |
+| 互動活動             | 應用程式       | 可從任何語音頻道中啟動                      |
+| 社交 SDK             | 您的遊戲       | 嵌入於您遊戲用戶端中的社交功能              |
+
+## 應用程式可以使用哪些 API？
+
+有幾種不同的 API 可供您依據應用程式的功能以及您想要存取哪些 Discord 功能來進行挑選。以下是 Discord 開發者平台上主要 API 的快速概述，但您可以在 [API 參考](/developers/zh-tw/reference) 中閱讀更多關於 API 使用的細節與資訊。
+
+### HTTP API
+
+**HTTP API** 是一個 REST API，能讓您互動並修改核心的 Discord 資源，例如 [頻道 (channels)](/developers/zh-tw/resources/channel)、[伺服器 (servers 或 guilds)](/developers/zh-tw/resources/guild)、[使用者 (users)](/developers/zh-tw/resources/user) 和 [訊息 (messages)](/developers/zh-tw/resources/message#message-object)。
+
+使用 HTTP API 以：
+
+- 取得資源의 相關資訊
+- 建立、更新或刪除資源
+
+在 [API 參考](/developers/zh-tw/reference#http-api) 中閱讀使用 HTTP API 的細節。
+
+### Gateway API
+
+**Gateway API** 是您的 App 與 Discord 之間的 WebSocket 連線。雖然它最常用於接收來自 Discord 的即時事件串流，但該連線是雙向的。您的 App 也可以透過同一個連線發送事件給 Discord。
+
+使用 Gateway API 以：
+
+- 接收來自 Discord 的即時事件（訊息、成員加入、反應、語音狀態變更等）
+- 更新您機器人的豐富狀態與狀態
+- 管理語音狀態並連線到語音頻道
+- 進行連線交握並管理 Gateway 連線的生命週期
+
+在 [API 參考](/developers/zh-tw/reference#gateway-websocket-api) 中閱讀使用 Gateway API 的細節。
+
+## 開始建置
+
+<CardGroup cols={1}>
+  <Card
+    title="機器人與附屬 App"
+    href="/developers/zh-tw/bots/overview"
+    icon={<RobotIcon />}
+  >
+    建置一個機器人，以在 Discord 伺服器中回應事件、指令和使用者互動。
+  </Card>
+  <Card
+    title="遊戲社交層"
+    href="/developers/zh-tw/discord-social-sdk/overview"
+    icon={<GameControllerIcon />}
+  >
+    使用 Discord 社交 SDK 將 Discord 驅動的社交功能加入到您的遊戲中。
+  </Card>
+  <Card
+    title="互動活動"
+    href="/developers/zh-tw/activities/overview"
+    icon={<ShapesIcon />}
+  >
+    建置一個嵌入式網頁應用程式或遊戲，並在 Discord 語音頻道中執行。
+  </Card>
+</CardGroup>
+
+  </div>
+</div>

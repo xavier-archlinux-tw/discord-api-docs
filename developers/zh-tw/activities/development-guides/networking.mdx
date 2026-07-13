@@ -1,0 +1,42 @@
+---
+title: 網路通訊
+description: 了解 Discord 互動活動的網路通訊模式與最佳實踐。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/networking" />
+
+## 互動活動代理伺服器考量 (Activity Proxy Considerations)
+
+基於安全原因，所有網路流量皆會透過 Discord 代理伺服器 (Discord Proxy) 進行路由。其底層使用 Cloudflare Workers，並帶來以下限制：
+
+#### WebTransport
+雖然目前僅支援 WebSocket，但我們正與上游供應商合作以支援 WebTransport。
+
+#### WebRTC
+目前不支援 WebRTC。
+
+---
+
+## 建構完整網址 (Construct A Full URL)
+
+在某些情況下，您可能需要使用完整網址而非相對路徑。網址的組成如下：
+1. 您希望使用的協定 (Protocol)
+2. 您的應用程式用戶端 ID (Client ID)
+3. Discord 代理網域 (`discordsays.com`)
+4. 您的資源路徑
+
+#### 範例
+
+```javascript
+const protocol = `https`;
+const clientId = '<您的 CLIENT ID>';
+const proxyDomain = 'discordsays.com';
+const resourcePath = '/foo/bar.jpg';
+const url = new URL(`${protocol}://${clientId}.${proxyDomain}${resourcePath}`);
+```
+
+例如，假設用戶端 ID 為 `12345678`：
+- 相對路徑：`/foo/bar.jpg`
+- 完整網址：`https://12345678.discordsays.com/foo/bar.jpg`

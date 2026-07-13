@@ -1,0 +1,110 @@
+---
+title: "Discord Bot Development Guides (雙語/Bilingual)"
+sidebarTitle: "Bot Development (雙語)"
+description: "Guides for developing bots on Discord."
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/guides/bots" />
+
+import {ImageCard} from '/snippets/imagecard.jsx'
+import {InboxIcon} from '/snippets/icons/InboxIcon.jsx'
+import {RobotIcon} from '/snippets/icons/RobotIcon.jsx'
+import {BookCheckIcon} from '/snippets/icons/BookCheckIcon.jsx'
+import {CompassIcon} from '/snippets/icons/CompassIcon.jsx'
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Getting Started
+
+<CardGroup cols={1}>
+  <ImageCard title="Build your first Discord bot" href="/developers/en-us/quick-start/getting-started" img="/images/headers/docs-botsapp-hero.png" >
+    A step-by-step guide to building your first bot on Discord.
+  </ImageCard>
+</CardGroup>
+
+## Diving Deeper
+
+<CardGroup cols={1}>
+  <ImageCard title="Using Message Components" href="/developers/en-us/components/using-message-components" img="/images/components/hero.webp">
+    A guide to using message components in your Discord bot.
+  </ImageCard>
+  <ImageCard title="Using Modal Components" href="/developers/en-us/components/using-modal-components" img="/images/components/hero.webp">
+    A guide to using modal components in your Discord bot.
+  </ImageCard>
+  <Card title="Using Community Invites" href="/developers/en-us/tutorials/using-community-invites" icon={<InboxIcon />}>
+    A guide to using community invites in your Discord bot.
+  </Card>
+  <Card title="Developing A User-Installable App" href="/developers/en-us/tutorials/developing-a-user-installable-app" icon={<RobotIcon />} >
+    A guide to developing a user-installable app on Discord.
+  </Card>
+  <Card title="Hosting on Cloudflare Workers" href="/developers/en-us/tutorials/hosting-on-cloudflare-workers" icon={<RobotIcon />} >
+    A guide to hosting your Discord bot on Cloudflare Workers.
+  </Card>
+  <Card title="You Might Not Need a Privileged Intent" href="/developers/en-us/gateway/you-might-not-need-a-privileged-intent" icon={<BookCheckIcon />} >
+    A guide to help you determine whether you need a privileged intent or whether an alternative approach will work.
+  </Card>
+</CardGroup>
+
+## Privileged Intents
+
+<CardGroup cols={1}>
+  <Card title="You Might Not Need a Privileged Intent" href="/developers/en-us/gateway/you-might-not-need-a-privileged-intent" icon={<BookCheckIcon />} >
+    A guide to help you determine whether you need a privileged intent or whether an alternative approach will work.
+  </Card>
+  <Card title="Getting Started With Privileged Intent Review" href="/developers/en-us/gateway/getting-started-with-privileged-intent-review" icon={<CompassIcon />} >
+    A guide to help you get started with the privileged intent review process.
+  </Card>
+</CardGroup>
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 開始使用
+
+<CardGroup cols={1}>
+  <ImageCard title="建置您的第一個 Discord 機器人" href="/developers/zh-tw/quick-start/getting-started" img="/images/headers/docs-botsapp-hero.png" >
+    在 Discord 上建置您的第一個機器人的逐步指南。
+  </ImageCard>
+</CardGroup>
+
+## 深入探討
+
+<CardGroup cols={1}>
+  <ImageCard title="使用訊息元件" href="/developers/zh-tw/components/using-message-components" img="/images/components/hero.webp">
+    在您的 Discord 機器人中使用訊息元件的指南。
+  </ImageCard>
+  <ImageCard title="使用互動視窗 (Modal) 元件" href="/developers/zh-tw/components/using-modal-components" img="/images/components/hero.webp">
+    在您的 Discord 機器人中使用互動視窗元件的指南。
+  </ImageCard>
+  <Card title="使用社群邀請" href="/developers/zh-tw/tutorials/using-community-invites" icon={<InboxIcon />}>
+    在您的 Discord 機器人中使用社群邀請的指南。
+  </Card>
+  <Card title="開發使用者可安裝的 App" href="/developers/zh-tw/tutorials/developing-a-user-installable-app" icon={<RobotIcon />} >
+    在 Discord 上開發使用者可安裝之應用程式的指南。
+  </Card>
+  <Card title="託管於 Cloudflare Workers" href="/developers/zh-tw/tutorials/hosting-on-cloudflare-workers" icon={<RobotIcon />} >
+    在 Cloudflare Workers 上託管您的 Discord 機器人的指南。
+  </Card>
+  <Card title="您可能不需要特權 Intent" href="/developers/zh-tw/gateway/you-might-not-need-a-privileged-intent" icon={<BookCheckIcon />} >
+    引導您判斷是否需要特權 Intent，或者替代方案是否可行。
+  </Card>
+</CardGroup>
+
+## 特權 Intent (Privileged Intents)
+
+<CardGroup cols={1}>
+  <Card title="您可能不需要特權 Intent" href="/developers/zh-tw/gateway/you-might-not-need-a-privileged-intent" icon={<BookCheckIcon />} >
+    引導您判斷是否需要特權 Intent，或者替代方案是否可行。
+  </Card>
+  <Card title="特權 Intent 審查入門" href="/developers/zh-tw/gateway/getting-started-with-privileged-intent-review" icon={<CompassIcon />} >
+    引導您開始進行特權 Intent 審查流程的指南。
+  </Card>
+</CardGroup>
+
+  </div>
+</div>

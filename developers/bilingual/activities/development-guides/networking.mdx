@@ -1,0 +1,47 @@
+---
+title: "Networking (雙語/Bilingual)"
+description: Learn networking patterns and best practices for Discord Activities.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/networking" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Activity Proxy Considerations
+
+All network traffic is routed through the Discord Proxy for various security reasons. WebRTC and WebTransport details are covered in the main guide.
+
+## Construct A Full URL
+
+```javascript
+const protocol = `https`;
+const clientId = '<YOUR CLIENT ID>';
+const proxyDomain = 'discordsays.com';
+const resourcePath = '/foo/bar.jpg';
+const url = new URL(`${protocol}://${clientId}.${proxyDomain}${resourcePath}`);
+```
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 互動活動代理伺服器考量 (Activity Proxy Considerations)
+
+基於安全原因，所有網路流量皆會透過 Discord 代理伺服器 (Discord Proxy) 進行路由。相關 WebRTC 與 WebTransport 限制已在指南中說明。
+
+## 建構完整網址 (Construct A Full URL)
+
+```javascript
+const protocol = `https`;
+const clientId = '<您的 CLIENT ID>';
+const proxyDomain = 'discordsays.com';
+const resourcePath = '/foo/bar.jpg';
+const url = new URL(`${protocol}://${clientId}.${proxyDomain}${resourcePath}`);
+```
+
+  </div>
+</div>

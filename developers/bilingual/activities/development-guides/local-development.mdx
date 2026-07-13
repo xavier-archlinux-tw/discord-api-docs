@@ -1,0 +1,61 @@
+---
+title: "Local Development (雙語/Bilingual)"
+description: Set up local development environment for Discord Activities.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/local-development" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Run Your Application Locally
+
+Use a network tunnel (e.g., [cloudflared](https://github.com/cloudflare/cloudflared)) to test against Discord's proxy:
+
+```
+cloudflared tunnel --url http://localhost:3000
+```
+
+## URL Mapping
+
+Configure URL Mappings in [Activities -> URL Mappings](https://discord.com/developers/applications/select/embedded/url-mappings). Set `PREFIX` to `/api` and `TARGET` to `some-api.com` to forward `/api` requests through Discord's proxy to `some-api.com`.
+
+## Logging
+
+SDK forwards `log`, `warn`, `error`, `info`, `debug` events to Discord.
+
+```javascript
+// Disable logging
+const discordSdk = new DiscordSDK(clientId, { disableConsoleLogOverride: true });
+```
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 在本機執行您的應用程式 (Run Your Application Locally)
+
+使用網路隧道工具（例如 [cloudflared](https://github.com/cloudflare/cloudflared)）透過 Discord 代理進行測試：
+
+```
+cloudflared tunnel --url http://localhost:3000
+```
+
+## URL 映射 (URL Mapping)
+
+在 [Activities -> URL Mappings](https://discord.com/developers/applications/select/embedded/url-mappings) 中設定映射。將 `PREFIX` 設為 `/api`，`TARGET` 設為 `some-api.com`，即可將 `/api` 的請求透過 Discord 代理轉發至 `some-api.com`。
+
+## 日誌記錄 (Logging)
+
+SDK 預設將 `log`、`warn`、`error`、`info`、`debug` 事件轉發至 Discord。
+
+```javascript
+// 停用日誌記錄
+const discordSdk = new DiscordSDK(clientId, { disableConsoleLogOverride: true });
+```
+
+  </div>
+</div>

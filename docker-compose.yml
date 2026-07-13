@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mintlify:
+    build: .
+    container_name: mintlify-dev-server
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      - PORT=3000
+    # 在有些系統上，為了熱重載（Hot Reload）能正常在容器中偵測檔案變更，可以視情況增加 watch 等配置，目前先以 standard volume 掛載為主

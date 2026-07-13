@@ -1,0 +1,47 @@
+---
+title: 生產環境準備
+description: 準備將您的 Discord 互動活動部署至生產環境。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/production-readiness" />
+
+## 快取清除 (Cache Busting)
+
+您的應用程式所載入的所有靜態資源都會遵循[快取標頭 (Cache Headers)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) 的設定。有一個例外：Discord 的應用程式代理伺服器會移除 `content-type` 標頭包含 `text/html` 的資源的快取標頭。對於所有非 `text/html` 的內容，請確保您的應用程式具備快取清除策略，例如[使用 webpack 建立動態檔名](https://webpack.js.org/guides/caching/)。
+
+---
+
+## 處理速率限制 (Handling Rate Limits)
+
+請確保您的應用程式用戶端和伺服器的網路請求能夠遵守 Discord API 的[速率限制規定](/developers/topics/rate-limits)。
+
+收到 `429` 錯誤時，請參考 `retry_after` 標頭的值進行適當的退避重試處理。
+
+---
+
+## 靜態 IP 位址 (Static IP Addresses)
+
+如果您的應用程式伺服器使用動態分配的 IP 位址（雲端函式的標準做法），則有可能繼承到前一個不良行為者被 Cloudflare 封鎖的 IP 位址，導致所有對 Discord API 的流量被封鎖長達一小時。最好的緩解方式是為您應用程式伺服器的所有對外流量設定靜態 IP 位址。
+
+---
+
+## 向後相容性 (Backward Compatibility)
+
+#### 新增指令 (New Commands)
+
+當 embedded-app-sdk 推出新指令時，並非所有 Discord 版本都會支援。若應用程式嘗試在不支援的舊版 Discord 上使用新指令，Discord 將回應 `INVALID_COMMAND` 錯誤碼：
+
+```javascript
+try {
+  const {permissions} = await discordSdk.commands.getChannelPermissions();
+  // 檢查權限...
+} catch (error) {
+  if (error.code == RPCErrorCodes.INVALID_COMMAND) {
+    // 此為預期的錯誤，Discord 用戶端不支援此指令
+  } else {
+    // 非預期的錯誤
+  }
+}
+```

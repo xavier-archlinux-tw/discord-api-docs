@@ -4,3 +4,6 @@ node_modules/
 dist/
 .idea
 xml_output/
+.env.example
+.env
+scripts/translate_docs.py

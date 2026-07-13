@@ -1,0 +1,102 @@
+---
+title: 多人遊戲體驗
+description: 在 Discord 互動活動中設計和實作引人入勝的多人遊戲體驗。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/multiplayer-experience" />
+
+## 活動實例管理 (Activity Instance Management)
+
+當使用者點擊「加入應用程式 (Join Application)」時，他們期望能進入與朋友相同的應用程式實例，無論是共享畫布、棋盤遊戲、協作播放清單或第一人稱射擊遊戲，兩位使用者都應能存取相同的共享資料。在本文件中，我們將此共享資料稱為**應用程式實例 (application instance)**。
+
+![join-application](/images/activities/join-application.png)
+
+Embedded App SDK 可讓您的 App 與 Discord 用戶端進行雙向通訊。`instanceId` 是您的應用程式與 Discord 識別特定實例不可或缺的依據。
+
+#### 使用 instanceId
+
+`instanceId` 屬性在 SDK 建構完成後即可立即使用，無需等待 Discord 用戶端的 `ready` 事件。
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+// 立即可用
+const instanceId = discordSdk.instanceId;
+```
+
+`instanceId` 應作為儲存和載入應用程式共享資料的鍵值，以確保相同實例中的使用者能存取相同的共享資料。
+
+##### instanceId 的語義
+
+實例 ID 在使用者啟動應用程式時生成。加入同一應用程式的使用者將收到相同的 `instanceId`。當一個頻道中所有使用者離開或關閉應用程式後，該實例即結束其生命週期，不會再被使用。下次有使用者在該頻道開啟應用程式時，將產生新的 `instanceId`。
+
+---
+
+## 實例參與者 (Instance Participants)
+
+實例參與者是指所有正在連線至同一應用程式實例的 Discord 使用者。您可以透過主動查詢或訂閱事件來取得此資料。
+
+```javascript
+import {DiscordSDK, Events, type Types} from '@discord/embedded-app-sdk';
+
+const discordSdk = new DiscordSDK('...');
+await discordSdk.ready();
+
+// 主動查詢 (Fetch)
+const participants = await discordSdk.commands.getInstanceConnectedParticipants();
+
+// 訂閱事件 (Subscribe)
+function updateParticipants(participants: Types.GetActivityInstanceConnectedParticipantsResponse) {
+  // 做些很酷的事
+}
+discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
+// 取消訂閱 (Unsubscribe)
+discordSdk.unsubscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
+```
+
+---
+
+## 渲染大頭貼與名稱 (Render Avatars and Names)
+
+以下是擷取使用者大頭貼和使用者名稱的基本範例：
+
+```javascript
+// 使用 authenticate 返回的 user 物件
+const {user} = await discordSdk.commands.authenticate({
+  access_token: accessToken,
+});
+
+let avatarSrc = '';
+if (user.avatar) {
+  avatarSrc = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+} else {
+  const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n;
+  avatarSrc = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`
+}
+
+const username = user.global_name ?? `${user.username}#${user.discriminator}`;
+
+// 在 HTML/JSX 中使用...
+<img alt="avatar" src={avatarSrc} />
+<p>{username}</p>
+```
+
+#### 渲染伺服器專屬大頭貼與暱稱
+
+若要取得使用者的伺服器專屬大頭貼與暱稱，您的應用程式必須請求 `guilds.members.read` 權限範圍。請注意，此範圍僅能授予目前使用者的資料；若要顯示所有使用者的伺服器專屬資料，需透過應用程式伺服器來提供。
+
+---
+
+## 防止未授權的活動連線 (Preventing Unwanted Activity Sessions)
+
+互動活動透過 Discord 中的 iframe 載入，其網站可公開存取於 `<application_id>.discordsays.com`。為了防止惡意客戶端偽造 RPC 協議，我們建議使用 Activity Instance API 進行活動連線驗證。
+
+### 使用 Activity Instance API
+
+透過 `discord.com/api/applications/<application_id>/activity-instances/<instance_id>` 端點，您的後端可在允許客戶端參與任何有意義的遊戲之前，驗證該客戶端是否確實在該活動的有效實例中。
+
+如果驗證失敗，您的 App 應以 `401` 錯誤碼回應。
+
+![activity-instance-validation](/images/activities/activity-instance-validation.jpg)

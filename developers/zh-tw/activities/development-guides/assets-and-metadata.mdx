@@ -1,0 +1,58 @@
+---
+title: 素材資源與中繼資料
+description: 管理互動活動素材資源、中繼資料與設定的指南。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/assets-and-metadata" />
+
+## 設定互動活動中繼資料 (Setting Up Activity Metadata)
+
+互動活動書架 (Activity Shelf) 是使用者瀏覽可遊玩互動活動的地方，您可以為其設定各種中繼資料與美術資源。
+
+前往您 App 的 `Settings -> General Information` 分頁，即可更新中繼資料：
+
+- **應用程式名稱 (Application Name)**：您 App 的公開顯示名稱。
+- **應用程式圖示 (Application Icon)**：您 App 的公開顯示圖示。
+- **應用程式說明 (Application Description)**：在互動活動書架項目預覽中顯示的說明文字。
+- **最多參與人數 (Max Participants)**：指定您的應用程式最多可容納的玩家人數。
+  - 最多參與人數顯示在 1-up 視圖的名稱上方：`Up to X participants`。
+  - 留空則預設為 `Unlimited participants`（無限制）。
+  - 在 2-up 視圖中，最多參與人數顯示在名稱下方。
+
+<Info>
+一個 App 的應用程式名稱和頭像可以與該 App 的 Bot 使用者名稱和頭像不同。兩組資訊都是公開的，在不同情境下均可能被使用者看見。您可在 `Settings -> Bot` 分頁檢視 Bot 的使用者名稱。
+</Info>
+
+---
+
+## 設定互動活動美術素材 (Setting Up Activity Art Assets)
+
+前往您 App 的 [Activities -> Art Assets](https://discord.com/developers/applications/select/embedded/assets) 分頁，即可設定 Embedded 專屬的美術素材：
+
+## 嵌入式背景 (Embedded Background)
+
+用於格狀視圖 (Grid View) 的背景疊加圖層。藝術品應集中於圖片四周邊緣，在圖片中央留白，以免 UI 元素與背景互相干擾。
+
+#### 規格
+- 寬高比 16:9
+- 寬度至少 1024 像素
+
+## 封面圖 (Cover Art)
+
+用作互動活動書架的主要圖片。建議此圖包含標題和背景藝術。
+
+#### 規格
+- 支援 16:9 和 13:11 兩種寬高比
+- 寬度至少 1024 像素
+
+## 應用程式磚片 (App Tile)
+
+應用程式磚片有兩種視圖：一般大小磚片（2-up 磚片）和較大的「精選」應用程式磚片（1-up 磚片）。
+
+## 影片預覽 (Video Preview)
+
+將游標懸停在封面圖上時，應自動播放應用程式的預覽影片。預覽影片長度不應超過 10 秒。若未提供影片，則懸停時不會有任何動作。
+
+#### 規格：640 x 360、mp4 格式、長度 10 秒以內、大小 1 MB 以內

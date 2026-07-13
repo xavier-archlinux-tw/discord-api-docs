@@ -1,0 +1,73 @@
+---
+title: 互動活動概述
+sidebarTitle: 概述
+description: 了解 Discord 互動活動——多人遊戲與社交體驗。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/overview" />
+
+![建置 Discord 互動活動](/images/activities/activities-hero.png)
+
+互動活動 (Activities) 是託管在 iframe 中，並使用 [嵌入式 App SDK](/developers/zh-tw/activities/overview#embedded-app-sdk) 與 Discord 用戶端進行通訊的網頁應用程式。如需了解什麼是互動活動，請參閱 [互動活動平台頁面](/developers/zh-tw/platform/activities)。
+
+此章節涵蓋如何建置互動活動。您可以閱讀我們的 [開發者案例研究](https://discord.com/build#case-studies) 來探索實際的互動活動，或是使用下方的資源直接開始建置。
+
+<CardGroup cols={3}>
+  <Card title="建置您的第一個 Discord 互動活動" href="/developers/zh-tw/activities/building-an-activity">
+    遵循此指南，使用嵌入式 App SDK 建置您的第一個互動活動。
+  </Card>
+  <Card title="開發模式" href="/developers/zh-tw/activities/development-guides">
+    探索常見的開發模式與實踐，讓建置互動活動變得更簡單。
+  </Card>
+  <Card title="互動活動運作原理" href="/developers/zh-tw/activities/how-activities-work">
+    深入了解互動活動的生命週期，以及它們在 Discord 用戶端中的執行方式。
+  </Card>
+</CardGroup>
+
+---
+
+## 開發互動活動
+
+無論您是要開發多人遊戲、新的社交體驗還是其他創意點子，您的互動活動都將被建置為一個在電腦版、行動版與網頁版 Discord 中透過 iframe 執行的網頁應用程式。您可以遵循 [使用嵌入式 App SDK 建置互動活動](/developers/zh-tw/activities/building-an-activity) 指南，或探索 [範例專案](/developers/zh-tw/activities/overview#sample-projects) 來開始。
+
+下方章節提供嵌入式 App SDK 的概述，而有關互動活動如何在 Discord 中執行的技術細節則涵蓋於 [互動活動運作原理](/developers/zh-tw/activities/how-activities-work) 中。
+
+### 嵌入式 App SDK (Embedded App SDK)
+
+[嵌入式 App SDK](/developers/zh-tw/developer-tools/embedded-app-sdk) 處理 Discord 與您的 App 之間的所有通訊，讓您能更輕鬆地處理常見任務，例如管理已連線使用者、支援行動端用戶以及對您的互動活動進行偵錯。
+
+嵌入式 App SDK 提供不同的事件與指令來處理 Discord 與您的互動活動之間的通訊，詳情將於下方進一步說明。
+
+#### 指令 (Commands)
+
+在您擁有適當權限 (Scope) 的前提下，SDK 提供一組您可以呼叫的指令來與 Discord 用戶端互動。當您想要授權並驗證使用者、獲取有關互動活動的資訊，或更新互動活動或已驗證使用者的資訊時，這會非常有用。
+
+閱讀 [嵌入式 App SDK 說明文件](/developers/zh-tw/developer-tools/embedded-app-sdk#sdk-commands) 以獲取指令的完整列表以及每個指令的詳細資訊。
+
+#### 事件 (Events)
+
+在您擁有適當權限的前提下，SDK 也提供事件，讓您可以訂閱（或取消訂閱）已連線用戶端中與您的互動活動相關的活動。當您想要處理初始連線與拋出的錯誤、監聽已連線使用者的更新，以及監聽與您的互動活動執行個體相關的事件時，這會非常有用。
+
+閱讀 [嵌入式 App SDK 說明文件](/developers/zh-tw/developer-tools/embedded-app-sdk#sdk-events) 以獲取事件的完整列表以及每個事件的詳細資訊。
+
+---
+
+## 範例專案
+
+使用我們建置的範例專案，協助您快速開始建置並學習常見的開發模式。
+
+您也可以在 [GitHub](https://github.com/discord/embedded-app-sdk-examples?tab=readme-ov-file#community-curated-examples) 上找到社群維護的範例列表，其中包含更多特定框架的範例。
+
+<CardGroup cols={3}>
+  <Card title="Discord 互動活動入門範本" href="https://github.com/discord/embedded-app-sdk-examples/tree/main/discord-activity-starter">
+    這個 TypeScript 入門範本非常適合用於快速啟動您自己的互動活動。
+  </Card>
+  <Card title="嵌入式 App SDK 遊樂場" href="https://github.com/discord/embedded-app-sdk-examples/tree/main/sdk-playground">
+    此參考範例實作了您可以在嵌入式 App SDK 中使用的指令與事件。
+  </Card>
+  <Card title="巢狀框架 App" href="https://github.com/discord/embedded-app-sdk-examples/tree/main/nested-messages">
+    此參考範例展示了使用巢狀框架（例如遊戲引擎）的互動活動。
+  </Card>
+</CardGroup>

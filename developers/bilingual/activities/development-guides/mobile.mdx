@@ -1,0 +1,69 @@
+---
+title: "Mobile (雙語/Bilingual)"
+description: Design and optimize Discord Activities for mobile devices.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/mobile" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Supported Platforms: Web, iOS, Android
+
+Enable/disable platform support in the [Activities -> Settings](https://discord.com/developers/applications/select/embedded/settings) tab of the developer portal.
+
+## Mobile Safe Areas
+
+```css
+:root {
+  --sait: var(--discord-safe-area-inset-top, env(safe-area-inset-top));
+  --saib: var(--discord-safe-area-inset-bottom, env(safe-area-inset-bottom));
+  --sail: var(--discord-safe-area-inset-left, env(safe-area-inset-left));
+  --sair: var(--discord-safe-area-inset-right, env(safe-area-inset-right));
+}
+```
+
+## Mobile Thermal States
+
+Subscribe to thermal state changes:
+
+```javascript
+discordSdk.subscribe('THERMAL_STATE_UPDATE', handleThermalStateUpdate);
+```
+
+States: `NOMINAL(0)`, `FAIR(1)`, `SERIOUS(2)`, `CRITICAL(3)`
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 支援的平台：Web、iOS、Android
+
+在開發者入口網站的 [Activities -> Settings](https://discord.com/developers/applications/select/embedded/settings) 分頁中啟用/停用平台支援。
+
+## 行動裝置安全區域 (Mobile Safe Areas)
+
+```css
+:root {
+  --sait: var(--discord-safe-area-inset-top, env(safe-area-inset-top));
+  --saib: var(--discord-safe-area-inset-bottom, env(safe-area-inset-bottom));
+  --sail: var(--discord-safe-area-inset-left, env(safe-area-inset-left));
+  --sair: var(--discord-safe-area-inset-right, env(safe-area-inset-right));
+}
+```
+
+## 行動裝置散熱狀態 (Mobile Thermal States)
+
+訂閱散熱狀態變更事件：
+
+```javascript
+discordSdk.subscribe('THERMAL_STATE_UPDATE', handleThermalStateUpdate);
+```
+
+狀態：`NOMINAL(0)`、`FAIR(1)`、`SERIOUS(2)`、`CRITICAL(3)`
+
+  </div>
+</div>

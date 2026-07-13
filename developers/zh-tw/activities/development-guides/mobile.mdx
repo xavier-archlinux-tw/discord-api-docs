@@ -1,0 +1,89 @@
+---
+title: 行動裝置
+description: 設計並優化 Discord 互動活動以支援行動裝置。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/mobile" />
+
+## 支援的平台：Web、iOS、Android
+
+預設情況下，您的互動活動可在網頁/桌面版上啟動。若要啟用或停用 Web/iOS/Android 支援，請執行以下步驟：
+
+- 前往 [Discord 開發者入口網站](https://discord.com/developers/applications)
+- 選擇您的應用程式
+- 在左側導覽中選擇 [Activities -> Settings](https://discord.com/developers/applications/select/embedded/settings)
+- 在開發者入口網站中勾選對應的核取方塊並儲存變更
+
+![supported-platforms](/images/activities/supported-platforms.png)
+
+---
+
+## 行動裝置安全區域 (Mobile Safe Areas)
+
+您可以在 CSS 中定義安全區域內縮值 (safe area insets)，以確保您的應用程式介面不會被裝置的瀏海 (notch) 或底部手勢區域遮擋：
+
+```css
+:root {
+  --sait: var(--discord-safe-area-inset-top, env(safe-area-inset-top));
+  --saib: var(--discord-safe-area-inset-bottom, env(safe-area-inset-bottom));
+  --sail: var(--discord-safe-area-inset-left, env(safe-area-inset-left));
+  --sair: var(--discord-safe-area-inset-right, env(safe-area-inset-right));
+}
+```
+
+此設定優先使用 `--discord-safe-area-inset-*` 變數，若不存在則退而使用 iOS 的 `env()` 值（適用於在 Discord 外部進行本機測試的情況）。
+
+接著便可在樣式中引用這些變數：
+
+```css
+body {
+  padding-left: var(--sail);
+  padding-right: var(--sair);
+  padding-top: var(--sait);
+  padding-bottom: var(--saib);
+}
+```
+
+---
+
+## 行動裝置散熱狀態 (Mobile Thermal States)
+
+您可能需要依據裝置的散熱狀態調整應用程式行為，以改善使用者體驗。Discord 的 Embedded App SDK 提供了對 Apple 和 Android 散熱狀態 API 的統一封裝：
+
+```javascript
+enum ThermalState {
+  NOMINAL = 0, // iOS 上為 "nominal"，Android 上為 "none"
+  FAIR = 1,    // iOS 上為 "fair"，Android 上為 "light" / "moderate"
+  SERIOUS = 2, // iOS 上為 "serious"，Android 上為 "severe"
+  CRITICAL = 3, // iOS 上為 "critical"，Android 上為 "critical" / "emergency" / "shutdown"
+}
+```
+
+您可以訂閱散熱狀態變更事件：
+
+```javascript
+const handleThermalStateUpdate = (update: {thermal_state: number}) => {
+  switch (thermalState) {
+      case Common.ThermalStateTypeObject.NOMINAL:
+        ...
+      case Common.ThermalStateTypeObject.FAIR:
+        ...
+      case Common.ThermalStateTypeObject.SERIOUS:
+        ...
+      case Common.ThermalStateTypeObject.CRITICAL:
+        ...
+      default:
+        ...
+    }
+}
+
+discordSdk.subscribe('THERMAL_STATE_UPDATE', handleThermalStateUpdate);
+```
+
+Discord 將在訂閱事件時立即發布當前的散熱狀態，並在之後發生任何散熱狀態變更時持續通知。
+
+<Info>
+在 Android 裝置上，散熱狀態更新僅適用於 Android 10 及以上版本。
+</Info>
