@@ -113,6 +113,16 @@
               "developers/en-us/policies/developer-policy",
               "developers/en-us/policies/developer-terms-of-service"
             ]
+          },
+          {
+            "group": "Language Variants",
+            "hidden": true,
+            "pages": [
+              "developers/zh-tw/intro",
+              "developers/zh-tw/quick-start/overview-of-apps",
+              "developers/bilingual/intro",
+              "developers/bilingual/quick-start/overview-of-apps"
+            ]
           }
         ]
       },
@@ -170,6 +180,16 @@
               "developers/en-us/tutorials/using-community-invites",
               "developers/en-us/gateway/you-might-not-need-a-privileged-intent",
               "developers/en-us/gateway/getting-started-with-privileged-intent-review"
+            ]
+          },
+          {
+            "group": "Language Variants",
+            "hidden": true,
+            "pages": [
+              "developers/zh-tw/components/using-message-components",
+              "developers/zh-tw/tutorials/using-community-invites",
+              "developers/bilingual/components/using-message-components",
+              "developers/bilingual/tutorials/using-community-invites"
             ]
           }
         ]
@@ -280,6 +300,16 @@
               "developers/en-us/discord-social-sdk/how-to/handle-special-characters-display-names",
               "developers/en-us/discord-social-sdk/how-to/voice-muting-for-blocked-players"
             ]
+          },
+          {
+            "group": "Language Variants",
+            "hidden": true,
+            "pages": [
+              "developers/zh-tw/discord-social-sdk/getting-started",
+              "developers/zh-tw/discord-social-sdk/design-guidelines/principles",
+              "developers/bilingual/discord-social-sdk/getting-started",
+              "developers/bilingual/discord-social-sdk/design-guidelines/principles"
+            ]
           }
         ]
       },
@@ -334,6 +364,40 @@
             "pages": [
               "developers/en-us/activities/design-patterns"
             ]
+          },
+          {
+            "group": "Language Variants",
+            "hidden": true,
+            "pages": [
+              "developers/zh-tw/activities/overview",
+              "developers/zh-tw/activities/how-activities-work",
+              "developers/zh-tw/activities/building-an-activity",
+              "developers/zh-tw/activities/development-guides",
+              "developers/zh-tw/activities/development-guides/local-development",
+              "developers/zh-tw/activities/development-guides/user-actions",
+              "developers/zh-tw/activities/development-guides/mobile",
+              "developers/zh-tw/activities/development-guides/layout",
+              "developers/zh-tw/activities/development-guides/networking",
+              "developers/zh-tw/activities/development-guides/multiplayer-experience",
+              "developers/zh-tw/activities/development-guides/growth-and-referrals",
+              "developers/zh-tw/activities/development-guides/assets-and-metadata",
+              "developers/zh-tw/activities/development-guides/production-readiness",
+              "developers/zh-tw/activities/design-patterns",
+              "developers/bilingual/activities/overview",
+              "developers/bilingual/activities/how-activities-work",
+              "developers/bilingual/activities/building-an-activity",
+              "developers/bilingual/activities/development-guides",
+              "developers/bilingual/activities/development-guides/local-development",
+              "developers/bilingual/activities/development-guides/user-actions",
+              "developers/bilingual/activities/development-guides/mobile",
+              "developers/bilingual/activities/development-guides/layout",
+              "developers/bilingual/activities/development-guides/networking",
+              "developers/bilingual/activities/development-guides/multiplayer-experience",
+              "developers/bilingual/activities/development-guides/growth-and-referrals",
+              "developers/bilingual/activities/development-guides/assets-and-metadata",
+              "developers/bilingual/activities/development-guides/production-readiness",
+              "developers/bilingual/activities/design-patterns"
+            ]
           }
         ]
       },
@@ -361,6 +425,24 @@
             "group": "Building Games",
             "pages": [
               "developers/en-us/guides/game-development"
+            ]
+          },
+          {
+            "group": "Language Variants",
+            "hidden": true,
+            "pages": [
+              "developers/zh-tw/guides/bots",
+              "developers/zh-tw/guides/activities",
+              "developers/zh-tw/guides/social-sdk",
+              "developers/zh-tw/guides/platform",
+              "developers/zh-tw/guides/communities",
+              "developers/zh-tw/guides/game-development",
+              "developers/bilingual/guides/bots",
+              "developers/bilingual/guides/activities",
+              "developers/bilingual/guides/social-sdk",
+              "developers/bilingual/guides/platform",
+              "developers/bilingual/guides/communities",
+              "developers/bilingual/guides/game-development"
             ]
           }
         ]
