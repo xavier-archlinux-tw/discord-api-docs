@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export const LanguageSelector = ({ current, path }) => {
   // 清理與轉換路由路徑，確保基本英文路由正確
@@ -14,6 +14,52 @@ export const LanguageSelector = ({ current, path }) => {
   const enRoute = baseRoute;
   const zhRoute = baseRoute.replace('/developers/en-us/', '/developers/zh-tw/');
   const biRoute = baseRoute.replace('/developers/en-us/', '/developers/bilingual/');
+
+  // 當處於非英文頁面時，把 Top Nav Tab 的連結改為指向當前語言版本
+  useEffect(() => {
+    if (current === 'en') return;
+
+    const langSegment = current === 'zh-tw' ? 'zh-tw' : 'bilingual';
+    const cleanupFns = [];
+    let applied = false;
+
+    const rewriteTabLinks = () => {
+      if (applied) return;
+
+      const tabLinks = document.querySelectorAll('a.nav-tabs-item');
+      if (!tabLinks.length) return;
+
+      applied = true;
+      tabLinks.forEach(link => {
+        const origHref = link.getAttribute('href') || '';
+        // 只改 en-us 的路徑
+        if (!origHref.includes('/en-us/')) return;
+
+        const newHref = origHref.replace('/en-us/', `/${langSegment}/`);
+
+        // 更新 href 屬性（用於視覺 tooltip / 右鍵選單）
+        link.setAttribute('href', newHref);
+
+        // 在 capture 階段攔截點擊，覆蓋 Next.js 的 router.push
+        const handler = (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window.location.assign(newHref);
+        };
+        link.addEventListener('click', handler, true); // capture: true 確保最先執行
+        cleanupFns.push(() => link.removeEventListener('click', handler, true));
+      });
+    };
+
+    // 立即嘗試；若 Mintlify hydration 尚未完成，則延遲重試
+    rewriteTabLinks();
+    const t = setTimeout(rewriteTabLinks, 300);
+
+    return () => {
+      clearTimeout(t);
+      cleanupFns.forEach(fn => fn());
+    };
+  }, [current]);
 
   const activeStyle = { 
     fontWeight: 'bold', 
