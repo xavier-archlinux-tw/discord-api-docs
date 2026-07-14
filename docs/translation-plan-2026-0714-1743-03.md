@@ -86,17 +86,17 @@ API 速率限制限制、OAuth2 授權流與互動回覆指令。
 - `[COMPLETED]` [zh-tw/bilingual] `interactions/application-commands.mdx`
 - `[COMPLETED]` [en-us] 對應的 6 個英文檔案（引入 `LanguageSelector`）
 
-### [Batch 6] 探索推廣與平台其他功能 (優先級：P1 ~ P2)
+### [Batch 6] 探索推廣與平台其他功能 (優先級：P1 ~ P2) ➔ [✅ 已完成 / COMPLETED]
 發布、探索發現與平台通用功能。
-- `[NEW]` [zh-tw/bilingual] `discovery/overview.mdx`
-- `[NEW]` [zh-tw/bilingual] `discovery/enabling-discovery.mdx`
-- `[NEW]` [zh-tw/bilingual] `discovery/best-practices.mdx`
-- `[NEW]` [zh-tw/bilingual] `platform/oauth2-and-permissions.mdx`
-- `[NEW]` [zh-tw/bilingual] `platform/activities.mdx`
-- `[NEW]` [zh-tw/bilingual] `platform/app-monetization.mdx`
-- `[NEW]` [zh-tw/bilingual] `platform/discovery.mdx`
-- `[NEW]` [zh-tw/bilingual] `platform/rich-presence.mdx`
-- `[MODIFY]` [en-us] 對應的 8 個英文檔案（引入 `LanguageSelector`）
+- `[COMPLETED]` [zh-tw/bilingual] `discovery/overview.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `discovery/enabling-discovery.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `discovery/best-practices.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `platform/oauth2-and-permissions.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `platform/activities.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `platform/app-monetization.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `platform/discovery.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `platform/rich-presence.mdx`
+- `[COMPLETED]` [en-us] 對應的 8 個英文檔案（引入 `LanguageSelector`）
 
 ### [Batch 7] 變更日誌與索引首頁 (優先級：P2)
 - `[NEW]` [zh-tw/bilingual] `change-log.mdx`

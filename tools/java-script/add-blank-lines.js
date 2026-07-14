@@ -16,7 +16,15 @@ const FILES_TO_FIX = [
   './developers/bilingual/topics/permissions.mdx',
   './developers/bilingual/interactions/overview.mdx',
   './developers/bilingual/interactions/receiving-and-responding.mdx',
-  './developers/bilingual/interactions/application-commands.mdx'
+  './developers/bilingual/interactions/application-commands.mdx',
+  './developers/bilingual/discovery/overview.mdx',
+  './developers/bilingual/discovery/enabling-discovery.mdx',
+  './developers/bilingual/discovery/best-practices.mdx',
+  './developers/bilingual/platform/oauth2-and-permissions.mdx',
+  './developers/bilingual/platform/activities.mdx',
+  './developers/bilingual/platform/app-monetization.mdx',
+  './developers/bilingual/platform/discovery.mdx',
+  './developers/bilingual/platform/rich-presence.mdx'
 ];
 
 FILES_TO_FIX.forEach(filePath => {

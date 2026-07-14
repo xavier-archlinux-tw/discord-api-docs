@@ -1,0 +1,72 @@
+---
+title: "OAuth2 與權限"
+sidebarTitle: "OAuth2 與權限"
+description: OAuth2、權限範圍 (Scopes) 與權限如何在 Discord 平台上運作。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/platform/oauth2-and-permissions" />
+
+Discord 使用 [OAuth2](/developers/zh-tw/topics/oauth2) 作為標準授權框架，以授予應用程式存取使用者與伺服器的權限。了解 OAuth2 與權限模型對於任何 Discord 應用程式都至關重要。
+
+## 兩種驗證方式 (Two Ways to Authenticate)
+
+### Bot 權杖 (Bot Token)
+
+當您在開發者入口網站中建立 Bot 使用者時，Discord 會產生一個 **Bot 權杖 (Bot Token)**。您的程式碼會使用此權杖來驗證為 Bot 使用者，這是一個獨立於一般使用者帳戶的專用應用程式帳戶。
+
+**Bot 權杖 (Bot Token)：**
+- 作為 Bot 使用者進行驗證，而非代表任何個人
+- 用於 Gateway 連線與大多數 REST API 呼叫
+- 授予 Bot 在被加入伺服器時所獲得的權限
+- 應視為密碼保護，且絕不能公開透露
+
+### OAuth2 使用者權杖 (OAuth2 User Token)
+
+當您需要代表使用者執行操作時，您可以使用 OAuth2 來獲取使用者存取權杖 (User Access Token)。使用者使用 Discord 登入並為特定權限範圍 (Scopes) 授權您的應用程式。
+
+**使用者權杖 (User Token)：**
+- 讓您的應用程式代表經所請求範圍授權的使用者讀取或寫入資料
+- 具有範圍限制，因此您只能存取使用者所授予的內容
+- 屬於短期有效，必須定期重新整理 (Refresh)
+- 應視為密碼保護，且絕不能公開透露
+
+## 權限範圍 (Scopes)
+
+權限範圍 (Scopes) 定義了您應用程式被允許執行的操作。它們是在 OAuth2 授權流程期間請求的，且必須在開發者入口網站中進行宣告。
+
+常見的權限範圍包括：
+
+| 權限範圍 (Scope) | 授予內容 (What It Grants) |
+|-------------------------|------------------------------------------------------------|
+| `bot` | 將您的 Bot 新增到伺服器 (Guild) |
+| `identify` | 讀取使用者的基本個人資料（例如：id、使用者名稱、頭像） |
+| `guilds` | 列出使用者所屬的伺服器 |
+| `guilds.join` | 將使用者新增到伺服器 |
+| `email` | 讀取使用者的電子郵件地址 |
+| `connections` | 檢視使用者連結的帳戶（Twitch、Steam 等） |
+| `applications.commands` | 在伺服器中註冊斜線指令 |
+
+如需完整清單，請參閱 [OAuth2 權限範圍參考 (OAuth2 Scopes Reference)](/developers/zh-tw/topics/oauth2#shared-resources)。
+
+## 權限 (Permissions)
+
+權限控制 **Bot** 在特定伺服器或頻道中可以執行的操作。當透過 OAuth2 將 Bot 新增到伺服器時，伺服器管理員會授予其一組權限。
+
+權限以位元欄位 (Bitfield) 的形式儲存。它們可以是：
+- **伺服器級別 (Guild-level)**：套用到整個伺服器
+- **頻道級別 (Channel-level)**：套用到特定頻道的覆寫設定 (Overrides)
+
+您的應用程式應該只請求它所需的權限。請求過多權限會降低使用者的信任度。您的應用程式應該只請求它所需的權限，如我們的 [開發者政策 (Developer Policy)](https://support-dev.discord.com/hc/en-us/articles/8563934450327-Discord-Developer-Policy) 中所述。
+
+## 進階閱讀 (Further Reading)
+
+<CardGroup cols={2}>
+  <Card title="OAuth2 參考指南" href="/developers/zh-tw/topics/oauth2">
+    完整的 OAuth2 流程文件、權限範圍與端點詳細資訊。
+  </Card>
+  <Card title="權限參考指南" href="/developers/zh-tw/topics/permissions">
+    完整的權限位元欄位參考以及覆寫機制的工作方式。
+  </Card>
+</CardGroup>

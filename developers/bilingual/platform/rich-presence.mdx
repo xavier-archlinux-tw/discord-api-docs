@@ -1,0 +1,179 @@
+---
+title: "Rich Presence"
+sidebarTitle: "Rich Presence (雙語)"
+description: Display real-time game activity on Discord user profiles with rich presence.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/platform/rich-presence" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+![Rich Presence](/images/game-development/how-to-get-your-game-seen/banner-how-to-get-your-game-seen.webp)
+
+Rich Presence lets your game display live, actionable data on a Discord user's profile when they have activity sharing enabled: what they're playing, what level they're on, how long they've been in a session, or a prompt for friends to join. It's a lightweight integration that connects your app to Discord's social layer.
+
+<iframe className="w-full aspect-video rounded-3xl" src="https://www.youtube-nocookie.com/embed/NlRtLGwemMw?si=L6Bho5MksTjn4n-W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+The data you surface is entirely up to you. Rich Presence supports custom text fields, timestamps, party size indicators, and uploaded art assets. When configured with a "Join" button, friends can jump directly into a user's game session from the profile card.
+
+Rich Presence is available through two SDKs depending on what you're building: the Discord Social SDK for native game integrations, or the Embedded App SDK for Activities running inside Discord.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+![豐富狀態](/images/game-development/how-to-get-your-game-seen/banner-how-to-get-your-game-seen.webp)
+
+豐富狀態 (Rich Presence) 可讓您的遊戲在使用者啟用活動分享時，在其 Discord 個人資料上顯示即時、可操作的資料：例如他們正在玩什麼、處於哪一個關卡、在該活動階段中待了多久，或是提示好友加入的按鈕。這是一個輕量級的整合，可以將您的應用程式連結到 Discord 的社群功能層。
+
+<iframe className="w-full aspect-video rounded-3xl" src="https://www.youtube-nocookie.com/embed/NlRtLGwemMw?si=L6Bho5MksTjn4n-W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+要呈現哪些資料完全由您決定。豐富狀態支援自訂文字欄位、時間戳記、隊伍大小指標以及上傳的插圖資產。配置「加入 (Join)」按鈕後，好友可以直接從個人資料卡片跳轉到使用者的遊戲活動階段。
+
+豐富狀態可透過兩個 SDK 取得，具體取決於您要建置的項目：適用於原生遊戲整合的 Discord 社交 SDK (Discord Social SDK)，或者適用於在 Discord 內部運行之互動活動的嵌入式應用程式 SDK (Embedded App SDK)。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Choosing an SDK
+
+There are two options when integrating Rich Presence. Depending on what you're building, you'll want to choose the right SDK for your project:
+
+- The **[Discord Social SDK](/developers/en-us/discord-social-sdk/overview)** allows you to build social features into your game or app, including friends lists, game invites, and more.
+- The **[Embedded App SDK](/developers/en-us/developer-tools/embedded-app-sdk)** should be used if you're building an [Activity](/developers/en-us/activities/overview) in Discord.
+
+<Info>
+Rich Presence data appears publicly on your Discord profile, so during development you should use a test account that only belongs to your private development server(s).
+</Info>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 選擇 SDK (Choosing an SDK)
+
+在整合豐富狀態時有兩種選擇。根據您要建置的項目，您需要為您的專案選擇正確的 SDK：
+
+- **[Discord 社交 SDK (Discord Social SDK)](/developers/bilingual/discord-social-sdk/overview)** 允許您在遊戲或應用程式中建立社群功能，包括好友列表、遊戲邀請等。
+- **[嵌入式應用程式 SDK (Embedded App SDK)](/developers/bilingual/developer-tools/embedded-app-sdk)** 應該在您於 Discord 中建置 [互動活動 (Activity)](/developers/bilingual/activities/overview) 時使用。
+
+<Info>
+豐富狀態資料會公開顯示在您的 Discord 個人資料上，因此在開發期間，您應該使用僅屬於您私有開發伺服器的測試帳戶。
+</Info>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Discord Social SDK
+
+The Discord Social SDK is used for building social features directly into your game. When a user is playing your game, you can show what they're up to in their Discord profile and even prompt their friends to join in with game invites.
+
+When integrating Rich Presence with an off-platform game, data can be shown about what a user is up to in your game. A "Join" button can also be configured to allow a user's friends to jump into their game and enable sending game invites.
+
+[Learn how to implement Rich Presence with the Discord Social SDK](/developers/en-us/discord-social-sdk/development-guides/setting-rich-presence)
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### Discord 社交 SDK (Discord Social SDK)
+
+Discord 社交 SDK 用於直接在您的遊戲中建置社群功能。當使用者正在玩您的遊戲時，您可以在他們的 Discord 個人資料中展示他們正在做什麼，甚至可以透過遊戲邀請提示他們的好友加入。
+
+當將豐富狀態與平台外遊戲整合時，可以顯示有關使用者在您的遊戲中正在做什麼的資料。還可以配置「加入 (Join)」按鈕，以允許使用者的好友加入他們的遊戲並發送遊戲邀請。
+
+[了解如何使用 Discord 社交 SDK 實作豐富狀態](/developers/bilingual/discord-social-sdk/development-guides/setting-rich-presence)
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Embedded App SDK
+
+The Embedded App SDK is used to build Activities, which are multiplayer games and social experiences hosted in an iframe within Discord. The SDK handles communication between Discord and the Activity and helps integrate platform features (like Rich Presence!).
+
+After a user joins an Activity, Rich Presence can be used to dynamically show data about what that user is doing or playing, as well as prompt others to join in and play along.
+
+[Learn how to implement Rich Presence with the Embedded App SDK](/developers/en-us/rich-presence/using-with-the-embedded-app-sdk)
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 嵌入式應用程式 SDK (Embedded App SDK)
+
+嵌入式應用程式 SDK 用於建置互動活動 (Activities)，這些活動是託管在 Discord 內部的 iframe 中的多人遊戲和社交體驗。該 SDK 處理 Discord 與互動活動之間的通訊，並協助整合平台功能（例如豐富狀態！）。
+
+在使用者加入互動活動後，豐富狀態可用於動態顯示該使用者正在做什麼或玩什麼的資料，並提示其他人加入並一起遊玩。
+
+[了解如何使用嵌入式應用程式 SDK 實作豐富狀態](/developers/bilingual/rich-presence/using-with-the-embedded-app-sdk)
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Start Building
+
+<CardGroup cols={3}>
+  <Card title="Using Rich Presence with the Embedded App SDK" href="/developers/en-us/rich-presence/using-with-the-embedded-app-sdk">
+    Guide on using Rich Presence in the Embedded App SDK while you're building an Activity
+  </Card>
+  <Card title="Using Rich Presence with the Discord Social SDK" href="/developers/discord-social-sdk/development-guides/setting-rich-presence">
+    Guide on using Rich Presence in the Discord Social SDK for your game
+  </Card>
+  <Card title="Rich Presence Best Practices" href="/developers/rich-presence/best-practices">
+    Design tips and a launch checklist for shipping a polished Rich Presence integration.
+  </Card>
+</CardGroup>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 開始建置 (Start Building)
+
+<CardGroup cols={3}>
+  <Card title="在嵌入式應用程式 SDK 中使用豐富狀態" href="/developers/bilingual/rich-presence/using-with-the-embedded-app-sdk">
+    在您建置互動活動時，於嵌入式應用程式 SDK 中使用豐富狀態的指南。
+  </Card>
+  <Card title="在 Discord 社交 SDK 中使用豐富狀態" href="/developers/bilingual/discord-social-sdk/development-guides/setting-rich-presence">
+    在您的原生遊戲中，於 Discord 社交 SDK 中使用豐富狀態的指南。
+  </Card>
+  <Card title="豐富狀態最佳實踐" href="/developers/bilingual/rich-presence/best-practices">
+    設計秘訣與上架前檢查清單，以發布精緻完善的豐富狀態整合。
+  </Card>
+</CardGroup>
+
+</div>
+
+</div>

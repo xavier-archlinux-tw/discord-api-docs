@@ -1,0 +1,41 @@
+---
+title: 互動活動 (Activities)
+sidebarTitle: 互動活動 (Activities)
+description: 建置可直接在 Discord 中運行的多人遊戲與社交體驗。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/platform/activities" />
+
+import {ShapesIcon} from '/snippets/icons/ShapesIcon.jsx'
+import {WrenchIcon} from '/snippets/icons/WrenchIcon.jsx'
+import {MagicWandIcon} from '/snippets/icons/MagicWandIcon.jsx'
+
+_已經熟悉了嗎？直接跳轉到 [互動活動文件](/developers/zh-tw/activities/overview) 或 [建置您的第一個互動活動](/developers/zh-tw/activities/building-an-activity)。_
+
+## Discord 中的多人體驗 (Multiplayer Experiences in Discord)
+
+互動活動 (Activities) 是直接嵌入在 Discord 中的多人遊戲和社交體驗。它們可以在頻道、私訊 (DM) 中啟動，或者從應用程式啟動器 (App Launcher) 啟動，不需要外部視窗或單獨下載。
+
+玩家可以與已經在語音頻道中的好友一起加入，這使得互動活動非常適合派對遊戲、共同觀看、協作工具等。
+
+![Discord 互動活動](/images/platform/activity-playing.png)
+
+## 用於互動活動的嵌入式應用程式 SDK (Embedded App SDK for Activities)
+
+在底層，互動活動是一個透過 [嵌入式應用程式 SDK (Embedded App SDK)](/developers/zh-tw/developer-tools/embedded-app-sdk) 與 Discord 進行通訊的 iframe。該 SDK 提供了在您的互動活動與 Discord 用戶端之間進行互動的方法。
+
+## 後續步驟 (Next Steps)
+
+<CardGroup cols={3}>
+  <Card title="互動活動概述" href="/developers/zh-tw/activities/overview" icon={<ShapesIcon />} >
+    完整指南：介紹互動活動的運作方式、啟動流程以及嵌入式應用程式 SDK。
+  </Card>
+  <Card title="互動活動如何運作" href="/developers/zh-tw/activities/how-activities-work" icon={<MagicWandIcon />} >
+    深入探討：互動活動的生命週期、iframe 環境以及用戶端通訊。
+  </Card>
+  <Card title="建置第一個互動活動" href="/developers/zh-tw/activities/building-an-activity" icon={<WrenchIcon />} >
+    逐步指南：設定與部署您的第一個互動活動。
+  </Card>
+</CardGroup>

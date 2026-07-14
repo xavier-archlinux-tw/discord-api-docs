@@ -594,33 +594,6 @@
     ]
   },
   {
-    "relPath": "developers/discovery/best-practices.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/discovery/enabling-discovery.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/discovery/overview.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
     "relPath": "developers/events/gateway-events.mdx",
     "zhExists": false,
     "biExists": false,
@@ -746,24 +719,6 @@
     ]
   },
   {
-    "relPath": "developers/platform/activities.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/platform/app-monetization.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
     "relPath": "developers/platform/bots.mdx",
     "zhExists": false,
     "biExists": false,
@@ -800,15 +755,6 @@
     ]
   },
   {
-    "relPath": "developers/platform/discovery.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
     "relPath": "developers/platform/game-profiles.mdx",
     "zhExists": false,
     "biExists": false,
@@ -819,24 +765,6 @@
   },
   {
     "relPath": "developers/platform/interactions.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/platform/oauth2-and-permissions.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/platform/rich-presence.mdx",
     "zhExists": false,
     "biExists": false,
     "issues": [

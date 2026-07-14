@@ -1,0 +1,45 @@
+---
+title: 應用程式探索 (App Discovery)
+sidebarTitle: 應用程式探索
+description: 透過應用程式目錄、應用程式啟動器以及社群分享，讓您的 Discord 應用程式可被探索發現。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/platform/discovery" />
+
+import {ShapesIcon} from '/snippets/icons/ShapesIcon.jsx'
+
+應用程式探索功能為使用者提供了多種在 Discord 各處尋找與安裝您應用程式的方式。
+
+## 應用程式目錄 (App Directory)
+
+[應用程式目錄 (App Directory)](https://discord.com/discovery/applications) 是一個可搜尋的樞紐，使用者可以透過名稱、類別或精選特輯瀏覽應用程式，並查看包含說明、螢幕截圖與連結的完整產品頁面。
+
+要出現在這裡，您的應用程式需要經過驗證並加入探索功能。請參閱 [啟用探索功能](/developers/zh-tw/discovery/enabling-discovery) 以了解逐步設定方法。
+
+## 應用程式啟動器 (App Launcher)
+
+您可以從 Discord 各處的應用程式形狀圖示存取 [應用程式啟動器 (App Launcher)](https://support-apps.discord.com/hc/en-us/articles/26592957841303-How-to-Discover-and-Add-Apps#h_01J8JE2VM7QEKH9XKNR696P56C)，其中會顯示最近使用的應用程式以及依精選特輯整理的應用程式。
+
+<ShapesIcon />
+
+## 自然探索與分享 (Organic Discovery & Sharing)
+
+一旦您的應用程式可被探索，Discord 內部的社群互動就會成為一個自然的獲取管道。當使用者在伺服器中與您的應用程式互動時，該伺服器中的其他使用者可以看到它，並存取您應用程式的檔案頁面以自行安裝。
+
+每個 Discord 應用程式也都擁有可分享的連結，可以帶領使用者前往您的應用程式檔案頁面或 [商店頁面](/developers/zh-tw/monetization/managing-skus#linking-to-your-store)，這些連結可在從 Discord 訊息到外部網站的任何地方進行分享。
+
+## 後續步驟 (Next Steps)
+
+<CardGroup cols={3}>
+  <Card title="探索功能總覽" href="/developers/zh-tw/discovery/overview">
+    完整指南：介紹探索入口、應用程式目錄、應用程式啟動器以及社群探索。
+  </Card>
+  <Card title="啟用探索功能" href="/developers/zh-tw/discovery/enabling-discovery">
+    為您的應用程式啟用探索功能，使其在應用程式目錄與應用程式啟動器中可用。
+  </Card>
+  <Card title="探索最佳實踐" href="/developers/zh-tw/discovery/best-practices">
+    了解如何讓您的應用程式脫穎而出，並吸引更多使用者去探索它。
+  </Card>
+</CardGroup>

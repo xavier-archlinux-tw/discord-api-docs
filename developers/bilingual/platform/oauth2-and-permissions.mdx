@@ -1,0 +1,203 @@
+---
+title: "OAuth2 and Permissions"
+sidebarTitle: "OAuth2 & Permissions (雙語)"
+description: How OAuth2, scopes, and permissions work across the Discord platform.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/platform/oauth2-and-permissions" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+Discord uses [OAuth2](/developers/en-us/topics/oauth2) as the standard authorization framework for granting apps access to users and servers. Understanding OAuth2 and the permissions model is essential for any Discord app.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+Discord 使用 [OAuth2](/developers/bilingual/topics/oauth2) 作為標準授權框架，以授予應用程式存取使用者與伺服器的權限。了解 OAuth2 與權限模型對於任何 Discord 應用程式都至關重要。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Two Ways to Authenticate
+
+### Bot Token
+
+When you create a bot user in the Developer Portal, Discord generates a **bot token**. Your code uses this token to authenticate as the bot user, a dedicated application account separate from a regular user account.
+
+**Bot tokens:**
+- Authenticate as the bot user, not on behalf of any person
+- Are used for Gateway connections and most REST API calls
+- Grant the permissions the bot was given when added to a server
+- Should be treated like passwords and never exposed publicly
+
+### OAuth2 User Token
+
+When you need to act on behalf of a user, you use OAuth2 to get a user access token. The user logs in with Discord and authorizes your app for specific scopes.
+
+**User tokens:**
+- Let your app read or write data on behalf of the user as authorized by requested scopes
+- Are scoped, so you only get access to what the user grants
+- Are short-lived and must be refreshed
+- Should be treated like passwords and never exposed publicly
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 兩種驗證方式 (Two Ways to Authenticate)
+
+### Bot 權杖 (Bot Token)
+
+當您在開發者入口網站中建立 Bot 使用者時，Discord 會產生一個 **Bot 權杖 (Bot Token)**。您的程式碼會使用此權杖來驗證為 Bot 使用者，這是一個獨立於一般使用者帳戶的專用應用程式帳戶。
+
+**Bot 權杖 (Bot Token)：**
+- 作為 Bot 使用者進行驗證，而非代表任何個人
+- 用於 Gateway 連線與大多數 REST API 呼叫
+- 授予 Bot 在被加入伺服器時所獲得的權限
+- 應視為密碼保護，且絕不能公開透露
+
+### OAuth2 使用者權杖 (OAuth2 User Token)
+
+當您需要代表使用者執行操作時，您可以使用 OAuth2 來獲取使用者存取權杖 (User Access Token)。使用者使用 Discord 登入並為特定權限範圍 (Scopes) 授權您的應用程式。
+
+**使用者權杖 (User Token)：**
+- 讓您的應用程式代表經所請求範圍授權的使用者讀取或寫入資料
+- 具有範圍限制，因此您只能存取使用者所授予的內容
+- 屬於短期有效，必須定期重新整理 (Refresh)
+- 應視為密碼保護，且絕不能公開透露
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Scopes
+
+Scopes define what your app is allowed to do. They are requested during the OAuth2 authorization flow and must be declared in the Developer Portal.
+
+Common scopes include:
+
+| Scope                   | What It Grants                                             |
+|-------------------------|------------------------------------------------------------|
+| `bot`                   | Adds your bot to a guild                                   |
+| `identify`              | Read the user's basic profile (e.g., id, username, avatar) |
+| `guilds`                | List the guilds the user belongs to                        |
+| `guilds.join`           | Add the user to a guild                                    |
+| `email`                 | Read the user's email address                              |
+| `connections`           | View the user's linked accounts (Twitch, Steam, etc.)      |
+| `applications.commands` | Register slash commands in a guild                         |
+
+For a complete list, see the [OAuth2 scopes reference](/developers/en-us/topics/oauth2#shared-resources).
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 權限範圍 (Scopes)
+
+權限範圍 (Scopes) 定義了您應用程式被允許執行的操作。它們是在 OAuth2 授權流程期間請求的，且必須在開發者入口網站中進行宣告。
+
+常見的權限範圍包括：
+
+| 權限範圍 (Scope) | 授權內容 (What It Grants) |
+|-------------------------|------------------------------------------------------------|
+| `bot` | 將您的 Bot 新增到伺服器 (Guild) |
+| `identify` | 讀取使用者的基本個人資料（例如：id、使用者名稱、頭像） |
+| `guilds` | 列出使用者所屬的伺服器 |
+| `guilds.join` | 將使用者新增到伺服器 |
+| `email` | 讀取使用者的電子郵件地址 |
+| `connections` | 檢視使用者連結的帳戶（Twitch、Steam 等） |
+| `applications.commands` | 在伺服器中註冊斜線指令 |
+
+如需完整清單，請參閱 [OAuth2 權限範圍參考 (OAuth2 Scopes Reference)](/developers/bilingual/topics/oauth2#shared-resources)。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Permissions
+
+Permissions control what a **bot** can do in a specific server or channel. When a bot is added to a server via OAuth2, the server admin grants it a set of permissions.
+
+Permissions are stored as a bitfield. They can be:
+- **Guild-level:** Apply across the entire server
+- **Channel-level:** Overrides that apply to specific channels
+
+Your app should request only the permissions it needs. Requesting excessive permissions reduces trust with users. Your app should request only the permissions it needs as described in our [Developer Policy](https://support-dev.discord.com/hc/en-us/articles/8563934450327-Discord-Developer-Policy).
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 權限 (Permissions)
+
+權限控制 **Bot** 在特定伺服器或頻道中可以執行的操作。當透過 OAuth2 將 Bot 新增到伺服器時，伺服器管理員會授予其一組權限。
+
+權限以位元欄位 (Bitfield) 的形式儲存。它們可以是：
+- **伺服器級別 (Guild-level)**：套用到整個伺服器
+- **頻道級別 (Channel-level)**：套用到特定頻道的覆寫設定 (Overrides)
+
+您的應用程式應該只請求它所需的權限。請求過多權限會降低使用者的信任度。您的應用程式應該只請求它所需的權限，如我們的 [開發者政策 (Developer Policy)](https://support-dev.discord.com/hc/en-us/articles/8563934450327-Discord-Developer-Policy) 中所述。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Further Reading
+
+<CardGroup cols={2}>
+  <Card title="OAuth2 Reference" href="/developers/en-us/topics/oauth2">
+    Full OAuth2 flow documentation, scopes, and endpoint details.
+  </Card>
+  <Card title="Permissions Reference" href="/developers/en-us/topics/permissions">
+    Complete permissions bitfield reference and how overrides work.
+  </Card>
+</CardGroup>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 進階閱讀 (Further Reading)
+
+<CardGroup cols={2}>
+  <Card title="OAuth2 參考指南" href="/developers/bilingual/topics/oauth2">
+    完整的 OAuth2 流程文件、權限範圍與端點詳細資訊。
+  </Card>
+  <Card title="權限參考指南" href="/developers/bilingual/topics/permissions">
+    完整的權限位元欄位參考以及覆寫機制的工作方式。
+  </Card>
+</CardGroup>
+
+</div>
+
+</div>
