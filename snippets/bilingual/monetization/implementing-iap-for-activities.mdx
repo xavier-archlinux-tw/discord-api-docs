@@ -1,0 +1,432 @@
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/monetization/implementing-iap-for-activities" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+In-App Purchases (IAP) for [Activities](/developers/activities/overview) allows developers to easily monetize their Activity by allowing users to buy premium subscriptions or items natively in Discord. This guide will walk you through the process of implementing monetization using the [Embedded App SDK](/developers/developer-tools/embedded-app-sdk).
+
+Before you can add premium products with the Embedded App SDK in an Activity, you must [Enable Monetization](/developers/monetization/enabling-monetization) for your app.
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+為 [互動活動 (Activities)](/developers/zh-tw/activities/overview) 實作應用程式內購買 (IAP) 可讓開發人員在 Discord 中原生提供付費訂閱或商品，從而輕鬆實現活動的營利。本指南將引導您使用 [嵌入式 App SDK (Embedded App SDK)](/developers/zh-tw/developer-tools/embedded-app-sdk) 實作營利功能的完整流程。
+
+在您藉由互動活動中的嵌入式 App SDK 新增付費商品之前，必須先為應用程式 [啟用營利功能 (Enable Monetization)](/developers/zh-tw/monetization/enabling-monetization)。
+
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Key Concepts
+
+Before implementing monetization in your app, it's important to understand the features of Discord you'll be working with:
+
+- **SKUs**: Represent your app's premium products.
+- **Entitlements**: Represent the user's access to your premium products.
+- **Subscriptions**: Represent an ongoing agreement for a user to pay for an entitlement on a recurring basis until canceled.
+
+You can learn more about these concepts in the [Monetization Overview](/developers/monetization/overview).
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 核心概念 (Key Concepts)
+
+在應用程式中實作營利功能之前，理解您將會配合使用的 Discord 功能至關重要：
+
+- **SKU (品項)**：代表您的應用程式付費商品。
+- **權利 (Entitlements)**：代表使用者對您付費商品的存取權限。
+- **訂閱 (Subscriptions)**：代表使用者承諾定期為某項權利付費的持續性協議，直到取消為止。
+
+您可以在 [營利概述 (Monetization Overview)](/developers/zh-tw/monetization/overview) 中了解更多關於這些概念的資訊。
+
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Working with SKUs
+
+SKUs represent the premium products you offer in your app. Before you can start implementing monetization in your app, you will need to create a SKU for each premium product.
+
+To learn more about creating and managing SKUs and the different types of SKUs you can create, see the [Managing SKUs](/developers/monetization/managing-skus) guide.
+
+### Publishing SKUs for Activities
+
+When publishing SKUs, you can choose to publish them to your **Store and the API** or **API Only**. Which method you select will depend on the purchase experience you want to offer your users.
+
+#### Published to Store and the API
+
+- Your SKUs will be visible to users in the Discord client in your [app's store](/developers/monetization/managing-skus#viewing-your-store-page) or your Activity's custom storefront.
+- Your users will be able to purchase them directly from the Discord client without having your Activity open so you should handle the purchase flow accordingly.
+
+#### Published to API Only
+
+- Your SKUs will **not** be visible to users in your [app's store](/developers/monetization/managing-skus#viewing-your-store-page), and users will only be able to purchase them through your Activity's custom storefront.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 處理 SKU (Working with SKUs)
+
+SKU 代表您在應用程式中提供的付費商品。在您開始在應用程式中實作營利功能之前，您需要為每個付費商品建立一個 SKU。
+
+要了解更多關於建立與管理 SKU 以及您可以建立的不同 SKU 類型的資訊，請參閱 [管理 SKU (Managing SKUs)](/developers/zh-tw/monetization/managing-skus) 指南。
+
+### 發布互動活動的 SKU (Publishing SKUs for Activities)
+
+發布 SKU 時，您可以選擇將其發布到 **商店與 API (Store and the API)** 或 **僅限 API (API Only)**。選擇哪種方法取決於您想為使用者提供的購買體驗。
+
+#### 發布到商店與 API (Published to Store and the API)
+
+- 您的 SKU 將在 Discord 用戶端中，對進入您 [應用程式商店](/developers/zh-tw/monetization/managing-skus#viewing-your-store-page) 的使用者或您互動活動的自訂商店頁面可見。
+- 您的使用者可以直接從 Discord 用戶端購買商品，而不需要開啟您的互動活動，因此您應該對應地處理此購買流程。
+
+#### 僅發布到 API (Published to API Only)
+
+- 您的 SKU **不會**在您 [應用程式的商店](/developers/zh-tw/monetization/managing-skus#viewing-your-store-page) 中對使用者可見，使用者只能透過您互動活動的自訂商店頁面來進行購買。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Building a Storefront
+
+Once you have created your SKUs, you will need to build and render your own custom storefront in your Activity to display your premium products to users. This section will guide you through the process of listing SKUs, mapping SKUs to your premium perks, and displaying prices.
+
+### Listing SKUs
+
+To fetch the list of products for displaying in your Activity, you can call the [`getSkus()`](/developers/developer-tools/embedded-app-sdk#getskus) command from the [Embedded App SDK](/developers/developer-tools/embedded-app-sdk). 
+
+You can also fetch SKUs using the [HTTP API](/developers/resources/sku#list-skus).
+
+### Mapping SKUs to Your Premium Perks
+
+When a user purchases a SKU, an entitlement is created. Entitlements represent the user's access to a specific SKU. You will need to map your SKUs to the premium perks you are offering in your application to ensure users receive the correct perks when they purchase a SKU.
+
+When mapping SKUs to premium perks, keep the following in mind:
+- SKUs should be mapped to product based on `id` attribute, **not** other attributes (such as `name`)
+- SKUs can never be deleted, so once purchased it cannot be revoked and should always be mapped to some perk or product in your application
+
+### Formatting and Displaying Prices
+
+The methods for listing SKUs automatically localize currency and prices. 
+
+This means `sku.price` has a number `amount` attribute and a string `currency` attribute. Properly rendering prices with proper currency can be challenging, given the large number of currencies.  The Embedded App SDK provides a `PriceUtils` utility to make this easier.
+
+```javascript
+import {PriceUtils} from '@discord/embedded-app-sdk';
+
+const displayPrice = PriceUtils.formatPrice(sku.price);
+console.log(`The price is ${displayPrice}!`);
+```
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 建立商店頁面 (Building a Storefront)
+
+Once you have created your SKUs, you will need to build and render your own custom storefront in your Activity to display your premium products to users. This section will guide you through the process of listing SKUs, mapping SKUs to your premium perks, and displaying prices.
+
+### 列出 SKU (Listing SKUs)
+
+若要獲取要在互動活動中顯示的商品清單，您可以呼叫 [嵌入式 App SDK](/developers/zh-tw/developer-tools/embedded-app-sdk) 中的 [`getSkus()`](/developers/zh-tw/developer-tools/embedded-app-sdk#getskus) 指令。
+
+您也可以使用 [HTTP API](/developers/zh-tw/resources/sku#list-skus) 獲取 SKU。
+
+### 將 SKU 對應至您的付費福利 (Mapping SKUs to Your Premium Perks)
+
+當使用者購買 SKU 時，系統會建立一筆權利。權利代表使用者存取特定 SKU 的權限。您需要將您的 SKU 對應到應用程式中提供的付費福利，以確保使用者在購買 SKU 時獲得正確的福利。
+
+在將 SKU 對應至付費福利時，請記住以下幾點：
+- SKU 應該根據 `id` 屬性對應到商品，**而非**其他屬性（例如 `name`）。
+- SKU 無法被刪除，因此一旦購買，該權利便無法被收回，且應始終對應到應用程式中的某些福利或商品。
+
+### 格式化與顯示價格 (Formatting and Displaying Prices)
+
+列出 SKU 的方法會自動在地化貨幣與價格。
+
+這意味著 `sku.price` 具有一個數值型的 `amount` 屬性與一個字串型的 `currency` 屬性。鑑於貨幣種類繁多，要正確渲染帶有適當貨幣符號的價格可能會具有挑戰性。嵌入式 App SDK 提供了 `PriceUtils` 實用工具來簡化此操作。
+
+```javascript
+import { PriceUtils } from '@discord/embedded-app-sdk';
+
+const displayPrice = PriceUtils.formatPrice(sku.price);
+console.log(`價格是 ${displayPrice}！`);
+```
+
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Working with Entitlements
+
+When a user purchases a SKU, an entitlement is created. [Entitlements](/developers/resources/entitlement) represent the user's access to your premium product.
+
+Depending on your app's features, you can use a combination of the [Embedded App SDK events](/developers/developer-tools/embedded-app-sdk#getentitlements), [Gateway events](/developers/events/gateway-events#entitlements), the [Entitlement HTTP API](/developers/resources/entitlement), and [interaction payloads](/developers/interactions/receiving-and-responding) to keep track of entitlements to users who have purchased items in your app.
+
+### Fetching Entitlements with the Embedded App SDK
+
+Use the [`getEntitlements()`](/developers/developer-tools/embedded-app-sdk#getentitlements) SDK command to fetch a list of entitlements for a user. This command will return a list of entitlement objects that represent the user's access to your premium products.
+
+### Handling Subscription Entitlements
+  
+When a user purchases a subscription SKU, an entitlement is created. For more information on handling subscription entitlements, see the [Implementing App Subscriptions](/developers/monetization/implementing-app-subscriptions) guide.
+
+### Handling One-Time Purchase Entitlements
+
+When a user purchases a one-time purchase SKU, an entitlement is created. For more information on handling one-time purchase entitlements, see the [Implementing One-Time Purchases](/developers/monetization/implementing-one-time-purchases) guide.
+
+#### One-Time Purchases: Consumable and Durable Items
+
+It is common in Activities to have consumable or one-time-use items, such as a single-use potion or power-up. 
+
+When a user purchases a consumable SKU, an entitlement is created. This entitlement will be marked as `consumed: false`. Your application should process the item purchase and [consume the entitlement](/developers/resources/entitlement#consume-an-entitlement) as soon as possible to grant the user the perks associated with the item.
+
+If you want to offer an item that grants perks for an unlimited amount of time, you should use a durable SKU instead of a consumable SKU. 
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 處理權利 (Working with Entitlements)
+
+當使用者購買 SKU 時，系統會建立一筆權利。[權利 (Entitlements)](/developers/zh-tw/resources/entitlement) 代表使用者存取您付費商品的權限。
+
+根據您應用程式的功能，您可以結合使用 [嵌入式 App SDK 事件](/developers/zh-tw/developer-tools/embedded-app-sdk#getentitlements)、[網關事件 (Gateway events)](/developers/zh-tw/events/gateway-events#entitlements)、[權利 HTTP API](/developers/zh-tw/resources/entitlement) 和 [互動載荷 (interaction payloads)](/developers/zh-tw/interactions/receiving-and-responding)，來追蹤購買您應用程式商品的使用者的權利。
+
+### 透過嵌入式 App SDK 獲取權利 (Fetching Entitlements with the Embedded App SDK)
+
+使用 [`getEntitlements()`](/developers/zh-tw/developer-tools/embedded-app-sdk#getentitlements) SDK 指令來獲取使用者的權利清單。此指令將傳回一個權利對象清單，代表使用者存取您付費商品的權限。
+
+### 處理訂閱權利 (Handling Subscription Entitlements)
+
+當使用者購買訂閱 SKU 時，系統會建立一筆權利。如需了解更多關於處理訂閱權利的資訊，請參閱 [實作應用程式訂閱](/developers/zh-tw/monetization/implementing-app-subscriptions) 指南。
+
+### 處理單次性購買權利 (Handling One-Time Purchase Entitlements)
+
+當使用者購買單次性購買 SKU 時，系統會建立一筆權利。如需了解更多關於處理單次性購買權利的資訊，請參閱 [實作單次性購買](/developers/zh-tw/monetization/implementing-one-time-purchases) 指南。
+
+#### 單次性購買：消耗型與耐久型商品 (One-Time Purchases: Consumable and Durable Items)
+
+在互動活動中，提供消耗型或一次性使用的商品很常見，例如一次性使用的藥水或增益效果。
+
+當使用者購買消耗型 SKU 時，系統會建立一筆權利。此權利將會被標記為 `consumed: false`。您的應用程式應儘快處理商品的發放，並 [消耗該權利](/developers/zh-tw/resources/entitlement#consume-an-entitlement)，以向使用者授予與該商品相關聯的福利。
+
+如果您想要提供永久授予福利的商品，您應該使用耐久型 SKU，而非消耗型 SKU。
+
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Initiating Purchases
+
+After displaying your SKUs in your custom storefront, you will need to initiate a purchase when a user selects a SKU to purchase.
+
+To initiate a purchase in your activity, use the Embedded App SDK to call the [`startPurchase()`](/developers/developer-tools/embedded-app-sdk#startpurchase) command with the selected SKU `id`. This command will open the purchase flow modal in the Discord client, allowing users to purchase that SKU.
+
+To know when it has been completed, you can subscribe to `ENTITLEMENT_CREATE` events.
+
+### Subscribing to Purchase Events with the Embedded App SDK
+
+Once a user has completed a purchase, Discord will emit an `ENTITLEMENT_CREATE` event. You can subscribe to this event using the Embedded App SDK to know when a user has successfully purchased a SKU and is granted an entitlement.
+
+You can subscribe to the `ENTITLEMENT_CREATE` event using the [`subscribe()`](/developers/developer-tools/embedded-app-sdk#subscribe) method in the Embedded App SDK. 
+
+Here's an example of how to subscribe to the `ENTITLEMENT_CREATE` event:
+
+```js
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+
+const handleEntitlementCreate = () => {
+  // refetch entitlements from server using the Entitlement HTTP API endpoint
+};
+discordSdk.subscribe('ENTITLEMENT_CREATE', handleEntitlementCreate);
+```
+
+You can also subscribe to the `ENTITLEMENT_CREATE` event using the [Gateway API](/developers/events/gateway-events#entitlements) to receive the event in your app's backend or use the [List Entitlements](/developers/resources/entitlement#list-entitlements) HTTP API endpoint to fetch a user's entitlements.
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 發起購買 (Initiating Purchases)
+
+在您的自訂商店頁面中顯示 SKU 後，當使用者選取要購買的 SKU 時，您需要發起購買流程。
+
+要在您的互動活動中發起購買，請使用嵌入式 App SDK 呼叫 [`startPurchase()`](/developers/zh-tw/developer-tools/embedded-app-sdk#startpurchase) 指令，並帶入選定的 SKU `id`。此指令將在 Discord 用戶端中開啟購買流程的彈出視窗，允許使用者購買該 SKU。
+
+若要得知購買何時完成，您可以監聽 `ENTITLEMENT_CREATE` 事件。
+
+### 透過嵌入式 App SDK 訂閱購買事件 (Subscribing to Purchase Events with the Embedded App SDK)
+
+一旦使用者完成購買，Discord 將會發送一個 `ENTITLEMENT_CREATE` 事件。您可以使用嵌入式 App SDK 訂閱此事件，以得知使用者何時成功購買了 SKU 並獲得了權利。
+
+您可以使用嵌入式 App SDK 中的 [`subscribe()`](/developers/zh-tw/developer-tools/embedded-app-sdk#subscribe) method 來訂閱 `ENTITLEMENT_CREATE` 事件。
+
+以下是如何訂閱 `ENTITLEMENT_CREATE` 事件的範例：
+
+```js
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+
+const handleEntitlementCreate = () => {
+  // 透過後端伺服器的 Entitlement HTTP API 端點重新獲取最新權利資料
+};
+discordSdk.subscribe('ENTITLEMENT_CREATE', handleEntitlementCreate);
+```
+
+您也可以使用 [閘道 API (Gateway API)](/developers/zh-tw/events/gateway-events#entitlements) 訂閱 `ENTITLEMENT_CREATE` 事件，以便在您的應用程式後端接收該事件，或者使用 [列出權利](/developers/zh-tw/resources/entitlement#list-entitlements) HTTP API 端點來獲取使用者的權利。
+
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Data Security Considerations
+
+When working with SKUs and Entitlements in an Activity, it's crucial to ensure the security and integrity of your application's data. Here are some things to keep in mind:
+
+Developers should ensure the accuracy of data obtained via [Embedded App SDK](/developers/developer-tools/embedded-app-sdk) commands and events. A malicious actor could potentially establish their own RPC connection and interact with your application client, posing as Discord. While this might not be an issue for most SDK commands and events, it becomes critical when dealing with perks offered through In-App purchases.
+
+If your application relies solely on SDK data to determine a user's entitlements, a malicious actor could exploit this to gain access to premium products, features, or advantages without paying. This is particularly relevant for commands like [`getEntitlements()`](/developers/developer-tools/embedded-app-sdk#getentitlements).
+
+### Use the Discord HTTP API for Verification
+
+Data fetched from the Discord HTTP API from your application's backend servers can be trusted and should be treated as the source of truth. This data should be used to validate any inconsistent client-side data.
+
+### Recommended Approach
+
+- **Optimistically** use client-side techniques such as SDK commands and events to fetch SKUs and Entitlements.
+- **Verify** the results via the Discord HTTP API from your application's backend.
+
+In summary, use the principle of "Trust (the SDK), but Verify (via the API)" to ensure the security and integrity of your application's premium features.
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 資料安全考量 (Data Security Considerations)
+
+在互動活動中處理 SKU 和權利時，確保應用程式資料的安全與完整性至關重要。以下是需要注意的事項：
+
+開發者應確保透過 [嵌入式 App SDK](/developers/zh-tw/developer-tools/embedded-app-sdk) 指令和事件獲取之資料的準確性。惡意使用者可能會建立自己的 RPC 連線並與您的應用程式用戶端互動，冒充是 Discord。雖然這對於大多數 SDK 指令和事件可能不是問題，但在處理透過應用程式內購買提供的付費福利時，這會變得非常關鍵。
+
+如果您的應用程式完全依賴 SDK 傳回的資料來判斷使用者的權利，惡意使用者便可以利用這一點，在不付費的情況下獲得付費商品、功能或優勢。這在處理像是 [`getEntitlements()`](/developers/zh-tw/developer-tools/embedded-app-sdk#getentitlements) 這類指令時尤為顯著。
+
+### 使用 Discord HTTP API 進行驗證 (Use the Discord HTTP API for Verification)
+
+由您的應用程式後端伺服器從 Discord HTTP API 獲取的資料是可以被信任的，且**應被視為唯一真實的依據 (source of truth)**。應使用此資料來驗證任何不一致的用戶端資料。
+
+### 建議的實作方式 (Recommended Approach)
+
+- **樂觀地 (Optimistically)** 使用用戶端技術（例如 SDK 指令與事件）來獲取 SKU 和權利。
+- **驗證 (Verify)**：由您的應用程式後端，透過 Discord HTTP API 驗證用戶端傳上來的結果。
+
+簡而言之，使用 **「信任 (SDK)，但驗證 (透過 API)」** (Trust, but Verify) 的原則，以確保您應用程式付費進階功能的安全與完整性。
+
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Testing Your In-App Purchases
+
+To test your In-App Purchases in your Activity, you will need to follow testing guidelines for both types of SKUs: [One-Time Purchases](/developers/monetization/implementing-one-time-purchases#testing-your-onetime-purchase-implementation) and [Subscriptions](/developers/monetization/implementing-app-subscriptions#testing-your-app-subscription-implementation).
+
+After you've tested your In-App Purchase flows, verify that your application has correctly granted the user the premium perks associated with the SKUs that were purchased during testing.
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 測試您的應用程式內購買 (Testing Your In-App Purchases)
+
+要在互動活動中測試應用程式內購買，您需要遵循這兩種 SKU 類期的測試指南：[單次性購買](/developers/zh-tw/monetization/implementing-one-time-purchases#testing-your-onetime-purchase-implementation) 與 [訂閱](/developers/zh-tw/monetization/implementing-app-subscriptions#testing-your-app-subscription-implementation)。
+
+測試完您的應用程式內購買流程後，請驗證您的應用程式是否已正確授予使用者與測試期間所購買之 SKU 相關聯的付費福利。
+
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Next Steps
+
+Check out our example implementation of In-App Purchase in our [SDK Playground Example Application](https://github.com/discord/embedded-app-sdk-examples/tree/main/sdk-playground).
+
+The example implementation includes client-side and server-side code. It also follows the [security considerations](/developers/monetization/implementing-iap-for-activities#data-security-considerations) you should make when working with SKUs and entitlements.
+
+<CardGroup cols={1}>
+    <Card title="Embedded App SDK Playground" href="https://github.com/discord/embedded-app-sdk-examples/tree/main/sdk-playground">
+        This reference example implements the commands and events available to you within the Embedded App SDK, including In-App Purchases.
+    </Card>
+</CardGroup>
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 後續步驟 (Next Steps)
+
+請在我們的 [SDK Playground 範例應用程式](https://github.com/discord/embedded-app-sdk-examples/tree/main/sdk-playground) 中查看應用程式內購買的範例實作。
+
+該範例實作包含了用戶端與伺服器端的程式碼。它也遵循了您在處理 SKU 和權利時應該考量的 [安全性考量](/developers/zh-tw/monetization/implementing-iap-for-activities#data-security-considerations)。
+
+<CardGroup cols={1}>
+    <Card title="嵌入式 App SDK 體驗場 (Embedded App SDK Playground)" href="https://github.com/discord/embedded-app-sdk-examples/tree/main/sdk-playground">
+        此參考範例實作了嵌入式 App SDK 中可供您使用的指令與事件，包括應用程式內購買 (In-App Purchases)。
+    </Card>
+</CardGroup>
+
+  </div>
+</div>

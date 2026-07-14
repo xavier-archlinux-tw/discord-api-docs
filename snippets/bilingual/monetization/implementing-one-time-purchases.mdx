@@ -1,0 +1,329 @@
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/monetization/implementing-one-time-purchases" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+One-time purchases enable you to charge your users for premium functionality with in-app items. 
+
+- Before you can add one-time purchases to your app, you must [Enable Monetization](/developers/monetization/enabling-monetization) for your app.
+- Once you've confirmed eligibility for your app and team, you will be able to set up a [SKU](/developers/resources/sku) (stock-keeping unit) to represent your one-time purchases.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+單次性購買可讓您透過應用程式內商品 (in-app items)，為您的付費進階功能向使用者收費。
+
+- 在您為應用程式新增單次性購買之前，必須先為應用程式 [啟用營利功能 (Enable Monetization)](/developers/zh-tw/monetization/enabling-monetization)。
+- 確定您的應用程式和團隊符合資格後，您將可以設定一個 [SKU (品項)](/developers/zh-tw/resources/sku) 來代表您的單次性購買商品。
+
+<br />
+  </div>
+<br />
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Types of One-Time Purchases
+
+When creating items for one-time purchase, you can choose between durable and consumable items:
+
+- **Durable Items**: A one-time purchase that is permanent and is not subject to either renewal or consumption, such as lifetime access to an app's premium features.
+- **Consumable Items**: A one-time, non-renewable purchase that provides access, such as a temporary power-up or boost in a game.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 單次性購買類型 (Types of One-Time Purchases)
+
+建立單次性購買商品時，您可以選擇耐久型商品或消耗型商品：
+
+- **耐久型商品 (Durable Items)**：永久性的單次性購買項目，不受自動續訂或消耗的影響。例如永久使用應用程式的付費進階功能。
+- **消耗型商品 (Consumable Items)**：一次性、不可續訂的購買項目，例如遊戲中的臨時能力提升 (power-up) 或增益效果 (boost)。
+
+<br />
+  </div>
+<br />
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## How One-Time Purchases Work
+
+#### For Durable SKUs
+- When a user purchases your durable SKU, Discord creates an [Entitlement](/developers/resources/entitlement) for the purchasing user and that specific [SKU](/developers/resources/sku). 
+- You will receive an `ENTITLEMENT_CREATE` event via the Gateway.
+- This entitlement is now available via the `LIST Entitlements` API endpoint.
+- This entitlement will be available on `Interaction Payloads` initiated from the entitled user.
+
+#### For Consumable SKUs
+- When a user purchases your consumable SKU, Discord creates an [Entitlement](/developers/resources/entitlement) for the purchasing user and that specific SKU. 
+- You will receive an `ENTITLEMENT_CREATE` event via the Gateway.
+- This entitlement is now available via the `LIST Entitlements` API endpoint.
+- This entitlement will be available on `Interaction Payloads` initiated from the entitled user or users in a guild (for guild subscriptions).
+- Users cannot repurchase this SKU until you consume the entitlement using the [Consume Entitlement API](/developers/resources/entitlement#consume-an-entitlement) endpoint.
+  - In [Test Mode](/developers/monetization/implementing-one-time-purchases#using-application-test-mode), repeated purchases are permitted without consumption for developer convenience.
+- When you receive an `ENTITLEMENT_CREATE` event for a consumable SKU, you should process the item purchase in your app and consume the entitlement as soon as possible.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 單次性購買如何運作 (How One-Time Purchases Work)
+
+#### 對於耐久型 SKU (For Durable SKUs)
+- 當使用者購買您的耐久型 SKU 時，Discord 會為購買的使用者與該特定 [SKU](/developers/zh-tw/resources/sku) 建立一筆 [權利 (Entitlement)](/developers/zh-tw/resources/entitlement)。
+- 您將透過網關 (Gateway) 接收到 `ENTITLEMENT_CREATE` 事件。
+- 此權利可透過 `LIST Entitlements` API 端點取得。
+- 此權利會包含在由該被授權使用者發起的 `Interaction Payloads (互動載荷)` 中。
+
+#### 對於消耗型 SKU (For Consumable SKUs)
+- 當使用者購買您的消耗型 SKU 時，Discord 會為購買的使用者與該特定 SKU 建立一筆 [權利](/developers/zh-tw/resources/entitlement)。
+- 您將透過網關接收到 `ENTITLEMENT_CREATE` 事件。
+- 此權利可透過 `LIST Entitlements` API 端點取得。
+- 此權利會包含在由該被授權使用者發起的 `Interaction Payloads (互動載荷)` 中。
+- **使用者無法重複購買此 SKU，直到您使用 [消耗權利 API](/developers/zh-tw/resources/entitlement#consume-an-entitlement) 端點消耗該權利為止。**
+  - 在 [測試模式](/developers/zh-tw/monetization/implementing-one-time-purchases#using-application-test-mode) 中，為了開發人員的便利，允許在不消耗的情況下重複購買。
+- 當您收到消耗型 SKU 的 `ENTITLEMENT_CREATE` 事件時，您應該在應用程式中處理該商品的發放，並儘快消耗該權利。
+
+<br />
+  </div>
+<br />
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Working with Entitlements
+
+When a user purchases a one-time purchase SKU, an entitlement is created. [Entitlements](/developers/resources/entitlement) represent the user's access to your consumable or durable item.
+
+Depending on your app's features, you can use a combination of [Gateway events](/developers/events/gateway-events#entitlements), the [Entitlement HTTP API](/developers/resources/entitlement), and [interaction payloads](/developers/interactions/receiving-and-responding) to keep track of entitlements to users who have purchased items in your app.
+
+### Accessing Entitlements with Gateway Events
+
+When a user purchases a SKU, Discord will emit an [`ENTITLEMENT_CREATE`](/developers/events/gateway-events#entitlements) event. This event will contain the entitlement object that represents the user's access to the SKU. You can use this event to keep track of the user's entitlements in near-time. For One-Time Purchases, you may also receive an `ENTITLEMENT_DELETE` event if the user's entitlement is revoked.
+
+### Accessing Entitlements with the HTTP API
+
+Entitlements are available via the [List Entitlements](/developers/resources/entitlement#list-entitlements) endpoint. You can filter entitlements by a specific user or set of SKUs by using the `?user_id=XYZ` or `?sku_ids=XYZ` query parameters.
+
+### Accessing Entitlements on Interaction Payloads
+
+Entitlements are also available on the `Interaction Payload` when a user interacts with your app. You can find the entitlements on the `entitlements` field of the `Interaction Payload` when [receiving and responding to interactions](/developers/interactions/receiving-and-responding).
+
+### Accessing Entitlements with the Embedded App SDK
+
+When using the [Embedded App SDK](/developers/developer-tools/embedded-app-sdk) to build an [Activity](/developers/activities/overview), you can also [access a user's entitlements](/developers/developer-tools/embedded-app-sdk#getentitlements). Check out the [Implementing In-App Purchases for Activities](/developers/monetization/implementing-iap-for-activities) guide to learn more about monetization with the Embedded App SDK.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 處理權利 (Working with Entitlements)
+
+當使用者購買單次性購買 SKU 時，系統會建立一筆權利。[權利 (Entitlements)](/developers/zh-tw/resources/entitlement) 代表使用者存取您消耗型或耐久型商品的權限。
+
+根據您應用程式的功能，您可以結合使用 [網關事件 (Gateway events)](/developers/zh-tw/events/gateway-events#entitlements)、[權利 HTTP API](/developers/zh-tw/resources/entitlement) 和 [互動載荷 (interaction payloads)](/developers/zh-tw/interactions/receiving-and-responding)，來追蹤使用者在應用程式中購買商品的權利。
+
+### 透過網關事件存取權利 (Accessing Entitlements with Gateway Events)
+
+當使用者購買 SKU 時，Discord 會發送一個 [`ENTITLEMENT_CREATE`](/developers/zh-tw/events/gateway-events#entitlements) 事件。此事件包含代表使用者存取該 SKU 權限的權利對象。您可以使用此事件來近乎即時地追蹤使用者的權利。對於單次性購買項目，如果使用者的權利被撤銷，您也可能會收到 `ENTITLEMENT_DELETE` 事件。
+
+### 透過 HTTP API 存取權利 (Accessing Entitlements with the HTTP API)
+
+權利可透過 [列出權利 (List Entitlements)](/developers/zh-tw/resources/entitlement#list-entitlements) 端點取得。您可以使用 `?user_id=XYZ` 或 `?sku_ids=XYZ` 查詢參數來篩選特定使用者或特定 SKU 的權利。
+
+### 在互動載荷上存取權利 (Accessing Entitlements on Interaction Payloads)
+
+當使用者與您的應用程式互動時，在 `Interaction Payload (互動載荷)` 中也可以取得權利。您可以在 [接收與回應互動](/developers/zh-tw/interactions/receiving-and-responding) 時，在 `Interaction Payload` 的 `entitlements` 欄位中找到該權利。
+
+### 透過嵌入式 App SDK 存取權利 (Accessing Entitlements with the Embedded App SDK)
+
+使用 [嵌入式 App SDK (Embedded App SDK)](/developers/zh-tw/developer-tools/embedded-app-sdk) 建置 [互動活動 (Activity)](/developers/zh-tw/activities/overview) 時，您也可以 [存取使用者的權利](/developers/zh-tw/developer-tools/embedded-app-sdk#getentitlements)。請參閱 [為互動活動實作應用程式內購買 (Implementing In-App Purchases for Activities)](/developers/zh-tw/monetization/implementing-iap-for-activities) 指南以了解更多資訊。
+
+<br />
+  </div>
+<br />
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## One-Time Purchase Considerations
+
+When implementing one-time purchases, you should consider the following:
+
+### For Durable One-Time Purchases
+
+When offering durable items, users will have access to the SKU indefinitely. Durable items can't be consumed, so you don't need to worry about the user losing access to the item except in the case of a refund.
+
+### For Consumable One-Time Purchases
+When offering consumable items, users can only have one unconsumed entitlement at a time. To handle consumable items in your app or game, you should process and store the consumable item in your app and then make a call to the [Consume Entitlement](/developers/resources/entitlement#consume-an-entitlement) endpoint so that the user can purchase more of this item in the future.
+
+Consuming the entitlement will update the entitlement to return a true value in the entitlement's `consumed` field. You will need to think through how your app keeps track of consumable items to decide on the best strategy for when to consume these entitlements and store the state of the consumable item and quantity in your app.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 單次性購買考量事項 (One-Time Purchase Considerations)
+
+實作單次性購買時，您應考量以下事項：
+
+### 對於耐久型單次性購買
+提供耐久型商品時，使用者將無限期擁有該 SKU 的使用權限。耐久型商品無法被消耗，因此除了退款的情況外，您不需要擔心使用者失去該商品的使用權限。
+
+### 對於消耗型單次性購買
+提供消耗型商品時，使用者一次只能擁有一筆未消耗的權利。若要在您的應用程式或遊戲中處理消耗型商品，您應該在應用程式中發放並儲存該消耗型商品，然後呼叫 [消耗權利 (Consume Entitlement)](/developers/zh-tw/resources/entitlement#consume-an-entitlement) 端點，以便使用者未來可以再次購買此商品。
+
+消耗權利將會更新該權利，使其在權利的 `consumed` 欄位中傳回 true 值。您需要思考您的應用程式如何追蹤消耗型商品，以決定何時消耗這些權利並在應用程式中儲存消耗型商品的狀態與數量的最佳策略。
+
+<br />
+  </div>
+<br />
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Prompting Users to Purchase an Item
+
+### Responding with a Premium Button
+
+[Responding with a premium button](/developers/monetization/managing-skus#responding-with-a-premium-button) gives you the ability to prompt users to subscribe to your app when they attempt to use a premium feature without a subscription.
+
+You can do this by sending a message with a [button](/developers/components/reference#button) with a [premium style](/developers/components/reference#button-button-styles) and a `sku_id` that allows the user to upgrade to your premium offering.  
+
+### Starting a Purchase from an Activity
+
+If you are using the [Embedded App SDK](/developers/developer-tools/embedded-app-sdk) to build an [Activity](/developers/activities/overview), you can also launch the purchase flow for a specific SKU using the SDK. Check out the [Implementing In-App Purchases for Activities](/developers/monetization/implementing-iap-for-activities) guide to learn more about monetization with the Embedded App SDK.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 提示使用者購買商品 (Prompting Users to Purchase an Item)
+
+### 使用付費按鈕進行回覆 (Responding with a Premium Button)
+
+當使用者嘗試在沒有訂閱的情況下使用付費功能時，[使用付費按鈕進行回覆](/developers/zh-tw/monetization/managing-skus#responding-with-a-premium-button) 可讓您提示使用者訂閱您的應用程式。
+
+您可以藉由發送一條訊息來實現此功能，該訊息包含一個帶有 [付費風格 (premium style)](/developers/zh-tw/components/reference#button-button-styles) 的 [按鈕](/developers/zh-tw/components/reference#button) 和一個 `sku_id`，允許使用者升級到您的付費商品。
+
+### 從互動活動中啟動購買流程 (Starting a Purchase from an Activity)
+
+如果您使用 [嵌入式 App SDK](/developers/zh-tw/developer-tools/embedded-app-sdk) 來建置 [互動活動 (Activity)](/developers/zh-tw/activities/overview)，您也可以使用該 SDK 來為特定的 SKU 啟動購買流程。請參閱 [為互動活動實作應用程式內購買 (Implementing In-App Purchases for Activities)](/developers/zh-tw/monetization/implementing-iap-for-activities) 指南以了解更多資訊。
+
+<br />
+  </div>
+<br />
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Testing Your One-Time Purchase Implementation
+
+<Warning>
+The method of testing purchases for One-Time Purchases differs from the method for App Subscriptions. **Do NOT use Test Entitlements for One-Time Purchases.**
+</Warning>
+
+### Using Application Test Mode
+
+While in Application Test Mode, you can freely make "purchases" of One-Time Purchase SKUs tied to your application. That means you can test buying your consumable and durable items by going through the In-App Purchase flow without any credit card charges.
+
+<Info>
+You still need to have a valid payment method on file to "purchase" SKUs in Application Test Mode. It just won't be charged at checkout.
+</Info>
+
+To enable it, first, make sure you have a payment method on file in `User Settings -> Billing` and then:
+
+1. Open up the Discord app
+2. Click on the Settings cog in the bottom left corner
+3. Go to the `Advanced` page under App Settings
+4. Toggle "Developer Mode" **on** and "Application Test Mode" **on**, and enter your application ID. You can leave the other settings as-is.
+5. Exit user settings
+
+Once you enabled Application Test Mode successfully, you should see an orange bar across the top of your screen with the name of your app.
+
+You can now navigate to your Store page and purchase your one-time purchase items without being charged.
+
+The entitlements tied to items purchased in Application Test Mode can be identified by entitlements with a `type` value of 4 to represent `TEST_MODE_PURCHASE`.
+
+<Warning>
+The "Go To SKU" button does not currently work. To purchase your SKU in test mode, go to your Store page.
+</Warning>
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 測試您的單次性購買實作 (Testing Your One-Time Purchase Implementation)
+
+<Warning>
+測試單次性購買的方法與測試應用程式訂閱的方法不同。**請勿將測試權利用於單次性購買項目。**
+</Warning>
+
+### 使用應用程式測試模式 (Using Application Test Mode)
+
+在「應用程式測試模式」下，您可以自由「購買」與您應用程式綁定的單次性購買 SKU。這意味著您可以透過模擬應用程式內購買流程來測試購買您的消耗型和耐久型商品，而不會產生任何信用卡費用。
+
+<Info>
+您仍然需要在帳戶中綁定有效的付款方式才能在「應用程式測試模式」中「購買」SKU。只是在結帳時不會扣除任何費用。
+</Info>
+
+若要啟用此模式，首先請確保您已在 `User Settings -> Billing (使用者設定 -> 帳單)` 中綁定了付款方式，然後：
+
+1. 開啟 Discord 應用程式
+2. 點選左下角的設定齒輪
+3. 前往 App 設定下的 `Advanced (進階)` 頁面
+4. 將「Developer Mode (開發者模式)」**開啟**，並將「Application Test Mode (應用程式測試模式)」**開啟**，接著輸入您的應用程式 ID (Application ID)。您可以保持其他設定不變。
+5. 退出使用者設定
+
+成功啟用「應用程式測試模式」後，您應該會在螢幕頂端看到一個顯示您應用程式名稱的橘色橫條。
+
+您現在可以前往您的商店頁面並購買您的單次性購買商品，而不會被收費。
+
+在「應用程式測試模式」下購買的商品權利可以透過 `type`值為 4 的權利來識別，代表 `TEST_MODE_PURCHASE` (測試模式購買)。
+
+<Warning>
+「Go To SKU」按鈕目前無法使用。若要在測試模式下購買您的 SKU，請前往您的商店頁面。
+</Warning>
+
+<br />
+  </div>
+<br />
+</div>

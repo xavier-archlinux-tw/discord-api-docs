@@ -1,0 +1,241 @@
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/monetization/managing-skus" />
+
+您在應用程式中提供的付費進階品項與訂閱皆由 SKU 代表。**SKU** 代表庫存單位 (Stock Keeping Unit)，是您付費商品的唯一識別碼。
+
+[SKU](/developers/zh-tw/resources/sku) 是您付費商品的建構元素，您可以在開發者入口網站中對其進行管理。
+
+---
+
+## 建立 SKU (Creating a SKU)
+
+要建立新的 SKU，請前往您的 [應用程式設定](https://discord.com/developers/applications) 並選擇 [Monetization -> Manage SKUs](https://discord.com/developers/applications/select/skus) 索引標籤。在該頁面中，您可以點擊 `Create SKU` 按鈕來建立新的 SKU。
+
+點擊 `Create SKU` 時，您可以選擇以下類型：
+
+- **使用者訂閱 (User Subscription)**：自動循環扣款的訂閱，授予單一使用者在所有伺服器中的福利。
+- **伺服器訂閱 (Guild Subscription)**：自動循環扣款的訂閱，授予單一伺服器中的所有使用者福利。
+- **消耗型 (Consumable)**：單次性購買項目，提供一次性使用的臨時福利，使用後即被消耗。
+- **耐久型 (Durable)**：單次性購買項目，授予永久性的功能新增或強化。
+
+選擇 SKU 類型後，輸入 SKU 的名稱即可繼續。
+
+### 建立訂閱分級 (Creating Subscription Tiers)
+
+您可以建立多個訂閱分級 (Subscription Tiers)，以不同的價位提供不同的福利。每個分級都可以有自己的一套福利與價格，並由唯一的 SKU 代表。
+
+若要支援訂閱分級之間的升級與降級，請參閱我們的 [實作應用程式訂閱](/developers/zh-tw/monetization/implementing-app-subscriptions#supporting-upgrades-and-downgrades) 指南。
+
+![支援多種訂閱分級](/images/monetization/multisub.png)
+
+### SKU 限制 (SKU Limitations)
+
+您可以建立的 SKU 數量有一些限制：
+- 每個應用程式最多可以建立 50 個 SKU。
+- 您可以提供使用者訂閱 SKU 或伺服器訂閱 SKU，但不能同時提供兩者。
+- SKU 價格必須從可用價格清單中選取。
+
+<Info>
+如果您需要的 SKU 超過 50 個的限制，請考慮建立一個消耗型應用程式內虛擬貨幣 SKU，用於購買您應用程式內部追蹤的品項。
+</Info>
+
+---
+
+## 自訂您的 SKU (Customizing Your SKUs)
+
+建立 SKU 後，您可以對其進行自訂，以符合您應用程式的品牌形象以及您想要提供的福利。您可以自訂：
+
+- 付費 SKU 的名稱，最多 80 個字元。
+- 付費 SKU 的說明，最多 160 個字元。
+- 付費 SKU 的圖片。
+- 付費 SKU 的價格。
+
+您的福利清單將顯示在應用程式的商店頁面、應用程式目錄以及購買和取消流程中，向使用者說明您付費商品的福利。這些福利可以包含：
+- 最多 6 個福利項目。
+- 一個表情符號 (標準或自訂)。
+- 名稱，最多 80 個字元。
+- 說明，最多 160 個字元。
+
+![SKU 福利範例](/images/monetization/sku-benefits.png)
+
+### 為您的 SKU 定價 (Pricing Your SKUs)
+
+設定 SKU 價格時，您可以從預定義的價格清單中選取。這些價格會根據使用者的地區自動轉換為當地的貨幣。
+
+訂閱 SKU 每月會自動扣款，除非取消訂閱。變更此 SKU 的價格只會影響新訂閱者，已訂閱的使用者將繼續按原本訂閱時的價格扣款。
+
+<Accordion title="使用標準 Unicode 表情符號 (Using Unicode Emoji)" icon="view">
+若要使用標準 Unicode 表情符號設定圖示，請在 `Unicode Emoji or Custom Emoji Name` 欄位中輸入該表情符號。
+
+<Info>
+使用表情符號鍵盤可以更容易選取要與 SKU 福利一起顯示的圖示。
+
+MacOS：`control + command + 空白鍵`
+
+Windows：`Windows 鍵 + .`
+</Info>
+
+![設定 unicode 表情符號](/images/sku-unicode.webp)
+</Accordion>
+
+<Accordion title="使用自訂表情符號 (Using a Custom Emoji)" icon="view">
+若要使用自訂表情符號，請同時設定以下兩個欄位：
+
+- 自訂表情符號的名稱
+- 自訂表情符號的 ID
+
+<Info>
+您可以在 Discord 應用程式中透過在訊息中的表情符號前加上反斜線 `\` 來尋找該表情符號的 ID。例如，`\:uwu:` 將會渲染出該表情符號的名稱與 ID。
+</Info>
+
+![設定自訂表情符號](/images/sku-custom.webp)
+</Accordion>
+
+---
+
+## 發布與取消發布 SKU (Publishing and Unpublishing SKUs)
+
+初次建立 SKU 時，它會處於 `Unavailable` (不可用) 狀態。此 SKU 還無法被使用者購買。您可以在發布之前編輯 SKU 以新增價格、福利和其他詳細資訊。
+
+在 [應用程式設定](https://discord.com/developers/applications) 的 [Monetization -> Manage SKUs](https://discord.com/developers/applications/select/skus) 標籤中建立與編輯 SKU 時，您有幾種管理 SKU 可見性與向使用者發布的選項：
+
+- 發布 SKU (Publish SKU)
+- 取消發布 SKU (Unpublish SKU)
+- 刪除 SKU (Delete SKU)
+
+### 發布 SKU (Publishing a SKU)
+
+發布 SKU 時，您可以選擇將其設定為 **透過商店與 API 可用 (Available via the Store and API)** 或 **僅透過 API 可用 (Available via the API Only)**。
+
+#### 發布到商店與 API (Publishing to Store & API)
+
+可供購買，且在您應用程式的商店頁面中可見。
+
+#### 僅發布到 API (Publishing to API Only)
+
+您只能透過 API 呼叫或使用嵌入式 App SDK 來授予此 SKU 的權利。
+
+### 取消發布 SKU (Unpublishing a SKU)
+
+<Warning>
+**危險：** 取消發布 SKU 可能會影響您使用者現有的訂閱與權利。
+</Warning>
+
+取消發布 SKU 會將其從商店和 API 中移除，使其無法被購買。
+
+取消發布 SKU 會有以下影響：
+- 對於訂閱 SKU，擁有此 SKU 的使用者和伺服器在計費週期結束時將不會自動續訂。
+- 使用者和伺服器在計費週期結束前仍將擁有該 SKU 的權利。
+- 對於消耗型與耐久型 SKU，如果使用者在取消發布前已經購買，則仍將擁有該 SKU 的權利。
+- 此操作不會刪除 SKU。
+
+### 刪除 SKU (Deleting a SKU)
+
+<Warning>
+**危險：** 刪除 SKU 項目可能會影響您使用者現有的訂閱與權利。
+</Warning>
+
+在 UI 中刪除 SKU，使其無法再發布。在 API 中呼叫 [列出 SKU](/developers/zh-tw/resources/sku#list-skus) 時，已刪除的 SKU 仍會被列出。
+
+刪除 SKU 會有以下影響：
+- 對於訂閱 SKU，使用者和伺服器將立即被取消訂閱。他們的權利在計費週期結束前仍將有效。
+- 對於消耗型與耐久型 SKU，如果使用者在刪除前已經購買，則仍將擁有該 SKU 的權利。
+
+---
+
+## 編輯已發布的 SKU (Editing a Published SKU)
+
+如果您想要變更已發布的 SKU，您可以先取消發布目前已發布的 SKU。取消發布後，該商品將不再對外販售，且已訂閱的使用者在計費週期結束時將不會自動續訂。您必須繼續向他們提供付費進階商品，直到他們的訂閱週期結束。
+
+### 變更訂閱 SKU 價格 (Changing a Subscription SKU Price)
+
+當您變更使用者或伺服器訂閱 SKU 的價格時，這只會影響新的訂閱者。現有的訂閱者將繼續按他們當初訂閱時的 SKU 價格進行扣款。
+
+---
+
+## 在您的 App 中整合 SKU (Integrating SKUs in Your App)
+
+發布 SKU 後，您就可以開始在應用程式中實作付費功能。請參閱我們的指南以開始使用。
+
+<CardGroup cols={2}>
+  <Card title="實作應用程式訂閱" href="/developers/zh-tw/monetization/implementing-app-subscriptions" icon={<ShopIcon />}>
+    了解如何在您的應用程式中啟動並管理定期循環的訂閱。
+  </Card>
+  <Card title="實作單次性購買" href="/developers/zh-tw/monetization/implementing-one-time-purchases" icon={<ShopIcon />}>
+    了解如何在您的應用程式中實作單次性購買功能。
+  </Card>
+</CardGroup>
+
+---
+
+## 檢視您的商店頁面 (Viewing your Store Page)
+
+使用者可以從伺服器中的機器人使用者個人檔案存取應用程式的商店頁面。這允許使用者檢視可用的訂閱和單次性購買、選取某個訂閱以檢視其特權、福利與詳細資訊，並直接從應用程式的商店頁面進行購買。
+
+<Info>
+只有已發布到商店的訂閱和品項才會在商店頁面上對使用者可見。
+</Info>
+
+#### 從機器人使用者的個人檔案存取您的商店頁面 (Accessing your Store page from a Bot User's Profile)
+![作為使用者存取商店](/images/monetization/botuser-profile.png)
+
+#### 商店頁面中的訂閱 (Subscriptions in Your Store page)
+![商店檢視中的訂閱項目](/images/monetization/multisub.png)
+
+#### 商店頁面中的品項 (Items in Your Store page)
+![商店檢視中的品項](/images/monetization/premium-items.png)
+
+---
+
+## 連結至特定的 SKU (Linking to a Specific SKU)
+
+您可以使用我們的應用程式目錄商店 URL 格式直接連結至特定的 SKU：
+
+`https://discord.com/application-directory/:appID/store/:skuID`
+
+- 在聊天中使用時，它將渲染為豐富嵌入內容 (rich embed)，允許使用者開啟視窗來檢視 SKU 詳細資訊或結帳流程。
+- 在瀏覽器中作為直接 URL 使用時，它將引導使用者前往網頁版應用程式目錄中的您的產品頁面。
+
+![直接連結至 SKU 的嵌入內容](/images/monetization/sku_embed.png)
+
+---
+
+## 連結至您的商店 (Linking To Your Store)
+
+您可以使用我們的應用程式目錄商店 URL 格式直接連結至您的商店頁面：
+
+`https://discord.com/application-directory/:appID/store`
+
+- 在聊天中使用時，它將渲染為豐富嵌入內容，允許使用者開啟視窗以進入您的商店頁面。
+- 在瀏覽器中作為直接 URL 使用時，它將引導使用者前往網頁版應用程式目錄中的您的商店頁面。
+
+![直接連結至商店的嵌入內容](/images/monetization/store_embed.png)
+
+---
+
+## 使用付費按鈕進行回覆 (Responding with a Premium Button)
+
+您可以使用帶有 `sku_id` 且具有 [付費風格 (premium style)](/developers/zh-tw/components/reference#button-button-styles) 的 [按鈕](/developers/zh-tw/components/reference#button) 來提示使用者購買品項或訂閱 SKU。您可以在任何可以使用訊息元件的地方使用此付費按鈕風格，例如在指令回覆中。
+
+```javascript
+return new JsonResponse({
+    type: 4, // InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE
+    data: {
+        content: "此指令需要 Nelly Premium 權限！立即升級以獲得這些功能的存取權！",
+        components: [{
+            type: MessageComponentTypes.ACTION_ROW,
+            components: [
+                {
+                    type: MessageComponentTypes.BUTTON,
+                    style: 6, // ButtonStyleTypes.PREMIUM
+                    sku_id: '1234965026943668316',
+                },
+            ],
+        }]
+    },
+});
+```
+
+![付費按鈕](/images/monetization/premium-button.png)

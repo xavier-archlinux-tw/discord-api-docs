@@ -179,10 +179,11 @@ export const LanguageSelector = ({ current, path }) => {
       style={{
         position: 'fixed',
         top: '120px',
-        right: '0px',
+        left: '50%',
+        transform: 'translateX(-50%)',
         backgroundColor: 'rgba(30, 30, 46, 0.85)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '9999px 0px 0px 9999px', // 圓角朝左，貼齊右側邊緣
+        borderRadius: '9999px',
         padding: '8px 16px',
         boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         display: 'flex',
