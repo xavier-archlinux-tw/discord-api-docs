@@ -1,0 +1,9 @@
+node_modules
+.git
+.mintlify
+.next
+.docusaurus
+.cache
+.agents
+*.log
+*.html

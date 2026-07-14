@@ -11,3 +11,16 @@ services:
     environment:
       - PORT=3000
     # 在有些系統上，為了熱重載（Hot Reload）能正常在容器中偵測檔案變更，可以視情況增加 watch 等配置，目前先以 standard volume 掛載為主
+
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.61.1
+    container_name: playwright-test-runner
+    volumes:
+      - .:/work
+    working_dir: /work
+    environment:
+      - TARGET_HOST=http://mintlify-dev-server:3000
+    depends_on:
+      - mintlify
+    command: npx tsx tools/type-script/verify-pagination.ts
+

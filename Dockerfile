@@ -21,7 +21,7 @@ FROM builder AS validator
 COPY . .
 
 # 0. 修正雙語 MDX 檔案中的 div 縮排
-RUN node tools/fix-mdx-divs.js
+RUN node tools/java-script/fix-mdx-divs.js
 
 # 1. 驗證文件結構與設定檔
 RUN mintlify validate
@@ -51,4 +51,4 @@ COPY --from=validator /app /app
 EXPOSE 3000
 
 # 啟動 Mintlify 開發伺服器
-CMD ["sh", "-c", "node tools/fix-mdx-divs.js && mintlify dev --port 3000"]
+CMD ["sh", "-c", "node tools/java-script/fix-mdx-divs.js && mintlify dev --port 3000"]
