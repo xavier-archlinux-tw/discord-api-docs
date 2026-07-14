@@ -13,49 +13,476 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 ## Run Your Application Locally
 
-Use a network tunnel (e.g., [cloudflared](https://github.com/cloudflare/cloudflared)) to test against Discord's proxy:
+It is possible to load your application via a localhost port or other unique URL. This URL must support an HTTPS connection to load on the web/desktop Discord app (HTTPS is not required for mobile). The downside to this flow is that your application's network traffic will not pass through Discord's proxy, which means any requests made by the application will need to use a full URL instead of a "mapped" URL.
 
-```
-cloudflared tunnel --url http://localhost:3000
-```
+To run your locally hosted application, follow the instructions for Launching your Application from the Discord Client and set the Application URL Override to the address of your application's web server.
 
-## URL Mapping
+### Running Your Application Through A Network Tunnel
 
-Configure URL Mappings in [Activities -> URL Mappings](https://discord.com/developers/applications/select/embedded/url-mappings). Set `PREFIX` to `/api` and `TARGET` to `some-api.com` to forward `/api` requests through Discord's proxy to `some-api.com`.
+Although it is possible to test your application locally, we recommend developing and testing against the Discord proxy. This is helpful to make sure all URLs behave as expected before your application runs in production. One technique to enable testing locally against the proxy is to use a network tunneling tool, such as [cloudflared](https://github.com/cloudflare/cloudflared#installing-cloudflared). A typical pattern is for each developer to have their own "development-only" application. To set up a local environment to run through Discord's proxy, you will need to do the following:
 
-## Logging
+1. Create a new application in the Discord Developer portal.
+2. Enable Activities for your app.
+3. Set up the application's URL mapping.
+4. Locally, spin up your web server.
+5. Install and run a tunnel solution, such as cloudflared. You will point it to your local web server.
 
-SDK forwards `log`, `warn`, `error`, `info`, `debug` events to Discord.
-
-```javascript
-// Disable logging
-const discordSdk = new DiscordSDK(clientId, { disableConsoleLogOverride: true });
-```
-
+<br />
   </div>
   <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 在本機執行您的應用程式 (Run Your Application Locally)
 
-使用網路隧道工具（例如 [cloudflared](https://github.com/cloudflare/cloudflared)）透過 Discord 代理進行測試：
+您可以透過 localhost 埠或其他唯一 URL 載入您的應用程式。此 URL 在網頁/桌面版 Discord 上必須支援 HTTPS 連線（行動版不要求 HTTPS）。此方式的缺點是應用程式的網路流量不會通過 Discord 的代理伺服器，因此所有請求都需要使用完整 URL 而非「映射 (Mapped)」URL。
+
+請遵循 [從 Discord 用戶端啟動您的應用程式](/developers/zh-tw/activities/development-guides/local-development#launch-your-application-from-the-discord-client) 的說明來執行您的本機應用程式，並將 Application URL Override 設定為您本機伺服器的位址。
+
+### 透過網路隧道執行 (Running Through A Network Tunnel)
+
+我們建議透過 Discord 代理伺服器進行開發與測試，以確保所有 URL 行為在生產環境中如預期運作。您可以使用網路隧道工具（例如 [cloudflared](https://github.com/cloudflare/cloudflared#installing-cloudflared)）來達到此目的：
+
+1. 在 Discord 開發者入口網站建立新應用程式。
+2. 為您的 App 啟用互動活動。
+3. 設定應用程式的 [URL 映射](/developers/zh-tw/activities/development-guides/local-development#url-mapping)。
+4. 在本機啟動您的網頁伺服器。
+5. 安裝並執行隧道工具，指向本機伺服器。
+
+<br />
+  </div>
+</div>
+
+<Info>
+  **🇬🇧 English**: Your web server can be HTTP and your network tunnel can upgrade the connection to HTTPS.
+  
+  **🇹🇼 繁體中文**: 您的網頁伺服器可以使用 HTTP，由網路隧道工具升級為 HTTPS。
+</Info>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+If using cloudflared, you will run the following command, replace `3000` with your web server's port.
 
 ```
 cloudflared tunnel --url http://localhost:3000
 ```
 
-## URL 映射 (URL Mapping)
+Once you run this command, you will receive your publicly accessible network tunnel address from cloudflared.
 
-在 [Activities -> URL Mappings](https://discord.com/developers/applications/select/embedded/url-mappings) 中設定映射。將 `PREFIX` 設為 `/api`，`TARGET` 設為 `some-api.com`，即可將 `/api` 的請求透過 Discord 代理轉發至 `some-api.com`。
+```
+Your quick Tunnel has been created! Visit it at (it may take some time to be reachable):
+https://funky-jogging-bunny.trycloudflare.com
+```
+
+In the Discord Developer Portal, update the Application URL mapping for `/` url to `funky-jogging-bunny.trycloudflare.com` to match your network tunnel address and save your changes.
+
+![Configuring your URL Mapping](/images/activities/url-mapping-tutorial.png)
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+若使用 cloudflared，請執行以下指令（將 `3000` 替換為您的伺服器埠號）：
+
+```
+cloudflared tunnel --url http://localhost:3000
+```
+
+執行後，您將獲得可公開存取的隧道位址：
+
+```
+Your quick Tunnel has been created! Visit it at (it may take some time to be reachable):
+https://funky-jogging-bunny.trycloudflare.com
+```
+
+在 Discord 開發者入口網站中，將應用程式 URL 映射的 `/` 路徑更新為您的隧道位址並儲存。
+
+![Configuring your URL Mapping](/images/activities/url-mapping-tutorial.png)
+
+<br />
+  </div>
+</div>
+
+<Warning>
+  **🇬🇧 English**: If you do not own the URL that you are using to host the application (i.e. ngrok's free tier), someone else could claim that domain and host a malicious site in its place. Please be aware of these risks, and if you have to use a domain you do not own, be sure to reset your URL mapping when you are done using the tunnel.
+  
+  **🇹🇼 繁體中文**: 若您使用不屬於自己的 URL（例如 ngrok 免費方案），他人可能宣告該網域並架設惡意網站。請務必在使用完隧道後重置您的 URL 映射。
+</Warning>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Running Your Application In Production
+
+The flow for setting up your production application is very similar:
+
+1. If not made yet, create a new application.
+2. Enable Activities for your app.
+3. Set up the application's URL Mapping. The URL for your application's html should be set to the `/` route.
+4. Follow the instructions for Launching your Application from the Discord Client. Application URL Override should not be enabled.
+
+This application now uses the same configuration it will use once it is fully published ✨.
+
+![application-test-mode-prod](/images/activities/application-test-mode-prod.gif)
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 在生產環境執行您的應用程式 (Running Your Application In Production)
+
+設定生產環境應用程式的流程非常相似：
+
+1. 如果尚未建立，請建立一個新應用程式。
+2. 為您的 App 啟用互動活動。
+3. 設定應用程式的 [URL 映射](/developers/zh-tw/activities/development-guides/local-development#url-mapping)。您應用程式 html 的 URL 應設定為 `/` 路由。
+4. 遵循 [從 Discord 用戶端啟動您的應用程式](/developers/zh-tw/activities/development-guides/local-development#launch-your-application-from-the-discord-client) 的指示。不應啟用 Application URL Override。
+
+此應用程式現在使用的是與其完全發布後相同的配置 ✨。
+
+![application-test-mode-prod](/images/activities/application-test-mode-prod.gif)
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Launch your application from the Discord Client
+
+You will be able to see and launch all activities owned by you or any teams you are a member of via the Developer Activity Shelf. One caveat is that the activity will not be shown on the current platform (web/ios/android) unless you have checked your platform in Settings/Supported Platforms on the developer portal.
+
+To see you app inside of Discord in the Activity Shelf:
+
+#### Web
+
+1. Select ⚙️ User Settings > App Settings > Advanced and toggle on `Developer Mode`
+3. Close the settings window and enter a voice channel.
+4. From either the RTC Panel or the Center Control Tray, click on the Rocket Button to open the Activity shelf. Note: The shelf will only include applications which have been flagged as "Embedded".
+6. Click on an activity to launch it!
+
+#### Mobile
+
+1. From your User Profile, select Appearance, and then toggle "On" Developer Mode
+2. Enter a voice channel
+5. Click on an activity to launch it!
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 從 Discord 用戶端啟動您的應用程式 (Launch from Discord Client)
+
+所有由您或您所在的團隊擁有的互動活動，都可透過開發者互動活動書架看到並啟動。但請注意，除非您已在開發者入口網站的 [Settings/Supported Platforms](https://discord.com/developers/applications/select/embedded/settings) 中勾選了您的平台，否則該活動將不會顯示在該平台（網頁版/iOS/Android）上。
+
+#### 網頁版/桌面版
+
+1. 前往 ⚙️ 使用者設定 > App 設定 > 進階，開啟 `開發者模式 (Developer Mode)`
+2. 關閉設定視窗並進入語音頻道。
+3. 在 RTC 面板或中央控制列中，點擊「火箭按鈕」開啟互動活動書架。您現在應該可以看到與開發者入口網站中相同有權限存取的應用程式。注意：書架中只會包含被標記為 "Embedded" 的應用程式。
+4. 點擊互動活動以啟動！
+
+#### 行動版
+
+1. 從您的使用者資料，選擇外觀 (Appearance)，然後開啟 `開發者模式`
+2. 進入語音頻道。
+3. 點擊互動活動以啟動！
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### URL Mapping
+
+Activities in Discord are "sandboxed" via a Discord proxy. This is done to hide the users' IP addresses, your application's IP addresses, and to block URLs from known malicious endpoints. As an application owner, you can configure the proxy to allow network requests to external endpoints.
+
+Because your application is "sandboxed", it will be unable to make network requests to external URLs. Let's say you want request `https://some-api.com`. To enable reaching this url from inside your application, you will create a new url mapping, with the `PREFIX` set to `/api` and `TARGET` set to `some-api.com`. Now you can make requests to `/api` from inside of your application, which will be forwarded, via Discord's proxy to `some-api.com`.
+
+#### How to set a URL Mapping
+
+To add or modify your application's URL mappings, click on Activities -> URL Mappings and set the prefix and target values for each mapping as needed.
+
+#### Prefix/Target formatting rules
+
+- URL mappings can utilize any url protocol, (https, wss, ftp, etc...), which is why the URL target should not include a protocol. For example, for a URL target, do not put `https://your-url.com`, instead, omit `https://` and use `your-url.com`.
+- Parameter matching can be used to help map external domain urls. For example, if an external url has many subdomains, such as `foo.google.com`, `bar.google.com`, then you could use the following mapping:
+
+<table className="w-full">
+  <thead>
+    <tr>
+      <th>PREFIX</th>
+      <th>TARGET</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>/google/&#123;subdomain&#125;</code></td>
+      <td><code>&#123;subdomain&#125;.google.com</code></td>
+    </tr>
+  </tbody>
+</table>
+
+- Targets must point to a directory; setting a target to a file (e.g. `example.com/index.html`) is unsupported and may lead to unexpected behavior.
+- Because of how URL globbing works, if you have multiple prefix urls with the same initial path, you must place the shortest of the prefix paths last in order for each url mapping to be reachable. For example, if you have `/foo` and `/foo/bar`, you must place the url `/foo/bar` before `/foo` or else the mapping for `/foo/bar` will never be reached.
+
+<table className="w-full">
+  <thead>
+    <tr>
+      <th>✅ DO</th>
+      <th>❌ DON'T</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/images/activities/url-mapping-do.png" alt="url-mapping-do" /></td>
+      <td><img src="/images/activities/url-mapping-dont.png" alt="url-mapping-dont" /></td>
+    </tr>
+  </tbody>
+</table>
+
+#### Exceptions
+
+The aforementioned "sandbox" is enforced by a Content Security Policy (CSP). We have some notable exceptions to our CSP, meaning application clients may make requests to these URLs without hitting the proxy and therefore without establishing mappings. Notable exceptions include:
+
+- `https://discord.com/api/`
+- `https://canary.discord.com/api/`
+- `https://ptb.discord.com/api/`
+- `https://cdn.discordapp.com/attachments/`
+- `https://cdn.discordapp.com/avatars/`
+- `https://cdn.discordapp.com/icons/`
+- `https://media.discordapp.net/attachments/`
+- `https://media.discordapp.net/avatars/`
+- `https://media.discordapp.net/icons/`
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### URL 映射 (URL Mapping)
+
+Discord 中的互動活動透過代理伺服器進行「沙盒化 (sandboxed)」，用以隱藏使用者和應用程式的 IP 位址，並封鎖已知的惡意端點。您可以設定代理伺服器，允許對外部端點的網路請求。
+
+由於您的應用程式已被「沙盒化」，因此無法直接對外部 URL 發送請求。假設您想要請求 `https://some-api.com`，要在您的應用程式內部訪問此 URL，您需要建立一個新的 URL 映射，將 `PREFIX` 設為 `/api`，`TARGET` 設為 `some-api.com`。此後對 `/api` 的請求都會透過 Discord 代理伺服器轉發至 `some-api.com`。
+
+#### 如何設定 URL 映射
+
+前往 [Activities -> URL Mappings](https://discord.com/developers/applications/select/embedded/url-mappings)，設定每個映射的前綴 (PREFIX) 和目標 (TARGET) 值。
+
+#### 前綴/目標格式規則
+
+- URL 映射可以使用任何協議（https、wss、ftp 等），因此 URL 目標中不應包含協議。例如不要填 `https://your-url.com`，應填 `your-url.com`。
+- 可以使用參數匹配處理多個子網域，例如：
+
+<table className="w-full">
+  <thead>
+    <tr>
+      <th>PREFIX</th>
+      <th>TARGET</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>/google/&#123;subdomain&#125;</code></td>
+      <td><code>&#123;subdomain&#125;.google.com</code></td>
+    </tr>
+  </tbody>
+</table>
+
+- 目標必須指向目錄，不支援指向特定檔案（例如 `example.com/index.html`），否則可能導致非預期行為。
+- 由於 URL 萬用字元（globbing）的運作方式，如果您有多個具有相同初始路徑的前綴 URL，您必須將最長的前綴路徑放在最前面，最短的放在最後面，以確保每個 URL 映射都能被正確訪問。例如，如果您同時有 `/foo` 和 `/foo/bar`，您必須將 `/foo/bar` 的映射排在 `/foo` 之前，否則 `/foo/bar` 的映射將永遠不會被觸發。
+
+<table className="w-full">
+  <thead>
+    <tr>
+      <th>✅ 建議做法</th>
+      <th>❌ 錯誤做法</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/images/activities/url-mapping-do.png" alt="url-mapping-do" /></td>
+      <td><img src="/images/activities/url-mapping-dont.png" alt="url-mapping-dont" /></td>
+    </tr>
+  </tbody>
+</table>
+
+#### 例外狀況 (Exceptions)
+
+上述的「沙盒化」是由 [內容安全政策 (Content Security Policy, CSP)](https://developer.mozilla.org/zh-TW/docs/Web/HTTP/CSP) 強制執行的。我們對 CSP 設定了一些顯著的例外，這意味著應用程式用戶端可以直接向這些 URL 發送請求而無需經過代理伺服器，因此不需要建立映射。這些例外包括：
+
+- `https://discord.com/api/`
+- `https://canary.discord.com/api/`
+- `https://ptb.discord.com/api/`
+- `https://cdn.discordapp.com/attachments/`
+- `https://cdn.discordapp.com/avatars/`
+- `https://cdn.discordapp.com/icons/`
+- `https://media.discordapp.net/attachments/`
+- `https://media.discordapp.net/avatars/`
+- `https://media.discordapp.net/icons/`
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Logging
+
+By default, the SDK will send any console `log`, `warn`, `error`, `info`, and `debug` events triggered by your app to the Discord application.
+
+#### Viewing Logs on Desktop
+
+Desktop logs are viewable through the console tab inside a browser's Developer Tools. See the Troubleshooting Console Log Errors support article for more information.
+
+The Public Test Build (PTB) Discord client also allows inspecting your logs from the `View -> Developer -> Toggle Developer Tools` menu. It can be downloaded at [https://discord.com/downloads](https://discord.com/downloads).
+
+#### Viewing Logs on Mobile
+
+Mobile logs are viewable via the `Debug Logs` option inside User Settings on the mobile App. It is only discoverable when you have `Developer Mode` enabled.
+
+1. On the bottom navigation, tap on your avatar and then the gear icon to open your `User Settings`.
+2. Tap `Appearance`.
+3. Slide the `Developer Mode` toggle to ON.
+4. The `Debug Logs` option will be available under the `DEV ONLY` section.
+
+#### Filtering for Application Logs
+
+Inside the Debug Logs view, you can search for your own application logs with the possible keywords:
+
+- `RpcApplicationLogger`
+- Your Application ID
+
+Each log line is formatted as: `[RpcApplicationLogger] <application-id> - message`
+
+The first section of Debug Logs are not your application logs but Discord specific app startup info which is not relevant to your application.
+
+When you scroll down the page, your application logs should be visible.
+
+![debug-logs-filtering](/images/activities/debug-logs-filtering.gif)
+
+#### Sharing Application Logs from Mobile
+
+With `Developer Mode` enabled, you can share your application logs from within a Voice Channel.
+
+1. In the voice channel, swipe from the bottom to see the expanded voice controls. Tap on `Share Application Logs`.
+2. You'll be presented with a native share sheet where you can save the logs to a file or share it as a message.
+
+#### Disabling Logging
+
+If you do not want logs to be forwarded to the browser, you can disable it with the optional configuration object.
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId, {
+  disableConsoleLogOverride: true,
+});
+```
+
+#### Forwarding Log Messages
+
+You can forward specific log messages via the SDK command `captureLog` as shown below.
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+discordSdk.commands.captureLog({
+  level: 'log',
+  message: 'This is my log message!',
+});
+```
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 日誌記錄 (Logging)
 
-SDK 預設將 `log`、`warn`、`error`、`info`、`debug` 事件轉發至 Discord。
+SDK 預設會將您的 App 觸發的所有 `log`、`warn`、`error`、`info` 和 `debug` 事件轉發至 Discord 應用程式。
+
+#### 在桌面版檢視日誌
+
+桌面版日誌可透過瀏覽器開發者工具的 Console 分頁查看。請參閱 [Troubleshooting Console Log Errors](https://support.discord.com/hc/en-us/articles/115001239472-Troubleshooting-Console-Log-Errors) 支援文章獲取更多資訊。
+
+Discord 的 PTB 用戶端也可從 `View -> Developer -> Toggle Developer Tools` 選單查看，其可於 [https://discord.com/downloads](https://discord.com/downloads) 下載。
+
+#### 在行動版檢視日誌
+
+行動版日誌可透過使用者設定中的 `除錯日誌 (Debug Logs)` 選項查看（需開啟開發者模式）：
+
+1. 點擊您的頭像再點擊齒輪圖示以開啟使用者設定。
+2. 點擊外觀 (Appearance)。
+3. 開啟開發者模式。
+4. `DEV ONLY` 區塊下會出現 `Debug Logs` 選項。
+
+#### 篩選應用程式日誌 (Filtering for Application Logs)
+
+在「除錯日誌 (Debug Logs)」檢視中，您可以使用以下關鍵字搜尋您自己應用程式的日誌：
+
+- `RpcApplicationLogger`
+- 您的應用程式 ID
+
+每行日誌的格式為：`[RpcApplicationLogger] <application-id> - message`
+
+「除錯日誌」的最上方區段不是您的應用程式日誌，而是 Discord 特定的應用程式啟動資訊，這與您的應用程式無關。當您向下滾動頁面時，即可看見您應用程式的日誌。
+
+![debug-logs-filtering](/images/activities/debug-logs-filtering.gif)
+
+#### 從行動版分享應用程式日誌 (Sharing Application Logs from Mobile)
+
+開啟「開發者模式」後，您可以直接從語音頻道中分享您的應用程式日誌。
+
+1. 在語音頻道中，從底部向上滑動以展開語音控制選項，點擊 **分享應用程式日誌 (Share Application Logs)**。
+2. 您將會看到系統原生的分享選單，可將日誌儲存為檔案或以訊息分享。
+
+#### 停用日誌記錄 (Disabling Logging)
+
+若不希望日誌被轉發至瀏覽器，可透過設定物件停用：
 
 ```javascript
-// 停用日誌記錄
-const discordSdk = new DiscordSDK(clientId, { disableConsoleLogOverride: true });
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId, {
+  disableConsoleLogOverride: true,
+});
 ```
 
+#### 轉發日誌訊息 (Forwarding Log Messages)
+
+您也可以使用 SDK 指令 `captureLog` 主動轉發特定日誌訊息：
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+discordSdk.commands.captureLog({
+  level: 'log',
+  message: '這是我的日誌訊息！',
+});
+```
+
+<br />
   </div>
 </div>

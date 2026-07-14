@@ -1,22 +1,37 @@
-import React, { useEffect } from 'react';
-
 export const LanguageSelector = ({ current, path }) => {
-  // 清理與轉換路由路徑，確保基本英文路由正確
-  let baseRoute = path || '';
-  baseRoute = baseRoute
-    .replace('/developers/zh-tw/', '/developers/en-us/')
-    .replace('/developers/bilingual/', '/developers/en-us/');
-    
-  if (baseRoute && !baseRoute.startsWith('/')) {
-    baseRoute = '/' + baseRoute;
+  // 動態偵測瀏覽器當前 URL，確保在分流路由或嵌套 import 時能維持相同路由切換
+  let currentPath = path || '';
+  if (typeof window !== 'undefined') {
+    currentPath = window.location.pathname;
+  }
+  
+  // 去除結尾斜線
+  currentPath = currentPath.replace(/\/$/, '');
+
+  let enRoute = '';
+  let zhRoute = '';
+  let biRoute = '';
+
+  if (currentPath.includes('/developers/zh-tw/')) {
+    enRoute = currentPath.replace('/developers/zh-tw/', '/developers/en-us/');
+    zhRoute = currentPath;
+    biRoute = currentPath.replace('/developers/zh-tw/', '/developers/bilingual/');
+  } else if (currentPath.includes('/developers/bilingual/')) {
+    enRoute = currentPath.replace('/developers/bilingual/', '/developers/en-us/');
+    zhRoute = currentPath.replace('/developers/bilingual/', '/developers/zh-tw/');
+    biRoute = currentPath;
+  } else {
+    // 預設為 en-us
+    const basePath = currentPath.includes('/developers/en-us/') 
+      ? currentPath 
+      : '/developers/en-us' + currentPath.replace('/developers/', '/');
+    enRoute = basePath;
+    zhRoute = basePath.replace('/developers/en-us/', '/developers/zh-tw/');
+    biRoute = basePath.replace('/developers/en-us/', '/developers/bilingual/');
   }
 
-  const enRoute = baseRoute;
-  const zhRoute = baseRoute.replace('/developers/en-us/', '/developers/zh-tw/');
-  const biRoute = baseRoute.replace('/developers/en-us/', '/developers/bilingual/');
-
   // 處理連結改寫與 Active 狀態高亮
-  useEffect(() => {
+  React.useEffect(() => {
     if (current === 'en') return;
 
     const langSegment = current === 'zh-tw' ? 'zh-tw' : 'bilingual';
@@ -79,8 +94,8 @@ export const LanguageSelector = ({ current, path }) => {
         const href = link.getAttribute('href') || '';
         
         // 如果是 en-us 連結，改寫為當前語言的連結
-        if (href.startsWith('/developers/en-us/')) {
-          const newHref = href.replace('/developers/en-us/', `/developers/${langSegment}/`);
+        if (href.includes('/en-us/')) {
+          const newHref = href.replace('/en-us/', `/${langSegment}/`);
           link.setAttribute('href', newHref);
 
           if (!registeredHandlers.has(link)) {

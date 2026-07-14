@@ -16,11 +16,11 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 我們建議透過 Discord 代理伺服器進行開發和測試，以確保所有 URL 行為在生產環境中如預期運作。您可以使用網路隧道工具（例如 [cloudflared](https://github.com/cloudflare/cloudflared#installing-cloudflared)）來達到此目的：
 
-1. 在 Discord 開發者入口網站建立新應用程式
-2. 為您的 App 啟用互動活動
-3. 設定應用程式的 [URL 映射](/developers/activities/development-guides/local-development#url-mapping)
-4. 在本機啟動您的網頁伺服器
-5. 安裝並執行隧道工具，指向本機伺服器
+1. 在 Discord 開發者入口網站建立新應用程式。
+2. 為您的 App 啟用互動活動。
+3. 設定應用程式的 [URL 映射](/developers/zh-tw/activities/development-guides/local-development#url-mapping)。
+4. 在本機啟動您的網頁伺服器。
+5. 安裝並執行隧道工具，指向本機伺服器。
 
 <Info>
 您的網頁伺服器可以使用 HTTP，由網路隧道工具升級為 HTTPS。
@@ -47,23 +47,36 @@ https://funky-jogging-bunny.trycloudflare.com
 若您使用不屬於自己的 URL（例如 ngrok 免費方案），他人可能宣告該網域並架設惡意網站。請務必在使用完隧道後重置您的 URL 映射。
 </Warning>
 
+### 在生產環境執行您的應用程式 (Running Your Application In Production)
+
+設定生產環境應用程式的流程非常相似：
+
+1. 如果尚未建立，請建立一個新應用程式。
+2. 為您的 App 啟用互動活動。
+3. 設定應用程式的 [URL 映射](/developers/zh-tw/activities/development-guides/local-development#url-mapping)。您應用程式 html 的 URL 應設定為 `/` 路由。
+4. 遵循 [從 Discord 用戶端啟動您的應用程式](/developers/zh-tw/activities/development-guides/local-development#launch-your-application-from-the-discord-client) 的指示。不應啟用 Application URL Override。
+
+此應用程式現在使用的是與其完全發布後相同的配置 ✨。
+
+![application-test-mode-prod](/images/activities/application-test-mode-prod.gif)
+
 ---
 
 ### 從 Discord 用戶端啟動您的應用程式 (Launch from Discord Client)
 
-所有由您或您所在的團隊擁有的互動活動，都可透過開發者互動活動書架看到並啟動。
+所有由您或您所在的團隊擁有的互動活動，都可透過開發者互動活動書架看到並啟動。但請注意，除非您已在開發者入口網站的 [Settings/Supported Platforms](https://discord.com/developers/applications/select/embedded/settings) 中勾選了您的平台，否則該活動將不會顯示在該平台（網頁版/iOS/Android）上。
 
 #### 網頁版/桌面版
 
 1. 前往 ⚙️ 使用者設定 > App 設定 > 進階，開啟 `開發者模式 (Developer Mode)`
-2. 關閉設定視窗並進入語音頻道
-3. 在 RTC 面板或中央控制列中，點擊「火箭按鈕」開啟互動活動書架
+2. 關閉設定視窗並進入語音頻道。
+3. 在 RTC 面板或中央控制列中，點擊「火箭按鈕」開啟互動活動書架。您現在應該可以看到與開發者入口網站中相同有權限存取的應用程式。注意：書架中只會包含被標記為 "Embedded" 的應用程式。
 4. 點擊互動活動以啟動！
 
 #### 行動版
 
 1. 從您的使用者資料，選擇外觀 (Appearance)，然後開啟 `開發者模式`
-2. 進入語音頻道
+2. 進入語音頻道。
 3. 點擊互動活動以啟動！
 
 ---
@@ -72,39 +85,83 @@ https://funky-jogging-bunny.trycloudflare.com
 
 Discord 中的互動活動透過代理伺服器進行「沙盒化 (sandboxed)」，用以隱藏使用者和應用程式的 IP 位址，並封鎖已知的惡意端點。您可以設定代理伺服器，允許對外部端點的網路請求。
 
+由於您的應用程式已被「沙盒化」，因此無法直接對外部 URL 發送請求。假設您想要請求 `https://some-api.com`，要在您的應用程式內部訪問此 URL，您需要建立一個新的 URL 映射，將 `PREFIX` 設為 `/api`，`TARGET` 設為 `some-api.com`。此後對 `/api` 的請求都會透過 Discord 代理伺服器轉發至 `some-api.com`。
+
 #### 如何設定 URL 映射
 
 前往 [Activities -> URL Mappings](https://discord.com/developers/applications/select/embedded/url-mappings)，設定每個映射的前綴 (PREFIX) 和目標 (TARGET) 值。
 
-例如，若您想存取 `https://some-api.com`，可將 `PREFIX` 設為 `/api`，`TARGET` 設為 `some-api.com`。之後應用程式對 `/api` 的請求都會透過 Discord 代理轉發至 `some-api.com`。
+![Configuring your URL Mapping](/images/activities/url-mapping-tutorial.png)
 
 #### 前綴/目標格式規則
 
-- 目標不應包含協定（不要填 `https://your-url.com`，應填 `your-url.com`）
-- 可使用參數匹配處理多個子網域，例如：
+- URL 映射可以使用任何協議（https、wss、ftp 等），因此 URL 目標中不應包含協議。例如不要填 `https://your-url.com`，應填 `your-url.com`。
+- 可以使用參數匹配處理多個子網域，例如：
   | PREFIX                | TARGET                   |
   |-----------------------|--------------------------|
   | `/google/{subdomain}` | `{subdomain}.google.com` |
-- 目標必須指向目錄，不支援指向特定檔案（例如 `example.com/index.html`）
+- 目標必須指向目錄，不支援指向特定檔案（例如 `example.com/index.html`），否則可能導致非預期行為。
+- 由於 URL 萬用字元（globbing）的運作方式，如果您有多個具有相同初始路徑的前綴 URL，您必須將最長的前綴路徑放在最前面，最短的放在最後面，以確保每個 URL 映射都能被正確訪問。例如，如果您同時有 `/foo` 和 `/foo/bar`，您必須將 `/foo/bar` 的映射排在 `/foo` 之前，否則 `/foo/bar` 的映射將永遠不會被觸發。
+
+| ✅ 建議做法 | ❌ 錯誤做法 |
+| :--- | :--- |
+| 請求被正確映射 | 前往 `/foo/bar` 的請求會被錯誤地發送到 `foo.com` |
+| ![url-mapping-do.png](/images/activities/url-mapping-do.png) | ![url-mapping-dont.png](/images/activities/url-mapping-dont.png) |
+
+#### 例外狀況 (Exceptions)
+
+上述的「沙盒化」是由 [內容安全政策 (Content Security Policy, CSP)](https://developer.mozilla.org/zh-TW/docs/Web/HTTP/CSP) 強制執行的。我們對 CSP 設定了一些顯著的例外，這意味著應用程式用戶端可以直接向這些 URL 發送請求而無需經過代理伺服器，因此不需要建立映射。這些例外包括：
+
+- `https://discord.com/api/`
+- `https://canary.discord.com/api/`
+- `https://ptb.discord.com/api/`
+- `https://cdn.discordapp.com/attachments/`
+- `https://cdn.discordapp.com/avatars/`
+- `https://cdn.discordapp.com/icons/`
+- `https://media.discordapp.net/attachments/`
+- `https://media.discordapp.net/avatars/`
+- `https://media.discordapp.net/icons/`
 
 ---
 
-### 日誌記錄 (Logging)
+## 日誌記錄 (Logging)
 
 SDK 預設會將您的 App 觸發的所有 `log`、`warn`、`error`、`info` 和 `debug` 事件轉發至 Discord 應用程式。
 
 #### 在桌面版檢視日誌
 
-桌面版日誌可透過瀏覽器開發者工具的 Console 分頁查看。Discord 的 PTB 用戶端也可從 `View -> Developer -> Toggle Developer Tools` 選單查看。
+桌面版日誌可透過瀏覽器開發者工具的 Console 分頁查看。請參閱 [Troubleshooting Console Log Errors](https://support.discord.com/hc/en-us/articles/115001239472-Troubleshooting-Console-Log-Errors) 支援文章獲取更多資訊。
+
+Discord 的 PTB 用戶端也可從 `View -> Developer -> Toggle Developer Tools` 選單查看，其可於 [https://discord.com/downloads](https://discord.com/downloads) 下載。
 
 #### 在行動版檢視日誌
 
 行動版日誌可透過使用者設定中的 `除錯日誌 (Debug Logs)` 選項查看（需開啟開發者模式）：
 
-1. 點擊您的頭像再點擊齒輪圖示以開啟使用者設定
-2. 點擊外觀 (Appearance)
-3. 開啟開發者模式
-4. `DEV ONLY` 區塊下會出現 `Debug Logs` 選項
+1. 點擊您的頭像再點擊齒輪圖示以開啟使用者設定。
+2. 點擊外觀 (Appearance)。
+3. 開啟開發者模式。
+4. `DEV ONLY` 區塊下會出現 `Debug Logs` 選項。
+
+#### 篩選應用程式日誌 (Filtering for Application Logs)
+
+在「除錯日誌 (Debug Logs)」檢視中，您可以使用以下關鍵字搜尋您自己應用程式的日誌：
+
+- `RpcApplicationLogger`
+- 您的應用程式 ID
+
+每行日誌的格式為：`[RpcApplicationLogger] <application-id> - message`
+
+「除錯日誌」的最上方區段不是您的應用程式日誌，而是 Discord 特定的應用程式啟動資訊，這與您的應用程式無關。當您向下滾動頁面時，即可看見您應用程式的日誌。
+
+![debug-logs-filtering](/images/activities/debug-logs-filtering.gif)
+
+#### 從行動版分享應用程式日誌 (Sharing Application Logs from Mobile)
+
+開啟「開發者模式」後，您可以直接從語音頻道中分享您的應用程式日誌。
+
+1. 在語音頻道中，從底部向上滑動以展開語音控制選項，點擊 **分享應用程式日誌 (Share Application Logs)**。
+2. 您將會看到系統原生的分享選單，可將日誌儲存為檔案或以訊息分享。
 
 #### 停用日誌記錄 (Disabling Logging)
 

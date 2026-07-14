@@ -5,10 +5,9 @@ description: Best practices and design principles for creating engaging Discord 
 ---
 
 import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import {ManualAnchor} from '/snippets/manualanchor.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/design-patterns" />
-
-import {ManualAnchor} from '/snippets/manualanchor.jsx'
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
   <div>
@@ -23,6 +22,15 @@ Before building your Activity, here are some guiding principles for you to consi
 - Give users a way to interact with one another.
 - User actions should impact the experiences of other participants.
 
+### Expression over Monotony
+- Our users want to create memorable moments.
+- Create experiences where users craft moments and react in ways they want to share with others.
+
+### Accessibility over Exclusion
+- Inclusivity is key. 
+- Reduce the bar to entry for your Activity and reward people for engaging deeply with your experience.
+
+<br />
   </div>
   <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -36,6 +44,15 @@ Before building your Activity, here are some guiding principles for you to consi
 - 給予使用者相互互動的方法。
 - 使用者的動作應該會影響其他參與者的體驗。
 
+### 著重表達而非單調
+- 我們的使用者希望能創造難忘的時刻。
+- 建立能讓使用者發揮創意、表達自我並以他們想要的方式與他人分享的體驗。
+
+### 著重易用性 (Accessibility) 而非排他性
+- 包容性是關鍵。
+- 降低互動活動的入門門檻，並獎勵使用者深入參與您的體驗。
+
+<br />
   </div>
 </div>
 
@@ -51,10 +68,17 @@ Successful experiences will be built to accommodate small group sessions ("Plus"
 
 ### Solo or single-player
 - While most people use Discord with small groups of friends. Consider experiences that are compelling alone, but better together!
+- If you don't support solo play, expect to see a lot of users peeking into the Activity on their own. Consider what you can do to preview the Activity and compel them to come back with their friends.
 
 ### Solo-Plus or small groups of users
 - Small group sessions (3-8 people) show more engagement and retention from users than single-player experiences.
+- Letting players join with their friends keeps them coming back for more.
 
+### Large groups of users
+- While you can set a "max participants" suggestion to users, the only real limit is the number of people who can join a Voice call.
+- Be aware of how your Activity will behave when there are 25 or more people in the call.
+
+<br />
   </div>
   <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -65,9 +89,493 @@ Successful experiences will be built to accommodate small group sessions ("Plus"
 
 ### 單人或單人遊戲
 - 雖然大多數人在 Discord 上會與一小群好友一起玩，但請考量那些單人玩也很有吸引力、多人玩更有趣的體驗！
+- 如果您不支援單人遊玩，預計會有許多使用者自己點進來查看您的互動活動。請考量如何提供預覽，並吸引他們帶好友一起回來。
 
 ### 小群組階段 (Solo-Plus)
 - 與單人體驗相比，小群組階段（3-8 人）的使用者參與度與留存率更高。
+- 讓玩家能與好友一起加入，可以吸引他們持續回來遊玩。
 
+### 大群組階段
+- 雖然您可以對使用者設定「最大參與人數」建議，但唯一的實際限制是能加入語音通話的人數。
+- 請注意當通話中有 25 人或更多人時，您的互動活動會有何表現。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## User Presence & Privacy
+
+When in an Activity with others, make the actions and presence of the others visible to each player. 
+
+### Make actions and presence of the others visible to each player
+- Users enjoy participating in a space that feels active.
+- If a user has customized their server nickname or avatar, use their server nickname or avatar in game.
+- Show when a user is speaking in the voice call, or whether they're active or inactive.
+
+![Speech bubbles in Bobble League](/images/activities/bobble-bash.png)
+
+### Respect user privacy
+- For Activity sessions that match users from various servers, usernames and avatars should be anonymized by default.
+- Discord personal identifiers should only be populated into the Activity with user confirmation.
+- Only use these identifiers when the people who can see them already have access via the server or DM.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 使用者狀態與隱私
+
+與他人一起進行互動活動時，讓每位玩家都能看到其他人的動作與狀態。
+
+### 讓每位玩家看到其他人的動作與狀態
+- 使用者喜歡參與在感覺活躍的空間中。
+- 如果使用者自訂了他們的伺服器暱稱或頭像，請在遊戲中使用該伺服器暱稱或頭像。
+- 顯示使用者何時在語音通話中發言，或他們是處於活躍還是閒置狀態。
+
+![Bobble League 中的對話氣泡](/images/activities/bobble-bash.png)
+
+### 尊重使用者隱私
+- 對於匹配來自不同伺服器之使用者的互動活動階段，使用者名稱與頭像預設應進行匿名化處理。
+- Discord 的個人識別資訊僅應在使用者確認後才載入至互動活動中。
+- 僅在能看見這些識別資訊的人已經透過伺服器或私訊 (DM) 擁有存取權時，才使用這些識別資訊。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Deliver a Quality Experience
+
+Make your app fast, easy to join, and maximize fun to launch a crowd favorite.
+
+### Surprise and delight users
+- Surprise and delight is about caring about the small details of how a person experiences your work.
+- Put the right emotion in when they least expect it to deliver the magic.
+
+![Bobble League](/images/activities/bobble-league.png)
+
+### Keep load times as low as possible
+- This allows for easier drop-in drop-out behavior for the large portion of mobile users on Discord.
+- See the below Quality & Testing Recommendations for key areas of minimum quality support and testing recommendations.
+- See the below Technical Considerations for recommendations on how to partition loading and work with various development tools to reduce load times.
+- Consider different screen sizes and orientations across desktop and mobile devices and make sure UI elements scale appropriately.
+
+### Support drop-in, drop-out behavior
+- Activities are frictionless to join and easy to discover, so you can expect that users will join mid-experience. Give those users something to do, even if it's just letting them spectate until they can join without being disruptive. In the same vein, users can leave without notice or become afk (away from keyboard). Handle these cases gracefully.
+- Create a case for users who have joined a call but have not yet started playing or engaging. Allow these users to "spectate" other users who are playing. This can also be helpful for Activities that have an ideal number in mind for play.
+
+![Support drop-in, drop-out behavior in your Activity](/images/activities/eights.png)
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 交付高品質的體驗
+
+讓您的應用程式快速、易於加入，並最大化趣味性，以推出深受大眾喜愛的產品。
+
+### 帶給使用者驚喜與愉悅
+- 驚喜與愉悅是指關心使用者體驗您作品的微小細節。
+- 在他們最意想不到的時候加入適當的情感，以傳遞魔法。
+
+![Bobble League](/images/activities/bobble-league.png)
+
+### 盡可能降低載入時間
+- 這可以讓 Discord 上龐大的行動端使用者更輕鬆地隨時加入或退出。
+- 請參閱下方的 品質與測試建議 以瞭解最低品質支援與測試建議。
+- 請參閱下方的 技術考量 以瞭解如何劃分載入工作以及使用各種開發工具來縮短載入時間的建議。
+- 考量桌上型電腦與行動裝置上不同的螢幕大小與方向，並確保 UI 元素適當地縮放。
+
+### 支援隨時加入與隨時退出
+- 互動活動的加入是無摩擦且容易發現的，因此您可以預期使用者會在體驗中途加入。給予這些使用者一些事情做，即使只是讓他們旁觀，直到他們能無障礙加入。同樣地，使用者可能會在未通知的情況下離開或閒置 (AFK)。請優雅地處理這些情況。
+- 為已加入通話但尚未開始遊玩的使用者提供「旁觀 (Spectate)」功能。這對於有理想遊玩人數限制的互動活動也很有幫助。
+
+![在您的互動活動中支援隨時加入與隨時退出](/images/activities/eights.png)
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Make your app as available as possible
+
+#### Cross-Platform Support
+- Supporting desktop and mobile devices will expand your user-base to the widest number of users.
+- Discord device usage is split between mobile and desktop platforms.
+
+#### Discord is a Global Audience
+- Consider supporting a multitude of languages and cultures to make your app more usable for all Discord users.
+
+#### Implement Invites
+- The Embedded App SDK allows for sending invites from within an Activity out to other friended users.
+- Add invite buttons to a screen or flow with intentionality, not only on the start screen and at the beginning. Examples of intentional Invite prompting include:
+  - Cases where players leave the activity session
+  - Cases where the minimum number of participants has not been reached (e.g. any activity that needs 2+ to start, or is more fun with more people, or when you need an opponent in a game like Chess.)
+
+#### Implement Sharing
+- The Embedded App SDK allows for sending an image or gif from within an Activity.
+  - Share photos or GIFs that capture moments of fun and memorable, or something to brag about. Don't make things shareable just to feature the activity.
+  - Sharing a high score alone may not be very engaging, but sharing a really good move made in a game, or a collaborative drawing that creates a memory is a conversation starter and may make others want to join in on the fun.
+
+![Shared Moment from Chess in the Park](/images/activities/chess-victory.png)
+
+#### Activities in Text Channels
+- The Activity user interface, copy and user flows should not rely on people in voice to explain, organize, clarify, or instruct about how the activity works. 
+- All controls, CTAs, and instructions should be clear enough that folks (especially first time users) playing in a text channel are able to quickly start using the app without needing to talk on voice to learn about it.
+- Lean on dynamic first-time user experience and "How To Play" instructions, toast messages, Call To Action buttons, etc. but be careful to not over-clutter with copy.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 讓您的應用程式盡可能可用
+
+#### 跨平台支援
+- 支援桌面與行動裝置將能把您的使用者群擴展到最大。
+- Discord 的裝置使用率在行動與桌面平台之間基本持平。
+
+#### Discord 擁有全球受眾
+- 考慮支援多種語言與文化，使您的應用程式更適合所有 Discord 使用者。
+
+#### 實作邀請功能
+- 專用嵌入式 App SDK 允許從互動活動內部向其他好友發送邀請。
+- 有意圖地將邀請按鈕加入到畫面或流程中，而不僅僅是在啟動畫面和開始時。有意圖地提示邀請的範例包括：
+  - 玩家離開互動活動階段時
+  - 未達到最低參與者人數時（例如任何需要 2 人以上才能開始、或者多人玩更有趣的活動，又或者像西洋棋這類需要對手的遊戲。）
+
+#### 實作分享功能
+- 專用嵌入式 App SDK 允許在互動活動中發送圖片或 GIF。
+  - 分享能記錄趣味與難忘時刻的相片或 GIF，或一些值得炫耀的東西。不要為了宣傳活動與產品而強行讓事物變得可分享。
+  - 單純分享高分可能不太吸引人，但分享遊戲中非常精妙的一步，或是一幅共同繪製、創造回憶的畫作，都是很好的話題開端，並可能吸引他人加入。
+
+![來自 Chess in the Park 的分享時刻](/images/activities/chess-victory.png)
+
+#### 文字頻道中的互動活動
+- 互動活動的使用者介面、文案與使用者流程不應依賴語音中的人來解釋、組織、澄清或說明活動如何運作。
+- 所有控制項、CTA 和說明都應足夠清晰，以便在文字頻道中遊玩的夥伴（特別是首次使用者）能夠快速開始使用該應用程式，而無需透過語音交談來學習它。
+- 依靠動態的首次使用者體驗和「如何遊玩」說明、彈出訊息、CTA 按鈕等，但注意不要讓文案過於雜亂。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Monetization Considerations
+
+<Check>
+Monetization in Activities will be available soon. Keep the following considerations in mind as you design your Activity.
+</Check>
+
+- Avoid prohibitive gates in front of participation (e.g. login wall / paywall), especially early in the user journey.
+- Avoid monetized unlocks that give unfair advantage to other non-paying players or users (i.e. "pay to win").
+- Take advantage of Discord as a social platform: look for opportunities to offer users customizable skins, aesthetic themes, new avatars, etc.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 營利考量
+
+<Check>
+互動活動中的營利功能即將推出。在設計互動活動時，請記住以下考量。
+</Check>
+
+- 避免在參與前設置令人望而卻步的門檻（如強制登入/付費牆），尤其是在使用者體驗的早期階段。
+- 避免使用會對其他非付費玩家產生不公平優勢的付費解鎖（即「付費獲勝, Pay-to-Win」）。
+- 利用 Discord 作為社交平台的優勢：尋找機會為使用者提供自訂外觀、美化主題、新頭像等。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Game Design Considerations
+
+### Build games that are easy to learn, hard to master
+- Players can often feel pressure when joining a multiplayer game (voice/video) in the moment if they’ve never played before.
+- Games that have a simple quick reference control scheme that are easily approachable help ease players into an experience without dropping them into the deep end.
+- An easy to understand game loop combined with easy to digest controls tends to work best. If you have to go through a tutorial to understand the game then it will be intimidating to join a game in the moment.
+
+### Discord users who engage with voice are among our most engaged users
+- Activity engagement and retention increases when users are in a voice call with friends.
+
+### Consider existing game expectations and tropes
+- If you're developing a game, you're more likely to attract users who are gamers.
+- Take advantage of existing tropes and expectations for games of the genre you're developing.
+- Appeal to the player interests that your game (or game genre) provides, and support those interests as a means to get them coming back.
+
+### Activities close when the last participant in the Activity leaves it
+- The next time the Activity is launched, even if it’s in the same DM or Voice Channel, it will be a different instance and could have different participants.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 遊戲設計考量
+
+### 建置易學難精的遊戲
+- 如果玩家以前從未玩過，當他們當下加入多人遊戲（語音/視訊）時，往往會感到壓力。
+- 具有簡單快速參考控制方案且易於上手的遊戲，能幫助玩家融入體驗，而不會將他們丟進深水區。
+- 易於理解的遊戲循環結合易於消化的控制通常效果最佳。如果必須透過教學才能理解遊戲，那麼在當下加入遊戲會令人望而生畏。
+
+### 參與語音的 Discord 使用者是我們最活躍的使用者
+- 當使用者與好友一起在語音通話中時，互動活動的參與度與留存率會增加。
+
+### 考量現記的遊戲預期與套路
+- 如果您正在開發一款遊戲，您更有可能吸引身為玩家的使用者。
+- 利用您正在開發的類型遊戲的現有套路與預期。
+- 迎合您的遊戲（或遊戲類型）所提供的玩家興趣，並支持這些興趣作為吸引他們回歸的手段。
+
+### 當互動活動的最後一個參與者離開時，活動將會關閉
+- 下次啟動互動活動時，即使是在相同的私訊或語音頻道中，它也會是一個不同的實例，並且可能會有不同的參與者。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+<ManualAnchor id="if-a-game-is-launched-what-percentage-of-the-time-do-users-reach-different-phases-of-the-game" />
+### If a game is launched, what percentage of the time do users reach different phases of the game?
+- This includes launch -> start, as there can be a large dropoff between these two (especially if you don’t support solo play or small group sizes).
+- This also includes various check points in the game, including what percentage of sessions that start a game reach the end of that game!
+- If your Activity has different settings you can start a game with, see if some are more popular or more successful — you may want to change your defaults!
+  - For non-games, you may want to analyze a certain action instead (such as queueing a video / song for a co-watching / co-listening Activity).
+- If drop-off is really high at a certain point, see if you can figure out why or change flows.
+
+<ManualAnchor id="how-many-games-are-played-in-a-session" />
+### How many games are played in a session?
+- More games per session isn’t inherently better (you may have an Activity that is meant to be one long game), but is a good baseline to understand.
+- If you expect to see a lot of repeat plays per session and don’t, it can be worth digging in to understand more.
+
+<ManualAnchor id="how-does-the-group-size-impact-various-key-metrics" />
+### How does the group size impact various key metrics?
+- For example, are larger sessions more or less likely to reach the end of a game? To replay? Etc.
+- This can help you catch if your Activity has unexpected weak points in different group sizes — maybe the game drags on if there are too many people or isn’t compelling enough if there’s only two.
+- Not every Activity needs to be built for robust group sizes, but if you have the option to play with X # of players, it’s good practice to make sure that experience is enjoyable for all involved!
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+<ManualAnchor id="if-a-game-is-launched-what-percentage-of-the-time-do-users-reach-different-phases-of-the-game" />
+### 如果遊戲啟動了，使用者有多少比例的時間能到達不同的遊戲階段？
+- 這包括「啟動 -> 開始」，因為這兩者之間可能會有很大的流失（特別是如果您不支援單人遊玩或小組人數限制）。
+- 這也包括遊戲中的各個檢查點，包含開始遊戲的階段中有多少比例能到達遊戲終點！
+- 如果您的互動活動可以以不同的設定開始遊戲，請查看哪些設定更受歡迎或更成功——您可能需要變更您的預設值！
+  - 對於非遊戲類，您可能需要分析某個動作（例如在共同觀看/共同聆聽活動中排隊播放影片/歌曲）。
+- 如果在某個點的流失率非常高，請看看能否找出原因或變更流程。
+
+<ManualAnchor id="how-many-games-are-played-in-a-session" />
+### 在同一次活動階段中玩了多少局遊戲？
+- 每次活動階段玩更多局遊戲並不一定更好（您可能有一個旨在成為一局長遊戲的互動活動），但這是一個很好的基線來理解。
+- 如果您預期在每次活動階段會看到很多重複遊玩，但實際卻沒有，那麼這值得深入探究以瞭解更多。
+
+<ManualAnchor id="how-does-the-group-size-impact-various-key-metrics" />
+### 小組人數如何影響各項關鍵指標？
+- 例如人數較多時是否更有可能或更不可能到達遊戲終點？重新遊玩？等等。
+- 這可以幫助您發現您的互動活動是否在不同的組別大小中存在非預期的弱點——也許如果人數太多遊戲就會拖得很長，或者如果只有兩個人就不夠吸引人。
+- 並非每個互動活動都需要針對龐大的組別大小進行建置，但如果您提供了與 X 人一起玩的選項，那麼確保該體驗對所有參與者來說都是愉快的就是很好的做法！
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Co-Watching / Co-Listening
+
+- Co-watching and co-listening should be more than just screen-sharing. Consider creative ways to make each user's experience impacted by other participants.
+- Consider providing host-controls so that playback isn't overly chaotic. If host controls are provided, make sure everyone can participate in some way, even if it's just recommending content to the host.
+- If content is not available for everyone in the activity (for example, geo-restricted content), make sure that information is known when the content is queued and when it's playing. The host is generally interested in creating a good experience for their friends. Playback of content should be in sync with others in a local channel or call.
+- Familiar design patterns can help to get people to participate in your Activity right away. Most Discord users are extremely familiar with media browsing (Spotify, YouTube, Netflix, etc.) and will immediately understand your content if you follow these patterns.
+- Mobile device volume can be controlled by a device's built-in controls (volume buttons on the side of the device) and work as expected across desktop, mobile, and browsers.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 共同觀看 / 共同聆聽 (Co-Watching / Co-Listening)
+
+- 共同觀看與共同聆聽應該不僅僅是螢幕分享。考量一些創意方式，讓每位使用者的體驗都能受到其他參與者的影響。
+- 考慮提供主持人控制項，以防止播放過於混亂。如果提供了主持人控制，請確保每個人都能以某種方式參與，即使只是向主持人推薦內容。
+- 如果某些內容並非對活動中的每個人都可用（例如地理區域限制內容），請確保在內容排入隊列與播放時讓大家知道。播放的內容應與語音通話中的其他人保持同步。
+- 熟悉的設計模式可以幫助人們立即參與到您的互動活動中。大多數 Discord 使用者對媒體瀏覽（Spotify、YouTube、Netflix 等）極為熟悉，如果您遵循這些模式，他們將能立即理解您的內容。
+- 行動裝置的音量可以透過裝置內建的控制項（裝置側邊的音量按鈕）進行控制，並且在桌面、行動裝置與瀏覽器上都能按預期運作。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Technical Considerations
+
+### Developing for the iframe
+- Remember that you need to contend with the Discord Client itself for resources (CPU, RAM and GPU) as that client is still fully running while executing your Activity.
+- Prioritize time-to-first-interaction.
+- Minimize the amount of Web Assembly (WASM) as much as possible in your Activity.
+  - Older iOS devices are especially affected by WebKit's optimization compilation pass of WASM that occurs during the first few minutes of usage of an Activity. To varying degrees, this will cause noticeable stutters, device thermal issues, and possibly degraded Discord's AV quality during those early minutes.
+- All network traffic is routed through the Discord Proxy for various security reasons.
+- Create multiple versions of your Activity in the Developer Portal for less and more stable development versioning (e.g. Development, Staging, Production). This allows you to show and test the last stable build while also having development and staging environments.
+
+### Developing in Unity
+Developing for the iframe in Unity is possible, but will likely require extensive min/maxing of all facets of your game to meet performance and quality standards. Other, web-first, game engines are generally more performant out of the box.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 技術考量 (Technical Considerations)
+
+### 針對 iframe 進行開發
+- 請記住，您需要與 Discord 用戶端本身爭奪資源（CPU、記憶體與 GPU），因為在執行您的互動活動時，該用戶端仍在完整運行。
+- 優先考量首次互動時間 (Time-to-First-Interaction)。
+- 盡可能減少您互動活動中的 Web Assembly (WASM)。
+  - 較舊的 iOS 裝置特別容易受到 WebKit 在互動活動使用的前幾分鐘內對 WASM 進行優化編譯的影響。這會在不同程度上導致明顯的卡頓、裝置發熱，並可能降低 Discord 的音訊與視訊品質。
+- 基於安全原因，所有網路流量皆會透過 Discord 代理進行路由。
+- 在開發者入口網站中為您的互動活動建立多個版本（例如開發、預備、生產環境）。這允許您展示並測試最後一個穩定版本，同時擁有開發與預備環境。
+
+### 在 Unity 中開發
+雖然在 Unity 中針對 iframe 進行開發是可行的，但可能需要對您遊戲的各個層面進行廣泛的微調，以滿足效能與品質標準。其他網頁原生 (Web-First) 的遊戲引擎通常開箱即用就具有更好的效能。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Quality and Testing
+
+### Verify User Interface and User Experience
+- Ensure all buttons and UI elements function correctly without any blocking issues for standard Activity use or gameplay. 
+- Test Discord usernames handling, ensuring they display appropriately based on the chosen format (Discord username or server identity).
+
+### Test for Performance
+- Evaluate performance to ensure it is satisfactory for the majority of users across phones, tablets, and desktop machines and across multiple operating systems. 
+- Lag or slowness should not significantly impact the Activity or gameplay experience.
+
+### Test for Audio
+- Check that sound effects and background music work as intended, with volume settings functioning correctly.
+- Being able to hear when playing on a voice call is important.
+
+### Validate Activity Controls
+- Confirm that all game controls, including clicks, drag, key controls, swiping, and hovers, work as expected and are suitable for the platform.
+- Test in-app tutorials and instructions for accuracy and relevance to the current activity functionality and user platform (desktop or mobile).
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 品質與測試 (Quality and Testing)
+
+### 驗證使用者介面與使用者體驗
+- 確保所有按鈕與 UI 元素皆正常運作，且在標準互動活動使用或遊戲過程中沒有任何阻礙性問題。
+- 測試 Discord 使用者名稱的處理，確保它們能根據所選格式（Discord 用戶名稱或伺服器身分）正確顯示。
+
+### 效能測試
+- 評估效能，以確保其能滿足跨手機、平板電腦與電腦，以及多種作業系統的絕大多數使用者的需求。卡頓或緩慢不應顯著影響互動活動或遊戲體驗。
+
+### 音訊測試
+- 檢查音效與背景音樂是否能按預期運作，且音量設定功能正常。在語音通話中遊玩時，能聽見聲音非常重要。
+
+### 驗證互動活動控制項
+- 確認所有遊戲控制項（包含點擊、拖曳、按鍵控制、滑動與懸浮）皆按預期運作且適合該平台。
+- 測試應用程式內教學與說明的準確性，以及其與當前活動功能和使用者平台的相關性（桌面或行動裝置）。
+
+<br />
+  </div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Mobile Device UI Considerations
+- Watch out for potential issues on devices with top notches or cameras in specific corners that may hide or cut off UI elements and buttons, rendering them untappable.
+- Be mindful of Android curved screen edges that could obscure or make elements and buttons inaccessible.
+- Take into account iOS/Android swipe gestures that may interfere with UI elements or buttons located at the bottom of the screen.
+- Ensure that Android devices with a back button do not overlap with elements or buttons at the bottom of the screen, preventing users from tapping them.
+- Respect the safe area defined by the platform to prevent any buttons or content from being cut off or non-functional.
+
+### Desktop Accessibility Guidelines
+- Enable users to cycle through Discord buttons and fields on desktop by pressing TAB repeatedly, ensuring that the activity does not capture control.
+- Implement the functionality for the ESC key to close any open in-activity modals, providing a consistent user experience.
+- Opt for color-blind friendly colors with high contrast, especially for crucial game elements that need to be distinguishable based on color. 
+- Avoid using similar colors for objects that are essential for gameplay but differ only in color, as this may pose challenges for color-blind users.
+
+<br />
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 行動裝置 UI 考量
+- 留意安全區域，避免特定角落的瀏海或相機鏡頭遮擋或切斷 UI 元素與按鈕，導致無法點擊。
+- 注意 Android 的彎曲螢幕邊緣可能會使按鈕無法點選。
+- 考量 iOS/Android 的滑動手勢是否會與位於螢幕底部的 UI 元素或按鈕產生衝突。
+- 注意 Android 裝置的返回按鈕，確保其不與螢幕底部的元素或按鈕重疊，以防使用者無法點擊。
+- 尊重平台定義的安全區域 (Safe Area)，以防止任何按鈕或內容被切斷或失效。
+
+### 桌面版易用性指南 (Desktop Accessibility Guidelines)
+
+- 允許使用者在桌面版上透過重複按 TAB 鍵在 Discord 按鈕與欄位之間循環，確保互動活動不會搶走焦點控制權。
+- 實作 ESC 鍵的功能以關閉任何開啟中的活動內彈出視窗，提供一致的使用者體驗。
+- 選擇具有 high 對比度且對色盲友善的顏色，特別是對於需要根據顏色進行區分的關鍵遊戲元素。
+- 避免對遊戲中至關重要但僅有顏色差異的物件使用相似的顏色，這可能會對色盲使用者造成挑戰。
+
+<br />
   </div>
 </div>
