@@ -43,7 +43,7 @@
         {
           "anchor": "API & SDK Reference",
           "icon": "code",
-          "href": "/developers/reference"
+          "href": "/developers/en-us/reference"
         },
         {
           "anchor": "Developer Community",
@@ -115,12 +115,18 @@
             ]
           },
           {
-            "group": "Language Variants",
+            "group": "Welcome (zh-tw)",
             "hidden": true,
             "pages": [
               "developers/zh-tw/intro",
+              "developers/bilingual/intro"
+            ]
+          },
+          {
+            "group": "應用程式基礎 (App Fundamentals)",
+            "hidden": true,
+            "pages": [
               "developers/zh-tw/quick-start/overview-of-apps",
-              "developers/bilingual/intro",
               "developers/bilingual/quick-start/overview-of-apps"
             ]
           }
@@ -183,12 +189,18 @@
             ]
           },
           {
-            "group": "Language Variants",
+            "group": "Components (zh-tw)",
             "hidden": true,
             "pages": [
               "developers/zh-tw/components/using-message-components",
+              "developers/bilingual/components/using-message-components"
+            ]
+          },
+          {
+            "group": "Tutorials (zh-tw)",
+            "hidden": true,
+            "pages": [
               "developers/zh-tw/tutorials/using-community-invites",
-              "developers/bilingual/components/using-message-components",
               "developers/bilingual/tutorials/using-community-invites"
             ]
           }
@@ -302,12 +314,18 @@
             ]
           },
           {
-            "group": "Language Variants",
+            "group": "開始使用 (Getting Started)",
             "hidden": true,
             "pages": [
               "developers/zh-tw/discord-social-sdk/getting-started",
+              "developers/bilingual/discord-social-sdk/getting-started"
+            ]
+          },
+          {
+            "group": "Design Foundations (zh-tw)",
+            "hidden": true,
+            "pages": [
               "developers/zh-tw/discord-social-sdk/design-guidelines/principles",
-              "developers/bilingual/discord-social-sdk/getting-started",
               "developers/bilingual/discord-social-sdk/design-guidelines/principles"
             ]
           }
@@ -366,12 +384,21 @@
             ]
           },
           {
-            "group": "Language Variants",
+            "group": "互動活動概述 (Discord Activities)",
             "hidden": true,
             "pages": [
               "developers/zh-tw/activities/overview",
               "developers/zh-tw/activities/how-activities-work",
               "developers/zh-tw/activities/building-an-activity",
+              "developers/bilingual/activities/overview",
+              "developers/bilingual/activities/how-activities-work",
+              "developers/bilingual/activities/building-an-activity"
+            ]
+          },
+          {
+            "group": "開發指南 (Development Guides)",
+            "hidden": true,
+            "pages": [
               "developers/zh-tw/activities/development-guides",
               "developers/zh-tw/activities/development-guides/local-development",
               "developers/zh-tw/activities/development-guides/user-actions",
@@ -382,10 +409,6 @@
               "developers/zh-tw/activities/development-guides/growth-and-referrals",
               "developers/zh-tw/activities/development-guides/assets-and-metadata",
               "developers/zh-tw/activities/development-guides/production-readiness",
-              "developers/zh-tw/activities/design-patterns",
-              "developers/bilingual/activities/overview",
-              "developers/bilingual/activities/how-activities-work",
-              "developers/bilingual/activities/building-an-activity",
               "developers/bilingual/activities/development-guides",
               "developers/bilingual/activities/development-guides/local-development",
               "developers/bilingual/activities/development-guides/user-actions",
@@ -395,7 +418,14 @@
               "developers/bilingual/activities/development-guides/multiplayer-experience",
               "developers/bilingual/activities/development-guides/growth-and-referrals",
               "developers/bilingual/activities/development-guides/assets-and-metadata",
-              "developers/bilingual/activities/development-guides/production-readiness",
+              "developers/bilingual/activities/development-guides/production-readiness"
+            ]
+          },
+          {
+            "group": "最佳實踐 (Best Practices)",
+            "hidden": true,
+            "pages": [
+              "developers/zh-tw/activities/design-patterns",
               "developers/bilingual/activities/design-patterns"
             ]
           }
@@ -428,20 +458,32 @@
             ]
           },
           {
-            "group": "Language Variants",
+            "group": "在 Discord 上建置 (Building on Discord)",
             "hidden": true,
             "pages": [
               "developers/zh-tw/guides/bots",
               "developers/zh-tw/guides/activities",
               "developers/zh-tw/guides/social-sdk",
               "developers/zh-tw/guides/platform",
-              "developers/zh-tw/guides/communities",
-              "developers/zh-tw/guides/game-development",
               "developers/bilingual/guides/bots",
               "developers/bilingual/guides/activities",
               "developers/bilingual/guides/social-sdk",
-              "developers/bilingual/guides/platform",
-              "developers/bilingual/guides/communities",
+              "developers/bilingual/guides/platform"
+            ]
+          },
+          {
+            "group": "社群與伺服器 (Communities & Servers)",
+            "hidden": true,
+            "pages": [
+              "developers/zh-tw/guides/communities",
+              "developers/bilingual/guides/communities"
+            ]
+          },
+          {
+            "group": "建置遊戲 (Building Games)",
+            "hidden": true,
+            "pages": [
+              "developers/zh-tw/guides/game-development",
               "developers/bilingual/guides/game-development"
             ]
           }
