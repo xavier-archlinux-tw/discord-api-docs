@@ -1,0 +1,494 @@
+---
+title: 接收與回覆互動功能 (Receiving and Responding to Interactions)
+sidebarTitle: 接收與回覆 (Receiving and Responding)
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ManualAnchor } from '/snippets/manualanchor.jsx'
+import { Route } from '/snippets/route.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/interactions/receiving-and-responding" />
+
+一個 **[Interaction (互動)](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)** 是當使用者使用應用程式指令或訊息組件時，您的應用程式所接收到的訊息。
+
+對於 [斜線指令 (Slash Commands)](/developers/zh-tw/interactions/application-commands#slash-commands)，它包含使用者提交的數值。
+
+對於 [使用者指令 (User Commands)](/developers/zh-tw/interactions/application-commands#user-commands) 和 [訊息指令 (Message Commands)](/developers/zh-tw/interactions/application-commands#message-commands)，它包含執行該操作的目標使用者或訊息物件。
+
+對於 [訊息組件 (Message Components)](/developers/zh-tw/components/reference)，它包含所使用組件的識別資訊。它還會包含一些有關如何觸發互動的中繼資料：`guild_id`、`channel`、`member` 以及其他欄位。您可以在下方的資料模型中找到所有的值。
+
+### Interaction 物件 (Interaction Object)
+
+<ManualAnchor id="interaction-object-interaction-structure" />
+###### Interaction 結構 (Interaction Structure)
+
+| 欄位 | 類型 | 說明 |
+|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id                             | snowflake | 互動的 ID |
+| application_id                 | snowflake | 此互動所屬的應用程式 ID |
+| type                           | [interaction type](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-interaction-type) | 互動類型 |
+| data?\*                        | [interaction data](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-interaction-data) | 互動資料承載 (payload) |
+| guild?                         | [partial guild](/developers/zh-tw/resources/guild#guild-object) 物件 | 發送此互動的伺服器 |
+| guild_id?                      | snowflake | 發送此互動的伺服器 ID |
+| channel?                       | [partial channel](/developers/zh-tw/resources/channel#channel-object) 物件 | 發送此互動的頻道 |
+| channel_id?                    | snowflake | 發送此互動的頻道 ID |
+| member?\*\*                    | [guild member](/developers/zh-tw/resources/guild#guild-member-object) 物件 | 觸發使用者的伺服器成員資料，包括其權限設定 |
+| user?                          | [user](/developers/zh-tw/resources/user#user-object) 物件 | 觸發使用者的使用者物件（如果在私訊中觸發） |
+| token                          | string | 用於回覆此互動的延續權杖 (continuation token) |
+| version                        | integer | 唯讀屬性，一律為 `1` |
+| message?                       | [message](/developers/zh-tw/resources/message#message-object) 物件 | 對於由組件或組件觸發的互動視窗，此為其所附加的訊息物件 |
+| app_permissions\*\*\*          | string | 應用程式在觸發此互動的來源位置中所擁有的權限位元集 |
+| locale?\*\*\*\*                | string | 觸發此互動的使用者所選擇的[語言語系 (locale)](/developers/zh-tw/reference#locales) |
+| guild_locale?                  | string | 伺服器的[首選語言語系 (preferred locale)](/developers/zh-tw/resources/guild#guild-object)（如果在伺服器中觸發） |
+| entitlements                   | array of [entitlement](/developers/zh-tw/resources/entitlement#entitlement-object) 物件 | 對於[營利型應用程式](/developers/zh-tw/monetization/overview)，此為觸發使用者的任何權利資訊，代表對付費 [SKU](/developers/zh-tw/resources/sku) 的存取權限 |
+| authorizing_integration_owners | dictionary with keys of [application integration types](/developers/zh-tw/resources/application#application-object-application-integration-types) | 授權此互動的安裝上下文與相關使用者或伺服器 ID 的對應。詳情請參閱 [授權整合服務擁有者物件](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-authorizing-integration-owners-object) |
+| context?                       | [interaction context type](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-interaction-context-types) | 觸發此互動的上下文環境 |
+| attachment_size_limit          | integer | 附件大小限制（以位元組為單位） |
+
+\* 在應用程式指令、訊息組件與互動視窗提交的互動類型中，此欄位一律存在。它是選填的，以確保與未來新互動類型的相容性。
+
+\*\* 當在伺服器中觸發互動時會發送 `member`，而在私訊 (DM) 中觸發時會發送 `user`。
+
+\*\*\* `app_permissions` 包括與其他使用者的 (G)DM 中的 `ATTACH_FILES | EMBED_LINKS | MENTION_EVERYONE` 權限，且另外包括與應用程式 Bot 使用者的 DM 中的 `USE_EXTERNAL_EMOJIS` 權限。
+
+\*\*\*\* 這適用於除 PING 之外的所有互動類型。
+
+<ManualAnchor id="interaction-object-interaction-type" />
+###### Interaction 類型 (Interaction Type)
+
+| 名稱 (Name)                      | 數值 (Value) |
+|----------------------------------|-------|
+| PING                             | 1     |
+| APPLICATION_COMMAND              | 2     |
+| MESSAGE_COMPONENT                | 3     |
+| APPLICATION_COMMAND_AUTOCOMPLETE | 4     |
+| MODAL_SUBMIT                     | 5     |
+
+<ManualAnchor id="interaction-object-interaction-context-types" />
+###### Interaction 上下文類型 (Interaction Context Types)
+
+可以使用或觸發互動的 Discord 上下文環境。有關應用程式指令使用互動上下文的詳細資訊，請參閱 [指令上下文說明文件](/developers/zh-tw/interactions/application-commands#interaction-contexts)。
+
+| 名稱 (Name)      | 類型 (Type) | 說明 (Description)                                                             |
+|-----------------|------|--------------------------------------------------------------------------------|
+| GUILD           | 0    | 互動可以在伺服器中使用 |
+| BOT_DM          | 1    | 互動可以在與應用程式 Bot 使用者的私訊中使用 |
+| PRIVATE_CHANNEL | 2    | 互動可以在群組私訊以及與應用程式 Bot 使用者之外的私訊中使用 |
+
+<ManualAnchor id="interaction-object-authorizing-integration-owners-object" />
+###### 授權整合服務擁有者物件 (Authorizing Integration Owners Object)
+
+`authorizing_integration_owners` 欄位包含與互動相關之安裝授權使用者或伺服器的詳細資訊。對於安裝到使用者的應用程式，它可用於區分授權使用者與觸發互動的使用者（例如點擊訊息組件的使用者）。
+
+僅在以下條件成立時，Key 值才會存在：
+- 應用程式已被授權到與該 Key 值對應的[安裝上下文](/developers/zh-tw/resources/application#application-object-application-integration-types)（`GUILD_INSTALL` 或 `USER_INSTALL`）
+- 該安裝上下文支援該互動在來源的 [互動上下文](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-interaction-context-types)（`GUILD`、`BOT_DM` 或 `PRIVATE_CHANNEL`）中運作
+- 對於指令觸發，該指令必須在安裝上下文中受支援（使用 [`integration_types`](/developers/zh-tw/interactions/application-commands#contexts)）
+
+`authorizing_integration_owners` 中的值取決於 Key ——
+
+- 如果 Key 是 `GUILD_INSTALL` (`"0"`)，其值取決於互動的來源：
+    - 如果互動是在伺服器中觸發的，該值將是該伺服器的 ID
+    - 如果互動是在與應用程式 Bot 使用者的私訊中觸發的，該值將是 `"0"`
+- 如果 Key 是 `USER_INSTALL` (`"1"`)，該值將是授權使用者的 ID
+
+<ManualAnchor id="interaction-object-interaction-data" />
+###### Interaction 資料 (Interaction Data)
+
+雖然除了 `PING` 之外的所有 [互動類型](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-interaction-type) 都保證會存在 `data` 欄位，但其結構會有所不同。以下表格詳細說明了每種互動類型的內部 `data` 承載。
+
+| 互動類型 | 互動資料 |
+|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| PING (`1`)                             | 不適用 (N / A) |
+| APPLICATION_COMMAND (`2`)              | [應用程式指令資料結構](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-application-command-data-structure) |
+| MESSAGE_COMPONENT (`3`)                | [訊息組件資料結構](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-message-component-data-structure) |
+| APPLICATION_COMMAND_AUTOCOMPLETE (`4`) | [應用程式指令資料結構](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-application-command-data-structure) |
+| MODAL_SUBMIT (`5`)                     | [互動視窗提交資料結構](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-modal-submit-data-structure) |
+
+
+<ManualAnchor id="interaction-object-application-command-data-structure" />
+###### 應用程式指令資料結構 (Application Command Data Structure)
+
+<Info>
+在 `APPLICATION_COMMAND` 和 `APPLICATION_COMMAND_AUTOCOMPLETE` 互動中發送。
+</Info>
+
+| 欄位 | 類型 | 說明 |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id         | snowflake | 被啟動指令的 [`ID`](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-structure) |
+| name       | string | 被啟動指令的 [`name`](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-structure) |
+| type       | integer | 被啟動指令的 [`type`](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-structure) |
+| resolved?  | [resolved data](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-resolved-data-structure) | 已轉換的使用者 + 身分組 + 頻道 + 附件 |
+| options?\* | array of [application command interaction data option](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-application-command-interaction-data-option-structure) | 來自使用者的參數 + 數值 |
+| guild_id?  | snowflake | 指令註冊所屬的伺服器 ID |
+| target_id? | snowflake | [使用者指令](/developers/zh-tw/interactions/application-commands#user-commands)或[訊息指令](/developers/zh-tw/interactions/application-commands#message-commands)所針對的使用者或訊息 ID |
+
+\* 在回應 `APPLICATION_COMMAND_AUTOCOMPLETE` 時，此欄位[可以是部分完整的](/developers/zh-tw/interactions/application-commands#autocomplete)。
+
+<ManualAnchor id="interaction-object-message-component-data-structure" />
+###### 訊息組件資料結構 (Message Component Data Structure)
+
+| 欄位 | 類型 | 說明 |
+|----------------|---------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| custom_id      | string | 組件的 [`custom_id`](/developers/zh-tw/components/reference#anatomy-of-a-component-custom-id) |
+| component_type | integer | 組件的 [類型](/developers/zh-tw/components/reference#component-object-component-types) |
+| values?\*      | array of [select option values](/developers/zh-tw/components/reference#string-select-select-option-structure) | 使用者在[選擇選單](/developers/zh-tw/components/reference#string-select)組件中選擇的數值 |
+| resolved?      | [resolved data](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-resolved-data-structure) | 從選擇的選項中解析出的實體 |
+
+\* 此欄位在選擇選單組件中一律存在。
+
+<ManualAnchor id="interaction-object-modal-submit-data-structure" />
+###### 互動視窗提交資料結構 (Modal Submit Data Structure)
+
+| 欄位 | 類型 | 說明 |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| custom_id  | string | 為此互動視窗提供的自訂 ID |
+| components | array of [component interaction response](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-component-interaction-response-structures) | 使用者提交的數值 |
+| resolved?  | [resolved data](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-resolved-data-structure) | 從選擇的選項中解析出的實體 |
+
+<ManualAnchor id="interaction-object-component-interaction-response-structures" />
+###### 組件互動回應結構 (Component Interaction Response Structures)
+
+互動視窗和訊息組件互動的回應結構。
+
+| 組件 (Component) |
+|-----------------------------------------------------------------------------------------------------------------------------|
+| [文字選擇選單 (String Select)](/developers/zh-tw/components/reference#string-select-string-select-interaction-response-structure) |
+| [文字輸入框 (Text Input)](/developers/zh-tw/components/reference#text-input-text-input-interaction-response-structure) |
+| [使用者選擇選單 (User Select)](/developers/zh-tw/components/reference#user-select-user-select-interaction-response-structure) |
+| [身分組選擇選單 (Role Select)](/developers/zh-tw/components/reference#role-select-role-select-interaction-response-structure) |
+| [可提及者選擇選單 (Mentionable Select)](/developers/zh-tw/components/reference#mentionable-select-mentionable-select-interaction-response-structure) |
+| [頻道選擇選單 (Channel Select)](/developers/zh-tw/components/reference#channel-select-channel-select-interaction-response-structure) |
+| [文字顯示 (Text Display)](/developers/zh-tw/components/reference#text-display-text-display-interaction-response-structure) |
+| [標籤 (Label)](/developers/zh-tw/components/reference#label-label-interaction-response-structure) |
+| [檔案上傳 (File Upload)](/developers/zh-tw/components/reference#file-upload-file-upload-interaction-response-structure) |
+| [單選按鈕組 (Radio Group)](/developers/zh-tw/components/reference#radio-group-interaction-response-structure) |
+| [複選框組 (Checkbox Group)](/developers/zh-tw/components/reference#checkbox-group-interaction-response-structure) |
+| [複選框 (Checkbox)](/developers/zh-tw/components/reference#checkbox-interaction-response-structure) |
+
+<ManualAnchor id="interaction-object-resolved-data-structure" />
+###### 已解析資料結構 (Resolved Data Structure)
+
+<Info>
+如果包含成員 (Member) 的資料，也將會一併包含其對應的使用者 (User) 資料。
+</Info>
+
+| 欄位 | 類型 | 說明 |
+|---------------|------------------------------------------------------------------------------------------------|---------------------------------|
+| users?        | Map of Snowflakes to [user](/developers/zh-tw/resources/user#user-object) 物件 | ID 與使用者物件 |
+| members?\*    | Map of Snowflakes to [partial member](/developers/zh-tw/resources/guild#guild-member-object) 物件 | ID 與部分成員物件 |
+| roles?        | Map of Snowflakes to [role](/developers/zh-tw/topics/permissions#role-object) 物件 | ID 與身分組物件 |
+| channels?\*\* | Map of Snowflakes to [partial channel](/developers/zh-tw/resources/channel#channel-object) 物件 | ID 與部分頻道物件 |
+| messages?     | Map of Snowflakes to [partial messages](/developers/zh-tw/resources/message#message-object) 物件 | ID 與部分訊息物件 |
+| attachments?  | Map of Snowflakes to [attachment](/developers/zh-tw/resources/message#attachment-object) 物件 | ID 與附件物件 |
+
+\* 部分 `Member` 物件缺少 `user`、`deaf` 和 `mute` 欄位。
+
+\*\* 部分 `Channel` 物件僅具有 `id`、`name`、`type`、`permissions`、`last_message_id`、`last_pin_timestamp`、`nsfw`、`parent_id`、`guild_id`、`flags`、`rate_limit_per_user`、`topic` 和 `position` 欄位。貼文/執行緒還將包含 `thread_metadata` 欄位。
+
+<ManualAnchor id="interaction-object-application-command-interaction-data-option-structure" />
+###### 應用程式指令互動資料選項結構 (Application Command Interaction Data Option Structure)
+
+所有選項都有名稱，且一個選項可以是一個參數和輸入值（在此情況下會設定 `value`），或者它可以表示一個子指令或群組（在此情況下它將包含一個最上層 Key 以及另一個 `options` 陣列）。
+
+`value` 和 `options` 是互斥的。
+
+| 欄位 | 類型 | 說明 |
+|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| name     | string | 參數名稱 |
+| type     | integer | [應用程式指令選項類型](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-option-type) 的值 |
+| value?   | string, integer, double, 或 boolean | 使用者輸入所產生的選項值 |
+| options? | array of [application command interaction data option](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-application-command-interaction-data-option-structure) | 如果此選項是群組或子指令，則會存在 |
+| focused? | boolean | 如果此選項是目前自動完成中焦點鎖定的選項，則為 `true` |
+
+### Message Interaction 物件 (Message Interaction Object)
+
+當訊息是回應一個沒有現有訊息的 Interaction 時，此物件會隨 [訊息物件 (message object)](/developers/zh-tw/resources/message#message-object) 一併發送。
+
+<Info>
+這意味著對 [訊息組件 (Message Components)](/developers/zh-tw/components/reference) 的回應不包含此屬性，而是包含一個[訊息參考 (message reference)](/developers/zh-tw/resources/message#message-reference-structure) 物件，因為組件*一律*存在於預先存在的訊息中。
+</Info>
+
+<ManualAnchor id="message-interaction-object-message-interaction-structure" />
+###### Message Interaction 結構 (Message Interaction Structure)
+
+| 欄位 | 類型 | 說明 |
+|---------|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id      | snowflake | 互動的 ID |
+| type    | [interaction type](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-interaction-type) | 互動類型 |
+| name    | string | [應用程式指令](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-structure)的名稱，包括子指令和子指令群組 |
+| user    | [user object](/developers/zh-tw/resources/user#user-object) | 觸發該互動的使用者 |
+| member? | [partial member](/developers/zh-tw/resources/guild#guild-member-object) 物件 | 在伺服器中觸發該互動的成員 |
+
+## 接收 Interaction (Receiving an Interaction)
+
+當使用者與您的應用程式互動時，您的應用程式將會收到一個 **[Interaction](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)**。您的應用程式可以透過以下兩種方式之一來接收互動：
+
+-   透過 [Interaction Create](/developers/zh-tw/events/gateway-events#interaction-create) 閘道器事件
+-   透過連出 Webhook
+
+這兩種方法是**互斥的**；您*只能*透過其中一種方式接收互動。連接的用戶端可以處理 `INTERACTION_CREATE` [閘道器事件](/developers/zh-tw/events/gateway-events#interaction-create)，而下方詳述的 Webhook 方法則不需要連接的用戶端。
+
+如果您希望透過基於 HTTP 的連出 Webhooks 接收互動，您必須為您的應用程式配置互動端點網址。您可以在互動總覽的[為互動做準備](/developers/zh-tw/interactions/overview#preparing-for-interactions)區段中閱讀有關為您的應用程式準備和新增互動端點網址的資訊。
+
+### Interaction 中繼資料 (Interaction Metadata)
+
+一個 [Interaction](/developers/zh-tw/interactions/receiving-and-responding#interaction-object) 包含中繼資料以協助您的應用程式進行處理，以及特定於互動類型的 `data`。您可以在其各自的頁面上找到每種互動類型的範例：
+
+-   [斜線指令](/developers/zh-tw/interactions/application-commands#slash-commands-example-interaction)
+-   [使用者指令](/developers/zh-tw/interactions/application-commands#user-commands-example-interaction)
+-   [訊息指令](/developers/zh-tw/interactions/application-commands#message-commands-example-interaction)
+-   [訊息組件](/developers/zh-tw/components/using-message-components)
+-   [互動視窗組件](/developers/zh-tw/components/using-modal-components)
+
+所有欄位的說明都可以在我們的[資料模型](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)中找到。
+
+現在您已從使用者獲取了資料，是時候對他們做出回應了。
+
+## 回覆 Interaction (Responding to an Interaction)
+
+互動的接收與回覆在底層都是 Webhooks。因此，回覆 Interaction 就如同發送 Webhook 請求一樣！
+
+<Info>
+互動回應具有與一般 HTTP API 請求相同的標頭要求。詳情請參閱[此處](/developers/zh-tw/reference#http-api)。
+</Info>
+
+您有多種方式可以回覆互動：
+
+### Interaction 回應物件 (Interaction Response Object)
+
+<ManualAnchor id="interaction-response-object-interaction-response-structure" />
+###### Interaction 回應結構 (Interaction Response Structure)
+
+| 欄位 | 類型 | 說明 |
+|-------|------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------|
+| type  | [interaction callback type](/developers/zh-tw/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type) | 回應類型 |
+| data? | [interaction callback data](/developers/zh-tw/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure) | 選填的回應訊息 |
+
+<ManualAnchor id="interaction-response-object-interaction-callback-type" />
+###### Interaction 回呼類型 (Interaction Callback Type)
+
+| 名稱 | 數值 | 說明 |
+|-----------------------------------------|-------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| PONG                                    | 1     | 確認一個 `Ping` 請求 |
+| CHANNEL_MESSAGE_WITH_SOURCE             | 4     | 以訊息回覆互動 |
+| DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE    | 5     | 確認互動並在稍後編輯回應，使用者會看到載入狀態 |
+| DEFERRED_UPDATE_MESSAGE\*               | 6     | 對於組件，確認互動並在稍後編輯原始訊息；使用者不會看到載入狀態 |
+| UPDATE_MESSAGE\*                        | 7     | 對於組件，編輯該組件所附加的訊息 |
+| APPLICATION_COMMAND_AUTOCOMPLETE_RESULT | 8     | 以建議的選項回應自動完成互動 |
+| MODAL\*\*                               | 9     | 彈出互動視窗以回應互動 |
+| PREMIUM_REQUIRED                        | 10    | [**已棄用**](/developers/zh-tw/change-log#premium-apps-new-premium-button-style-deep-linking-url-schemes)；以升級按鈕回應互動，僅適用於啟用了[營利功能](/developers/zh-tw/monetization/overview)的應用程式 |
+| LAUNCH_ACTIVITY                         | 12    | 啟動與應用程式相關聯的互動活動。僅適用於啟用了[互動活動 (Activities)](/developers/zh-tw/activities/overview)的應用程式 |
+
+\* 僅對基於[組件](/developers/zh-tw/components/reference)的互動有效。
+
+\*\* 不適用於 `MODAL_SUBMIT` 和 `PING` 互動。
+
+<ManualAnchor id="interaction-response-object-interaction-callback-data-structure" />
+###### Interaction 回呼資料結構 (Interaction Callback Data Structure)
+
+<ManualAnchor id="interaction-response-object-messages" />
+###### 訊息 (Messages)
+
+並非所有的訊息欄位目前都受支援。
+
+| 欄位 | 類型 | 說明 |
+|-------------------|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| tts?              | boolean | 回應是否為語音合成 (TTS) 訊息 |
+| content?          | string | 訊息內容 |
+| embeds?           | array of [embeds](/developers/zh-tw/resources/message#embed-object) | 支援最多 10 個嵌入卡片 |
+| allowed_mentions? | [allowed mentions](/developers/zh-tw/resources/message#allowed-mentions-object) | 允許的提及對象物件 |
+| flags? \*         | integer | [訊息旗標](/developers/zh-tw/resources/message#message-object-message-flags) 結合的位元欄位（僅能設定 `SUPPRESS_EMBEDS`、`EPHEMERAL`、`IS_COMPONENTS_V2`、`IS_VOICE_MESSAGE` 和 `SUPPRESS_NOTIFICATIONS`） |
+| components?       | array of [components](/developers/zh-tw/components/reference#component-object) | 訊息組件 |
+| attachments? \*\* | array of partial [attachment](/developers/zh-tw/resources/message#attachment-object) 物件 | 包含檔名與說明的附件物件 |
+| poll?             | [poll](/developers/zh-tw/resources/poll#poll-create-request-object) 建立請求物件 | 投票的詳細資訊 |
+
+\* 如果您建立了一個回呼，其[類型](/developers/zh-tw/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type)為 `DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE`，則您唯一可以使用的有效[訊息旗標](/developers/zh-tw/resources/message#message-object-message-flags)是 `EPHEMERAL`。如果您想建立一個帶有 `IS_COMPONENTS_V2` 的組件訊息，您必須使用[編輯原始互動回應](/developers/zh-tw/interactions/receiving-and-responding#edit-original-interaction-response)端點，而非此端點。
+
+\*\* 詳情請參閱[上傳檔案](/developers/zh-tw/reference#uploading-files)。
+
+<ManualAnchor id="interaction-response-object-autocomplete" />
+###### 自動完成 (Autocomplete)
+
+| 欄位 | 類型 | 說明 |
+|---------|------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|
+| choices | array of [choices](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-option-choice-structure) | 自動完成選項（最多 25 個選項） |
+
+<ManualAnchor id="interaction-response-object-modal" />
+###### 互動視窗 (Modal)
+
+| 欄位 | 類型 | 說明 |
+|------------|--------------------------------------------------------------------------|---------------------------------------------------------------|
+| custom_id  | string | 開發者定義的互動視窗識別碼，長度 1-100 個字元 |
+| title      | string | 彈出式互動視窗的標題，最多 45 個字元 |
+| components | array of [components](/developers/zh-tw/components/reference#component-object) | 組成互動視窗的組件，數量介於 1 到 5 個（含）之間 |
+
+<Warning>
+如果您的應用程式回應中包含使用者資料，您應該使用 [`allowed_mentions`](/developers/zh-tw/resources/message#allowed-mentions-object) 來過濾哪些在內容中的提及會實際發出叮咚提示音。
+</Warning>
+
+## Interaction 回呼 (Interaction Callback)
+
+當回覆收到的互動時，您可以對 `/interactions/<interaction_id>/<interaction_token>/callback` 發送 `POST` 請求。`interaction_id` 是接收到的 payload 中該特定 Interaction 的唯一 ID。`interaction_token` 是接收到的 payload 中該互動的唯一 token。
+
+如果您是透過閘道器接收 Interaction，您**必須透過 HTTP 做出回覆**。對 Interaction 的回覆**不會作為命令透過閘道器發送**。
+
+**如果您對透過 HTTP 接收到的互動發送此請求，請以 202 且無 body 回應原始 HTTP 請求。**
+
+```py
+import requests
+
+url = "https://discord.com/api/v10/interactions/<interaction_id>/<interaction_token>/callback"
+
+json = {
+    "type": 4,
+    "data": {
+        "content": "Congrats on sending your command!"
+    }
+}
+r = requests.post(url, json=json)
+```
+
+<Info>
+互動 `tokens` 的有效期限為 **15 分鐘**，可用於發送後續訊息，但您**必須在收到事件後的 3 秒內發送初始回應**。如果超過 3 秒的截止時間，token 將會失效。
+</Info>
+
+<Accordion title="內聯 HTTP 回應行為" icon="code">
+    如果您透過 HTTP 接收互動，您的伺服器也可以回應接收到的 `POST` 請求。您會希望回應 `200` 狀態碼（如果一切順利），並指定一個 `type` 和 `data`，這是一個 [Interaction 回應](/developers/zh-tw/interactions/receiving-and-responding#interaction-response-object) 物件：
+
+    ```py
+    @app.route('/', methods=['POST'])
+    def my_command():
+        if request.json["type"] == 1:
+            return jsonify({
+                "type": 1
+            })
+
+        else:
+            return jsonify({
+                "type": 4,
+                "data": {
+                    "tts": False,
+                    "content": "Congrats on sending your command!",
+                    "embeds": [],
+                    "allowed_mentions": { "parse": [] }
+                }
+            })
+    ```
+</Accordion>
+
+<ManualAnchor id="interaction-callback-interaction-callback-response-object" />
+###### 互動回呼回應物件 (Interaction Callback Response Object)
+
+| 欄位 | 類型 | 說明 |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| interaction | [interaction callback object](/developers/zh-tw/interactions/receiving-and-responding#interaction-callback-interaction-callback-object) | 與互動回應相關聯的互動物件。 |
+| resource?   | [interaction resource object](/developers/zh-tw/interactions/receiving-and-responding#interaction-callback-interaction-callback-resource-object) | 互動回應建立的資源。 |
+
+<ManualAnchor id="interaction-callback-interaction-callback-object" />
+###### 互動回呼物件 (Interaction Callback Object)
+
+| 欄位 | 類型 | 說明 |
+|-----------------------------|-----------|-----------------------------------------------------------------------------------------------------------|
+| id                          | snowflake | 互動的 ID |
+| type                        | integer   | [互動類型](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-interaction-type) |
+| activity_instance_id?       | string    | 如果啟動或加入了互動活動，此為其執行個體 (Instance) ID |
+| response_message_id?        | snowflake | 該互動所建立之訊息的 ID |
+| response_message_loading?   | boolean   | 該訊息是否處於載入狀態 |
+| response_message_ephemeral? | boolean   | 回應訊息是否為臨時的 (ephemeral) |
+
+<ManualAnchor id="interaction-callback-interaction-callback-resource-object" />
+###### 互動回呼資源物件 (Interaction Callback Resource Object)
+
+| 欄位 | 類型 | 說明 |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| type                 | integer | [互動回呼類型](/developers/zh-tw/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type) |
+| activity_instance?\* | [Activity instance resource](/developers/zh-tw/interactions/receiving-and-responding#interaction-callback-interaction-callback-activity-instance-resource) | 代表由此互動啟動的互動活動。 |
+| message?\*\*         | [message object](/developers/zh-tw/resources/message#message-object) | 互動建立的訊息。 |
+
+\* 僅在類型為 `LAUNCH_ACTIVITY` 時存在。
+
+\*\* 僅在類型為 `CHANNEL_MESSAGE_WITH_SOURCE` 或 `UPDATE_MESSAGE` 時存在。
+
+<ManualAnchor id="interaction-callback-interaction-callback-activity-instance-resource" />
+###### 互動回呼互動活動執行個體資源 (Interaction Callback Activity Instance Resource)
+
+| 欄位 | 類型 | 說明 |
+|-------|--------|------------------------------------------------------------|
+| id    | string | 如果啟動或加入了互動活動，此為其執行個體 ID。 |
+
+## 後續訊息 (Followup Messages)
+
+有時，您在回覆互動後想向使用者發送後續訊息。或者，您可能想編輯您的原始回應。不論您是透過閘道器還是連出 Webhook 接收 Interaction，您都可以使用以下端點來編輯您的初始回應或發送後續訊息：
+
+-   [`PATCH /webhooks/<application_id>/<interaction_token>/messages/@original`](/developers/zh-tw/interactions/receiving-and-responding#edit-original-interaction-response) 用於編輯您對 Interaction 的初始回應
+-   [`DELETE /webhooks/<application_id>/<interaction_token>/messages/@original`](/developers/zh-tw/interactions/receiving-and-responding#delete-original-interaction-response) 用於刪除您對 Interaction 的初始回應
+-   [`POST /webhooks/<application_id>/<interaction_token>`](/developers/zh-tw/interactions/receiving-and-responding#create-followup-message) 用於發送新的後續訊息
+-   [`PATCH /webhooks/<application_id>/<interaction_token>/messages/<message_id>`](/developers/zh-tw/interactions/receiving-and-responding#edit-followup-message) 用於編輯使用該 `token` 發送的訊息
+
+<Info>
+互動 Webhooks 與一般 Webhooks 共享相同的速率限制屬性。
+</Info>
+
+互動 tokens 的有效期限為 **15 分鐘**，代表您可以在該時間段內回應互動。
+
+### 端點 (Endpoints)
+
+<Info>
+下方的端點不受應用程式的[全域速率限制](/developers/zh-tw/topics/rate-limits#global-rate-limit)約束。
+</Info>
+
+## 建立 Interaction 回應 (Create Interaction Response)
+<Route method="POST">/interactions/[\{interaction.id\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)/[\{interaction.token\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)/callback</Route>
+
+建立對 Interaction 的回應。Body 是 [interaction response](/developers/zh-tw/interactions/receiving-and-responding#interaction-response-object)。傳回 `204`，除非 `with_response` 被設定為 `true`，此時會傳回 `200`，且 body 為 [interaction callback response](/developers/zh-tw/interactions/receiving-and-responding#interaction-callback-interaction-callback-response-object)。
+
+此端點也支持類似 Webhook 端點的檔案附件。上傳檔案以及 `multipart/form-data` 請求的詳細資訊請參閱[上傳檔案](/developers/zh-tw/reference#uploading-files)。
+
+<ManualAnchor id="create-interaction-response-query-string-params" />
+###### 查詢字串參數 (Query String Params)
+
+| 欄位 | 類型 | 說明 |
+|----------------|--------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| with_response? | [boolean](/developers/zh-tw/reference#boolean-query-strings) | 是否在回應中包含 [互動回呼物件](/developers/zh-tw/interactions/receiving-and-responding#interaction-callback-interaction-callback-response-object) |
+
+## 獲取原始 Interaction 回應 (Get Original Interaction Response)
+<Route method="GET">/webhooks/[\{application.id\}](/developers/zh-tw/resources/application#application-object)/[\{interaction.token\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)/messages/@original</Route>
+
+傳回初始 Interaction 回應。功能與[獲取 Webhook 訊息](/developers/zh-tw/resources/webhook#get-webhook-message)相同。
+
+## 編輯原始 Interaction 回應 (Edit Original Interaction Response)
+<Route method="PATCH">/webhooks/[\{application.id\}](/developers/zh-tw/resources/application#application-object)/[\{interaction.token\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)/messages/@original</Route>
+
+編輯初始 Interaction 回應。功能與[編輯 Webhook 訊息](/developers/zh-tw/resources/webhook#edit-webhook-message)相同。
+
+## 刪除原始 Interaction 回應 (Delete Original Interaction Response)
+<Route method="DELETE">/webhooks/[\{application.id\}](/developers/zh-tw/resources/application#application-object)/[\{interaction.token\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)/messages/@original</Route>
+
+刪除初始 Interaction 回應。成功時傳回 `204 No Content`。
+
+## 建立後續訊息 (Create Followup Message)
+<Route method="POST">/webhooks/[\{application.id\}](/developers/zh-tw/resources/application#application-object)/[\{interaction.token\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)</Route>
+
+<Info>
+如果互動是從使用者安裝型 App 發起的，且未安裝在伺服器中（代表[授權整合服務擁有者物件](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-authorizing-integration-owners-object)僅包含 `USER_INSTALL`），則每次互動最多隻能發送 5 條後續訊息。
+</Info>
+
+為 Interaction 建立後續訊息。功能與[執行 Webhook](/developers/zh-tw/resources/webhook#execute-webhook)相同，但 `wait` 一律為 true。在使用此端點進行互動後續處理時，不支援 `thread_id`、`avatar_url` 和 `username` 參數。您可以使用 `EPHEMERAL` [訊息旗標](/developers/zh-tw/resources/message#message-object-message-flags) `1 << 6` (64) 來發送僅使用者可見的訊息。您也可以使用 `IS_COMPONENTS_V2` [訊息旗標](/developers/zh-tw/resources/message#message-object-message-flags) `1 << 15` (32768) 來發送基於[組件](/developers/zh-tw/components/reference)的訊息。
+
+在使用 `DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE` 回應互動後立即使用此端點時，此端點將發揮與[編輯原始互動回應](/developers/zh-tw/interactions/receiving-and-responding#edit-original-interaction-response)相同的功能以實現向後相容。在此情況下，不會建立新訊息，而是會編輯載入訊息。臨時 (ephemeral) 旗標將被忽略，並且您在初始延遲回應中提供的值將被保留，因為現有訊息的臨時狀態無法更改。此行為已被棄用，在此情況下您應改用[編輯原始互動回應](/developers/zh-tw/interactions/receiving-and-responding#edit-original-interaction-response)端點。
+
+## 獲取後續訊息 (Get Followup Message)
+<Route method="GET">/webhooks/[\{application.id\}](/developers/zh-tw/resources/application#application-object)/[\{interaction.token\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)/messages/[\{message.id\}](/developers/zh-tw/resources/message#message-object)</Route>
+
+傳回 Interaction 的後續訊息。功能與[獲取 Webhook 訊息](/developers/zh-tw/resources/webhook#get-webhook-message)相同。
+
+## 編輯後續訊息 (Edit Followup Message)
+<Route method="PATCH">/webhooks/[\{application.id\}](/developers/zh-tw/resources/application#application-object)/[\{interaction.token\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)/messages/[\{message.id\}](/developers/zh-tw/resources/message#message-object)</Route>
+
+編輯 Interaction 的後續訊息。功能與[編輯 Webhook 訊息](/developers/zh-tw/resources/webhook#edit-webhook-message)相同。
+
+## 刪除後續訊息 (Delete Followup Message)
+<Route method="DELETE">/webhooks/[\{application.id\}](/developers/zh-tw/resources/application#application-object)/[\{interaction.token\}](/developers/zh-tw/interactions/receiving-and-responding#interaction-object)/messages/[\{message.id\}](/developers/zh-tw/resources/message#message-object)</Route>
+
+刪除 Interaction 的後續訊息。成功時傳回 `204 No Content`。

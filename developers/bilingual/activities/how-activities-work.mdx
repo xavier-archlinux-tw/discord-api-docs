@@ -14,6 +14,7 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 Activities are web applications that run in an iframe within Discord on desktop, mobile and web. In order to achieve this, we use the [`postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) protocol to enable secure communication between your application and Discord.
 
 The [Embedded App SDK](https://github.com/discord/embedded-app-sdk) simplifies this process by managing the `postMessage` protocol on your behalf. For details on available commands and their usage, consult the [SDK Reference](/developers/en-us/developer-tools/embedded-app-sdk). Our [Sample Projects](/developers/en-us/activities/overview#sample-projects) provide practical examples of how to implement these features.
+
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -21,7 +22,9 @@ The [Embedded App SDK](https://github.com/discord/embedded-app-sdk) simplifies t
 互動活動 (Activities) 是託管在 iframe 中，並在電腦版、行動版與網頁版 Discord 中執行的網頁應用程式。為實現此目的，我們使用 [postMessage](https://developer.mozilla.org/zh-TW/docs/Web/API/Window/postMessage) 協定在您的應用程式與 Discord 之間進行安全通訊。
 
 [嵌入式 App SDK](https://github.com/discord/embedded-app-sdk) 藉由代您管理 `postMessage` 協定來簡化此流程。有關可用指令及其用法的詳細資訊，請參閱 [SDK 參考](/developers/zh-tw/developer-tools/embedded-app-sdk)。我們的 [範例專案](/developers/zh-tw/activities/overview#sample-projects) 提供了如何實作這些功能的實際範例。
+
 </div>
+
 </div>
 
 ---
@@ -49,6 +52,7 @@ Read more about setting up Entry Point commands in the [development guide](/deve
 ### Interaction Response
 
 Activities can be launched in response to [command](/developers/en-us/interactions/overview#commands), [message component](/developers/en-us/interactions/overview#message-components), and [modal submission](/developers/en-us/interactions/overview#modals) interactions. To open an Activity, set the callback type to `LAUNCH_ACTIVITY` (type `12`) when [responding to the interaction](/developers/en-us/interactions/receiving-and-responding#responding-to-an-interaction).
+
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -72,7 +76,9 @@ Activities can be launched in response to [command](/developers/en-us/interactio
 ### 互動回應 (Interaction Response)
 
 互動活動也可以在回應 [指令 (Command)](/developers/zh-tw/interactions/overview#commands)、[訊息元件 (Message Component)](/developers/zh-tw/interactions/overview#message-components) 與 [互動視窗提交 (Modal Submission)](/developers/zh-tw/interactions/overview#modals) 等互動時啟動。若要開啟互動活動，請在 [回應互動](/developers/zh-tw/interactions/receiving-and-responding#responding-to-an-interaction) 時，將回呼類型設定為 `LAUNCH_ACTIVITY`（類型 `12`）。
+
 </div>
+
 </div>
 
 ---
@@ -84,6 +90,7 @@ Activities can be launched in response to [command](/developers/en-us/interactio
 ## Designed for Single-Page Apps (SPAs)
 
 This SDK is intended for use by a single-page application. We recognize developers may be using frameworks or approaches that are not an exact fit for single-page applications. We recommend nesting those frameworks inside your Activity's top-level single-page application and passing messages as you see fit. Please refer to the [Nested Messages App](/developers/en-us/activities/overview#sample-projects) sample project for guidance on this approach.
+
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -91,7 +98,9 @@ This SDK is intended for use by a single-page application. We recognize develope
 ## 專為單頁應用程式 (SPA) 設計
 
 此 SDK 旨在供單頁應用程式 (Single-Page Application) 使用。我們理解開發者可能使用的框架或方法並不完全契合單頁應用程式。我們建議將這些框架巢狀嵌入在您互動活動的最上層單頁應用程式中，並依您的需要傳遞訊息。請參考 [巢狀框架 App](/developers/zh-tw/activities/overview#sample-projects) 範例專案以獲取關於此方法的引導。
+
 </div>
+
 </div>
 
 ---
@@ -108,6 +117,7 @@ This SDK is intended for use by a single-page application. We recognize develope
 4. **Interacting with Discord Client:** Post-authentication, your application can subscribe to events and send commands to the Discord client. Note that attempting to use commands or subscribe to events outside your granted scope will result in errors. Adding new scopes may prompt an OAuth modal for user permission re-confirmation.
 5. **Disconnection and Errors:** Receiving a `[CLOSE, {message: string, code: number}]` message indicates an error or a need to restart the connection process.
 6. **Sending Errors or Close Requests:** To communicate an error or request a close from the Discord client, send `[CLOSE, {message?: string, code: number}]`. A code other than CLOSE_NORMAL will display the message to the user, while CLOSE_NORMAL results in a silent closure.
+
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -120,7 +130,9 @@ This SDK is intended for use by a single-page application. We recognize develope
 4. **與 Discord 用戶端互動：** 驗證完成後，您的應用程式可以訂閱事件並向 Discord 用戶端發送指令。請注意，嘗試使用您獲得之權限範圍外的指令或事件將會導致錯誤。新增範圍可能會跳出 OAuth 授權視窗以要求使用者重新確認。
 5. **中斷連線與錯誤：** 收到 `[CLOSE, {message: string, code: number}]` 訊息代表發生錯誤或需要重新啟動連線流程。
 6. **發送錯誤或關閉請求：** 若要向 Discord 用戶端反映錯誤或要求關閉，請發送 `[CLOSE, {message?: string, code: number}]`。CLOSE_NORMAL 以外的代碼會向使用者顯示訊息，而 CLOSE_NORMAL 則會直接無聲關閉。
+
 </div>
+
 </div>
 
 ---
@@ -134,6 +146,7 @@ This SDK is intended for use by a single-page application. We recognize develope
 <Info>
 Below is a minimal example of setting up the SDK. Please see our [Sample Projects](/developers/en-us/activities/overview#sample-projects) for more complete sample applications.
 </Info>
+
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -141,7 +154,9 @@ Below is a minimal example of setting up the SDK. Please see our [Sample Project
 <Info>
 以下是設定 SDK 的最小可行範例。請參閱我們的 [範例專案](/developers/zh-tw/activities/overview#sample-projects) 以獲取更完整的範例應用程式。
 </Info>
+
 </div>
+
 </div>
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -183,6 +198,7 @@ async function setup() {
   });
 }
 ```
+
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -222,7 +238,9 @@ async function setup() {
   });
 }
 ```
+
 </div>
+
 </div>
 
 ---
@@ -232,12 +250,15 @@ async function setup() {
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 This diagram illustrates the communication flow between your application and Discord in the sample code above.
+
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 下圖說明了上述範例程式碼中，您的應用程式與 Discord 之間的通訊流程：
+
 </div>
+
 </div>
 
 ![Diagram of how Activities communicate with Discord](/images/activities/embedded-app-flow-diagram.svg)

@@ -60,9 +60,12 @@ def restructure():
                         zh_p = p.replace("/en-us/", "/zh-tw/")
                         bi_p = p.replace("/en-us/", "/bilingual/")
                         
-                        if os.path.exists(zh_p + ".mdx"):
+                        zh_check = zh_p.lstrip('/')
+                        bi_check = bi_p.lstrip('/')
+                        
+                        if os.path.exists(zh_check + ".mdx"):
                             zh_pages.append(zh_p)
-                        if os.path.exists(bi_p + ".mdx"):
+                        if os.path.exists(bi_check + ".mdx"):
                             bi_pages.append(bi_p)
                             
                 lang_pages = zh_pages + bi_pages

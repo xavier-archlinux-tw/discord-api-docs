@@ -1,0 +1,498 @@
+---
+title: OAuth2
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ManualAnchor } from '/snippets/manualanchor.jsx'
+import { Route } from '/snippets/route.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/topics/oauth2" />
+
+OAuth2 允許應用程式開發者建置整合 Discord API 進行驗證與資料獲取的應用程式。在 Discord 中，有多種 OAuth2 驗證類型。我們支援授權碼憑證 (Authorization Code Grant)、隱式憑證 (Implicit Grant)、用戶端憑證 (Client Credentials Grant)，以及針對 Bot 和 Webhook 的一些 Discord 特殊修改流程。
+
+## 共享資源 (Shared Resources)
+
+實作 OAuth2 的第一步是[註冊一個開發者應用程式](https://discord.com/developers/applications)並取得您的用戶端 ID (Client ID) 與用戶端密鑰 (Client Secret)。大多數實作 OAuth2 的人都會希望找到並使用其所選語言的程式庫。對於那些想要從頭開始實作 OAuth2 的人，請參閱 [RFC 6749](https://tools.ietf.org/html/rfc6749) 以獲取詳細資訊。在 Discord 建立應用程式後，請確保您的 `client_id` 與 `client_secret` 在手邊。下一步是確定哪種 OAuth2 流程適合您的用途。
+
+<ManualAnchor id="shared-resources-oauth2-urls" />
+###### OAuth2 網址 (OAuth2 URLs)
+
+| 網址 (URL)                                  | 說明 (Description)                                          |
+|---------------------------------------------|-------------------------------------------------------------|
+| https://discord.com/oauth2/authorize        | 基礎授權網址                                                |
+| https://discord.com/api/oauth2/token        | 憑證 (Token) 網址                                           |
+| https://discord.com/api/oauth2/token/revoke | [憑證撤銷 (Token Revocation)](https://tools.ietf.org/html/rfc7009) 網址 |
+
+<Warning>
+根據相關 RFC，憑證 (Token) 和憑證撤銷網址**僅**接受 `application/x-www-form-urlencoded` 的內容類型。JSON 格式的內容是不被允許的，且會傳回錯誤。
+</Warning>
+
+<ManualAnchor id="shared-resources-oauth2-scopes" />
+###### OAuth2 權限範圍 (OAuth2 Scopes)
+
+這是 Discord 支援的所有 OAuth2 權限範圍 (Scopes) 列表。某些權限範圍需要經過 Discord 的審核批准才能使用。在未獲得 Discord 批准的情況下向使用者請求這些權限範圍可能會在 OAuth2 流程中導致錯誤或未記錄的異常行為。
+
+<Note>
+    若要洽詢僅開放給經核准合作夥伴之權限範圍的存取權限，請聯絡您的 Discord 帳戶代表，以確認它們是否符合您的需求。
+</Note>
+
+| 名稱 (Name)                              | 說明 (Description)                                                                                                                                                                                                                                                                                                                                                                                                                |
+|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| activities.read                          | 允許您的應用程式從使用者的「正在遊玩 / 最近遊玩」列表中獲取資料 —— 目前不對一般應用程式開放 |
+| activities.write                         | 允許您的應用程式更新使用者的活動狀態 —— 目前不對一般應用程式開放 (使用 [GAMESDK 互動活動管理員](/developers/zh-tw/developer-tools/game-sdk#activities) 時並不需要此 Scope) |
+| applications.builds.read                 | 允許您的應用程式讀取使用者應用程式的建置版本資料 |
+| applications.builds.upload               | 允許您的應用程式為使用者的應用程式上傳/更新建置版本 —— 僅開放給經核准的合作夥伴 |
+| applications.commands                    | 允許您的應用程式向伺服器新增 [指令 (commands)](/developers/zh-tw/interactions/application-commands) —— 預設包含在 `bot` 權限範圍中 |
+| applications.commands.update             | 允許您的應用程式使用 Bearer 權杖更新其 [指令 (commands)](/developers/zh-tw/interactions/application-commands) —— 僅限於 [用戶端憑證授權 (client-credentials grant)](/developers/zh-tw/topics/oauth2#client-credentials-grant) |
+| applications.commands.permissions.update | 允許您的應用程式在使用者擁有權限的伺服器中更新其 [指令權限 (permissions for its commands)](/developers/zh-tw/interactions/application-commands#permissions) |
+| applications.entitlements                | 允許您的應用程式讀取使用者應用程式的權利 (entitlements) 資訊 |
+| applications.store.update                | 允許您的應用程式為使用者應用程式讀取和更新商店資料（SKU、商店品項、成就等） |
+| bot                                      | 用於 OAuth2 Bot，預設會將 Bot 置入使用者選擇的伺服器中 |
+| connections                              | 允許 [`/users/@me/connections`](/developers/zh-tw/resources/user#get-current-user-connections) 傳回連結的第三方帳戶 |
+| dm_channels.read                         | 允許您的應用程式查看使用者私訊和群組私訊的資訊 —— 僅開放給經核准的合作夥伴 |
+| email                                    | 啟用 [`/users/@me`](/developers/zh-tw/resources/user#get-current-user) 以傳回使用者的 `email` 欄位 |
+| gdm.join                                 | 允許您的應用程式將 [使用者加入群組私訊 (GDM)](/developers/zh-tw/resources/channel#group-dm-add-recipient) |
+| guilds                                   | 允許 [`/users/@me/guilds`](/developers/zh-tw/resources/user#get-current-user-guilds) 傳回使用者所在的所有伺服器的基本資訊 |
+| guilds.join                              | 允許使用 [`/guilds/{guild.id}/members/{user.id}`](/developers/zh-tw/resources/guild#add-guild-member) 將使用者加入某個伺服器 |
+| guilds.members.read                      | 允許 [`/users/@me/guilds/{guild.id}/member`](/developers/zh-tw/resources/user#get-current-user-guild-member) 傳回使用者在伺服器中的成員資訊 |
+| identify                                 | 允許 [`/users/@me`](/developers/zh-tw/resources/user#get-current-user) 但不包含 `email` 欄位 |
+| identify.premium                         | 允許您的應用程式讀取使用者的 Nitro 訂閱類型（定義於 [User 物件](/developers/zh-tw/resources/user#user-object-user-structure) 上的 `premium_type`） —— 僅開放給經核准的合作夥伴 |
+| messages.read                            | 用於本地 RPC 伺服器 API 存取，這允許您讀取所有用戶端頻道的訊息（否則將限制於您應用程式建立的頻道/伺服器） |
+| relationships.read                       | 允許您的應用程式存取使用者的 Discord 好友列表、待處理的請求以及被封鎖的使用者。此權限範圍屬於我們的 Social SDK 的一部分 —— [在此提交存取申請](https://discord.com/developers/applications/select/social-sdk/getting-started)。適用 [Social SDK 條款](https://support-dev.discord.com/hc/en-us/articles/30225844245271-Discord-Social-SDK-Terms)，包括對您所獲取之資料的第 5(a)(ii) 節 |
+| role_connections.write                   | 允許您的應用程式更新使用者的連線與應用程式的中繼資料 |
+| rpc                                      | 用於本地 RPC 伺服器存取，這允許您控制使用者的本地 Discord 用戶端 —— 僅開放給經核准的合作夥伴 |
+| rpc.activities.write                     | 用於本地 RPC 伺服器存取，這允許您更新使用者的活動狀態 —— 僅開放給經核准的合作夥伴 |
+| rpc.notifications.read                   | 用於本地 RPC 伺服器存取，這允許您接收推送給使用者的通知 —— 僅開放給經核准的合作夥伴 |
+| rpc.voice.read                           | 用於本地 RPC 伺服器存取，這允許您讀取使用者的語音設定並監聽語音事件 —— 僅開放給經核准的合作夥伴 |
+| rpc.voice.write                          | 用於本地 RPC 伺服器存取，這允許您更新使用者的語音設定 —— 僅開放給經核准的合作夥伴 |
+| voice                                    | 允許您的應用程式代表使用者連線至語音並查看所有語音成員 —— 僅開放給經核准的合作夥伴 |
+| webhook.incoming                         | 這會生成一個 Webhook，並在授權碼憑證流程的 OAuth 權杖回應中傳回 |
+
+<Info>
+為了將使用者加入伺服器，您的 Bot 必須已屬於該伺服器。`role_connections.write` 不能與 [隱式授權類型 (Implicit grant type)](/developers/zh-tw/topics/oauth2#implicit-grant) 一併使用。
+</Info>
+
+## 狀態與安全性 (State and Security)
+
+在我們深入研究不同 OAuth2 授權類型的語意之前，我們應該停下來討論安全性，特別是 `state` 參數的使用。跨站請求偽造 (CSRF) 和點擊劫持 (Clickjacking) 是實作 OAuth 的個人必須解決的安全性漏洞。這通常可以透過使用 `state` 參數來完成。`state` 在授權請求中發送，並在回應中傳回，它應該是一個將使用者的請求與其已驗證狀態綁定在一起的數值。例如，`state` 可以是使用者工作階段 (session) Cookie 的雜湊值，或者可以與使用者工作階段相關聯的其他一次性隨機數 (nonce)。
+
+當使用者在用戶端開始授權流程時，會產生一個該使用者請求專屬的 `state`。此數值儲存在只有用戶端和使用者才能存取的地方，即受到[同源政策 (same-origin policy)](https://en.wikipedia.org/wiki/Same-origin_policy)保護。當使用者被重新導向時，會傳回 `state` 參數。用戶端藉由檢查傳回的 `state` 是否與儲存的數值相符來驗證該請求。如果相符，則是有效的授權請求。如果不相符，則可能有人攔截了請求，或者以其他方式將自己錯誤地授權給了另一位使用者的資源，該請求應被拒絕。
+
+雖然 Discord 不強制要求使用 `state` 參數，但我們支援此功能，並強烈建議您為您自己應用程式和資料的安全性實作此參數。
+
+## 授權碼憑證 (Authorization Code Grant)
+
+授權碼憑證是大多數開發者所公認的「標準 OAuth2」，涉及獲取授權碼並將其更換為使用者的存取權杖 (access token)。它允許授權伺服器作為用戶端與資源擁有者之間的媒介，因此資源擁有者的認證憑證絕不會直接與用戶端共用。
+
+所有對 OAuth2 端點的呼叫都需要 HTTP 基本驗證 (HTTP Basic authentication)，或者在表單資料主體中提供 `client_id` 與 `client_secret`。
+
+<ManualAnchor id="authorization-code-grant-authorization-url-example" />
+###### 授權網址範例 (Authorization URL Example)
+
+```
+https://discord.com/oauth2/authorize?response_type=code&client_id=157730590492196864&scope=identify%20guilds.join&state=15773059ghq9183habn&redirect_uri=https%3A%2F%2Fnicememe.website&prompt=consent&integration_type=0
+```
+
+`client_id` 是您應用程式的 `client_id`。`scope` 是由網址編碼空格 (`%20`) 分隔的 [OAuth2 權限範圍](/developers/zh-tw/topics/oauth2#shared-resources-oauth2-scopes) 列表。`redirect_uri` 是您在建立應用程式時註冊的任何經網址編碼後的 URL。`state` 是 [狀態與安全性](/developers/zh-tw/topics/oauth2#state-and-security) 中提到的唯一字串。
+
+當有人導覽至此網址時，系統會提示他們為請求的權限範圍授權您的應用程式。接受後，他們將被重新導向至您的 `redirect_uri`，其中將包含一個額外的查詢字串參數 `code`。如果先前有發送 `state`，此時也會一併傳回，並應在此步驟進行驗證。
+
+`prompt` 控制授權流程如何處理現有的授權。如果使用者先前已為您的應用程式授權了請求的權限範圍，且 prompt 設定為 `consent`，系統將要求他們重新批准其授權。如果設定為 `none`，它將跳過授權畫面，並將其重新導向回您的重新導向 URI，而不需要求他們授權。對於像 `bot` 和 `webhook.incoming` 這樣的傳遞 (passthrough) 權限範圍，則一律需要授權。
+
+`integration_type` 參數指定了授權的 [安裝上下文 (installation context)](/developers/zh-tw/resources/application#installation-context)。安裝上下文決定了應用程式的安裝位置，且僅在 `scope` 包含 `applications.commands` 時才相關。當設定為 0 (GUILD_INSTALL) 時，應用程式將被授權安裝到伺服器；當設定為 1 (USER_INSTALL) 時，應用程式將被授權安裝到使用者帳戶。應用程式必須在開發者入口網站中進行設定以支援所提供的 `integration_type`。
+
+<ManualAnchor id="authorization-code-grant-redirect-url-example" />
+###### 重新導向網址範例 (Redirect URL Example)
+
+```
+https://nicememe.website/?code=NhhvTDYsFcdgNLnnLijcl7Ku7bEEeee&state=15773059ghq9183habn
+```
+
+現在，透過向帶有以下參數的 [憑證網址](/developers/zh-tw/topics/oauth2#shared-resources-oauth2-urls) 發送 `POST` 請求，即可將 `code` 更換為使用者的存取權杖 (access token)：
+
+- `grant_type` - 必須設定為 `authorization_code`
+- `code` - 來自查詢字串的授權碼
+- `redirect_uri` - 與此授權相關聯的 `redirect_uri`，通常來自您的授權網址
+
+<ManualAnchor id="authorization-code-grant-access-token-exchange-example" />
+###### 存取權杖兌換範例 (Access Token Exchange Example)
+
+```python
+import requests
+
+API_ENDPOINT = 'https://discord.com/api/v10'
+CLIENT_ID = '332269999912132097'
+CLIENT_SECRET = '937it3ow87i4ery69876wqire'
+REDIRECT_URI = 'https://nicememe.website'
+
+def exchange_code(code):
+  data = {
+    'grant_type': 'authorization_code',
+    'code': code,
+    'redirect_uri': REDIRECT_URI
+  }
+  headers = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+  r = requests.post('%s/oauth2/token' % API_ENDPOINT, data=data, headers=headers, auth=(CLIENT_ID, CLIENT_SECRET))
+  r.raise_for_status()
+  return r.json()
+```
+
+作為回應，您將收到：
+
+<ManualAnchor id="authorization-code-grant-access-token-response" />
+###### 存取權杖回應 (Access Token Response)
+
+```json
+{
+  "access_token": "6qrZcUqja7812RVdnEKjpzOL4CvHBFG",
+  "token_type": "Bearer",
+  "expires_in": 604800,
+  "refresh_token": "D43f5y0ahjqew82jZ4NViEr2YafMKhue",
+  "scope": "identify"
+}
+```
+
+擁有使用者的存取權杖允許您的應用程式代表他們向 API 發送某些請求，這些請求受限於請求的權限範圍。`expires_in` 表示傳回的存取權杖在失效前還有多少秒，允許您預測權杖到期時間並更新權杖。若要更新，請向帶有以下參數的 [憑證網址](/developers/zh-tw/topics/oauth2#shared-resources-oauth2-urls) 發送另一個 `POST` 請求：
+
+- `grant_type` - 必須設定為 `refresh_token`
+- `refresh_token` - 使用者的更新權杖 (refresh token)
+
+<ManualAnchor id="authorization-code-grant-refresh-token-exchange-example" />
+###### 更新權杖兌換範例 (Refresh Token Exchange Example)
+
+```python
+import requests
+
+API_ENDPOINT = 'https://discord.com/api/v10'
+CLIENT_ID = '332269999912132097'
+CLIENT_SECRET = '937it3ow87i4ery69876wqire'
+
+def refresh_token(refresh_token):
+  data = {
+    'grant_type': 'refresh_token',
+    'refresh_token': refresh_token
+  }
+  headers = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+  r = requests.post('%s/oauth2/token' % API_ENDPOINT, data=data, headers=headers, auth=(CLIENT_ID, CLIENT_SECRET))
+  r.raise_for_status()
+  return r.json()
+```
+
+完成；這將會取得全新的 [存取權杖回應](/developers/zh-tw/topics/oauth2#authorization-code-grant-access-token-response)！
+
+<ManualAnchor id="authorization-code-grant-token-revocation-example" />
+###### 權杖撤銷範例 (Token Revocation Example)
+
+若要停用存取權杖或更新權杖，您可以藉由向帶有以下參數的 [憑證撤銷網址](/developers/zh-tw/topics/oauth2#shared-resources-oauth2-urls) 發送 `POST` 請求來撤銷它：
+
+- `token` - 要撤銷的存取權杖或更新權杖
+- `token_type_hint` *(選填)* - `token` 參數的類型 —— 可以是 `access_token` 或 `refresh_token`
+
+<Warning>
+當您撤銷某個權杖時，與該授權相關聯的任何作用中存取權杖或更新權杖都將被撤銷，不論您傳遞的 `token` 和 `token_type_hint` 值為何。
+</Warning>
+
+```python
+import requests
+
+API_ENDPOINT = 'https://discord.com/api/v10'
+CLIENT_ID = '332269999912132097'
+CLIENT_SECRET = '937it3ow87i4ery69876wqire'
+
+def revoke_access_token(access_token):
+  data = {
+    'token': access_token,
+    'token_type_hint': 'access_token'
+  }
+  headers = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+  requests.post('%s/oauth2/token/revoke' % API_ENDPOINT, data=data, headers=headers, auth=(CLIENT_ID, CLIENT_SECRET))
+```
+
+完成；這些權杖已安全撤銷。
+
+## 隱式憑證 (Implicit Grant)
+
+隱式 OAuth2 憑證是針對瀏覽器內用戶端所設計的簡化流程。用戶端不會被核發需要更換為存取權杖的授權碼，而是直接被核發存取權杖。網址格式如下：
+
+<ManualAnchor id="implicit-grant-authorization-url-example" />
+###### 授權網址範例 (Authorization URL Example)
+
+```
+https://discord.com/oauth2/authorize?response_type=token&client_id=290926444748734499&state=15773059ghq9183habn&scope=identify
+```
+
+在重新導向時，您的重新導向 URI 將包含額外的 **URI 片段 (URI fragments)**：`access_token`、`token_type`、`expires_in`、`scope` 以及 [`state`](/developers/zh-tw/topics/oauth2#state-and-security)（如果有的話）。**這些並非查詢字串參數。** 請注意「#」字元：
+
+<ManualAnchor id="implicit-grant-redirect-url-example" />
+###### 重新導向網址範例 (Redirect URL Example)
+
+```
+https://findingfakeurlsisprettyhard.tv/#access_token=RTfP0OK99U3kbRtHOoKLmJbOn45PjL&token_type=Bearer&expires_in=604800&scope=identify&state=15773059ghq9183habn
+```
+
+使用隱式憑證流程是有利有弊的。它的實作更快速且更容易，但與兌換授權碼並在安全的 HTTP 主體中傳回權杖不同，存取權杖是在 URI 片段中傳回的，這使其有可能暴露給未經授權的第三方。**此外，您不會收到更新權杖，因此一旦權杖過期，使用者必須明確重新進行授權。**
+
+## 用戶端憑證 (Client Credentials Grant)
+
+用戶端憑證流程是 Bot 開發者獲取自己的 Bearer 權杖以進行測試的一種快速且簡單的方法。藉由向 [憑證網址](/developers/zh-tw/topics/oauth2#shared-resources-oauth2-urls) 發送一個 `grant_type` 為 `client_credentials` 的 `POST` 請求，並使用您的用戶端 ID 作為使用者名稱，用戶端密鑰作為密碼來進行基本驗證，您將收到針對 Bot 擁有者的存取權杖。因此，請務必非常小心地保管您的 `client_id` 與 `client_secret`，確保您的資訊沒有包含在您的原始碼中。
+
+您可以使用 `scope` 參數指定權限範圍，這是一個由空格分隔的 [OAuth2 權限範圍](/developers/zh-tw/topics/oauth2#shared-resources-oauth2-scopes) 列表：
+
+<Info>
+團隊應用程式 (Team applications) 被限制為只能使用 `identify` 和 `applications.commands.update` 權限範圍，因為團隊不受限於特定使用者。
+</Info>
+
+<ManualAnchor id="client-credentials-grant-client-credentials-token-request-example" />
+###### 用戶端憑證權杖請求範例 (Client Credentials Token Request Example)
+
+```python
+import requests
+
+API_ENDPOINT = 'https://discord.com/api/v10'
+CLIENT_ID = '332269999912132097'
+CLIENT_SECRET = '937it3ow87i4ery69876wqire'
+
+def get_token():
+  data = {
+    'grant_type': 'client_credentials',
+    'scope': 'identify connections'
+  }
+  headers = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+  r = requests.post('%s/oauth2/token' % API_ENDPOINT, data=data, headers=headers, auth=(CLIENT_ID, CLIENT_SECRET))
+  r.raise_for_status()
+  return r.json()
+```
+
+作為回報，您將收到存取權杖（不包含更新權杖）：
+
+<ManualAnchor id="client-credentials-grant-client-credentials-access-token-response" />
+###### 用戶端憑證存取權杖回應 (Client Credentials Access Token Response)
+
+```json
+{
+  "access_token": "6qrZcUqja7812RVdnEKjpzOL4CvHBFG",
+  "token_type": "Bearer",
+  "expires_in": 604800,
+  "scope": "identify connections"
+}
+```
+
+## Bot 使用者 (Bot Users)
+
+Discord 的 API 提供了 Bot 使用者，這是一種專門用於自動化處理的獨立使用者類型。Bot 使用者會被自動加入所有 App 中，並使用在您 [App 設定](https://discord.com/developers/applications)中找到的 Bot 權杖 (token) 進行驗證。與一般的 OAuth2 流程不同，Bot 使用者無需使用 Bearer 權杖即可擁有對大多數 API 路由的完整存取權限，並且可以連線至 [即時閘道器 (Real Time Gateway)](/developers/zh-tw/events/gateway)。
+
+### Bot 與一般帳戶對照 (Bot vs User Accounts)
+
+<Warning>
+開發者必須遵守 [服務條款 (Terms of Service)](https://support-dev.discord.com/hc/articles/8562894815383-Discord-Developer-Terms-of-Service)，其中包括避免在 OAuth2 / Bot API 之外將標準使用者帳戶進行自動化操作（通常稱為「自助式 Bot / Self-bot」）。
+</Warning>
+
+與標準 Discord 使用者相比，Bot 使用者有一些不同之處：
+
+1. Bot 是透過 OAuth2 API 新增至伺服器的，無法接受一般邀請。
+2. Bot 不能擁有好友，也不能被加入或主動加入群組私訊 (Group DMs)。
+3. [經驗證的 Bot (Verified bots)](https://support-dev.discord.com/hc/en-us/articles/23926564536471-How-Do-I-Get-My-App-Verified) 沒有伺服器加入數量的上限。
+4. Bot 擁有一套完全獨立的 [速率限制](/developers/zh-tw/topics/rate-limits#rate-limits)。
+
+### Bot 授權流程 (Bot Authorization Flow)
+
+Bot 授權是一種特殊的無伺服器與無回呼的 OAuth2 流程，使使用者能輕鬆將 Bot 新增至伺服器。您建立的網址與我們用於全端實作的網址類似：
+
+<ManualAnchor id="bot-authorization-flow-bot-auth-parameters" />
+###### Bot 授權參數 (Bot Auth Parameters)
+
+| 名稱 (Name)           | 說明 (Description)                                                                                                                          |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| client_id             | 您的應用程式用戶端 ID                                                                                                                 |
+| scope?                | 對於 Bot 授權流程，需要包含 `bot` |
+| permissions?          | 您所請求的 [權限 (permissions)](/developers/zh-tw/topics/permissions)                                                                  |
+| guild_id?             | 為使用者預先填入伺服器下拉式選單 |
+| disable_guild_select? | `true` 或 `false` —— 禁止使用者變更下拉式選單中的伺服器選項 |
+| integration_type?     | 授權的 [安裝上下文 (installation context)](/developers/zh-tw/resources/application#application-object-application-integration-types) |
+
+<ManualAnchor id="bot-authorization-flow-url-example" />
+###### 網址範例 (URL Example)
+
+```
+https://discord.com/oauth2/authorize?client_id=157730590492196864&scope=bot&permissions=1
+```
+
+在 Bot 的情況下，`scope` 參數應設定為 `bot`。還有一個新參數 `permissions`，這是一個對應於 Bot 的 [權限計算](/developers/zh-tw/topics/permissions#permissions-bitwise-permission-flags) 的整數。您還會注意到缺少 `response_type` 與 `redirect_uri`。Bot 授權不需要這些參數，因為無需檢索使用者的存取權杖。
+
+當使用者導覽至此頁面時，系統會提示他們將 Bot 新增至他們擁有適當權限的伺服器。接受後，Bot 將被新增。超級簡單！
+
+如果您已經知道使用者要將您的 Bot 新增到的伺服器 ID，您可以將此 ID 作為 `guild_id=GUILD_ID` 參數提供在網址中。當授權頁面載入時，如果該使用者擁有將 Bot 新增到該伺服器的權限，該伺服器將在對話框中預先選取。您可以將此參數與 `disable_guild_select=true` 結合使用，以禁止使用者挑選其他伺服器。
+
+如果您僅提供 `client_id` 參數（可選填 `permissions`、`guild_id` 或 `disable_guild_select`），授權將使用在開發者入口網站中設定的 [預設安裝設定](/developers/zh-tw/resources/application#configuring-an-install-link-and-default-install-settings)。指定 `scope`、`integration_type` 或 `redirect_uri` 將會覆寫此預設行為。
+
+如果您的 Bot 非常特定於您的私人群組，或者您只是不喜歡與人分享，您可以在您應用程式的設定中取消勾選 `Public Bot` 選項。如果未勾選，則只有您可以將該 Bot 新增至伺服器。如果標記為公開，則任何擁有您 Bot 網址的人都可以將其新增至他們擁有適當權限的伺服器中。
+
+### 進階 Bot 授權 (Advanced Bot Authorization)
+
+開發者可以擴充 Bot 授權功能。您可以請求 `bot` 和 `applications.commands` 之外的其他權限範圍，這將會提示繼續進入完整的 [授權碼憑證流程](/developers/zh-tw/topics/oauth2#authorization-code-grant)，並增加請求使用者存取權杖的能力。如果您請求 `bot` 和 `applications.commands` 之外的任何權限範圍，`response_type` 再次成為必填欄位；除非指定了 `redirect_uri`，否則我們還會自動將使用者重新導向至您應用程式註冊列表中的第一個 URI。
+
+在重新導向時收到授權碼時，查詢字串中將包含額外的 `guild_id` 和 `permissions` 參數。`guild_id` 參數僅應作為您的 Bot 與伺服器之間關係的暗示。為了確認您的 Bot 與該伺服器之間的關係，請考慮在您的 Bot 設定中要求啟用 OAuth2 授權碼憑證流程。啟用它要求任何將您的 Bot 新增至伺服器的人都必須進行完整的 OAuth2 [授權碼憑證流程](/developers/zh-tw/topics/oauth2#authorization-code-grant)。當您獲取使用者的存取權杖時，您還將收到有關您的 Bot 被新增到的伺服器資訊：
+
+<ManualAnchor id="advanced-bot-authorization-extended-bot-authorization-access-token-example" />
+###### 擴充 Bot 授權存取權杖範例 (Extended Bot Authorization Access Token Example)
+
+```json
+{
+  "token_type": "Bearer",
+  "guild": {
+    "mfa_level": 0,
+    "emojis": [],
+    "application_id": null,
+    "name": "SomeTest",
+    "roles": [
+      {
+        "hoist": false,
+        "name": "@everyone",
+        "mentionable": false,
+        "color": 0,
+        "position": 0,
+        "id": "290926798626357250",
+        "managed": false,
+        "permissions": 49794241,
+        "permissions_new": "49794241"
+      }
+    ],
+    "afk_timeout": 300,
+    "system_channel_id": null,
+    "widget_channel_id": null,
+    "region": "us-east",
+    "default_message_notifications": 1,
+    "explicit_content_filter": 0,
+    "splash": null,
+    "features": [],
+    "afk_channel_id": null,
+    "widget_enabled": false,
+    "verification_level": 0,
+    "owner_id": "53908232999183680",
+    "id": "2909267986347357250",
+    "icon": null,
+    "description": null,
+    "public_updates_channel_id": null,
+    "safety_alerts_channel_id": null,
+    "rules_channel_id": null,
+    "max_members": 100000,
+    "vanity_url_code": null,
+    "premium_subscription_count": 0,
+    "premium_tier": 0,
+    "preferred_locale": "en-US",
+    "system_channel_flags": 0,
+    "banner": null,
+    "max_presences": null,
+    "discovery_splash": null,
+    "max_video_channel_users": 25
+  },
+  "access_token": "zMndOe7jFLXGawdlxMOdNvXjjOce5X",
+  "scope": "bot",
+  "expires_in": 604800,
+  "refresh_token": "mgp8qnvBwJcmadwgCYKyYD5CAzGAX4"
+}
+```
+
+### 雙重身分驗證 (2FA) 要求 (Two-Factor Authentication Requirement)
+
+對於具有 [較高權限](/developers/zh-tw/topics/permissions#permissions-bitwise-permission-flags) 的 Bot（名稱旁帶有 `*` 的權限），當它們被新增至啟用了全伺服器 2FA 的伺服器中時，我們將對擁有者的帳戶強制實施雙重身分驗證。
+
+## Webhooks
+
+Discord 的 Webhook 流程是 [授權碼憑證](/developers/zh-tw/topics/oauth2#authorization-code-grant) 實作的特殊版本。在此情況下，`scope` 查詢字串參數需要設定為 `webhook.incoming`：
+
+<ManualAnchor id="webhooks-url-example" />
+###### 網址範例 (URL Example)
+
+```
+https://discord.com/oauth2/authorize?response_type=code&client_id=157730590492196864&scope=webhook.incoming&state=15773059ghq9183habn&redirect_uri=https%3A%2F%2Fnicememe.website
+```
+
+當使用者導覽至此網址時，系統會提示他們選擇一個允許 Webhook 的頻道。當 Webhook 被 [執行](/developers/zh-tw/resources/webhook#execute-webhook)時，它將把訊息發送到此頻道。接受後，使用者將被重新導向至您的 `redirect_uri`。網址將包含 `code` 查詢字串參數，該參數應被 [用於更換存取權杖](/developers/zh-tw/topics/oauth2#authorization-code-grant-access-token-exchange-example)。作為回報，您將收到稍微修改後的權杖回應：
+
+<ManualAnchor id="webhooks-webhook-token-response-example" />
+###### Webhook 權杖回應範例 (Webhook Token Response Example)
+
+```json
+{
+  "token_type": "Bearer",
+  "access_token": "GNaVzEtATqdh173tNHEXY9ZYAuhiYxvy",
+  "scope": "webhook.incoming",
+  "expires_in": 604800,
+  "refresh_token": "PvPL7ELyMDc1836457XCDh1Y8jPbRm",
+  "webhook": {
+    "application_id": "310954232226357250",
+    "name": "testwebhook",
+    "url": "https://discord.com/api/webhooks/347114750880120863/kKDdjXa1g9tKNs0-_yOwLyALC9gydEWP6gr9sHabuK1vuofjhQDDnlOclJeRIvYK-pj_",
+    "channel_id": "345626669224982402",
+    "token": "kKDdjXa1g9tKNs0-_yOwLyALC9gydEWP6gr9sHabuK1vuofjhQDDnlOclJeRIvYK-pj_",
+    "type": 1,
+    "avatar": null,
+    "guild_id": "290926792226357250",
+    "id": "347114750880120863"
+  }
+}
+```
+
+從此物件中，您應該儲存 `webhook.token` 和 `webhook.id`。有關如何使用 Webhook 發送訊息，請參閱 [執行 Webhook (execute webhook)](/developers/zh-tw/resources/webhook#execute-webhook) 說明文件。
+
+任何希望將您的 Webhook 新增至其頻道的使用者都需要經歷完整的 OAuth2 流程。每次都會建立一個新的 Webhook，因此您需要儲存 token 與 id。如果您希望向所有 Webhook 發送訊息，您將需要遍歷每個儲存的 id:token 組合，並向每一個發送 `POST` 請求。請注意我們的 [速率限制 (Rate Limits)](/developers/zh-tw/topics/rate-limits#rate-limits)！
+
+## 獲取當前 Bot 應用程式資訊 (Get Current Bot Application Information)
+<Route method="GET">/oauth2/applications/@me</Route>
+
+傳回 Bot 的 [應用程式 (application)](/developers/zh-tw/resources/application#application-object) 物件。
+
+## 獲取當前授權資訊 (Get Current Authorization Information)
+<Route method="GET">/oauth2/@me</Route>
+
+傳回有關當前授權的資訊。需要使用 Bearer 權杖進行驗證。
+
+<ManualAnchor id="get-current-authorization-information-response-structure" />
+###### 回應結構 (Response Structure)
+
+| 欄位 | 類型 | 說明 |
+|-------------|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| application | partial [application](/developers/zh-tw/resources/application#application-object) 物件 | 當前的應用程式 |
+| scopes      | array of strings                                                                   | 使用者已授權給該應用程式的 Scope 權限範圍 |
+| expires     | ISO8601 timestamp                                                                  | 存取權杖失效時間 |
+| user?       | [user](/developers/zh-tw/resources/user#user-object) 物件                              | 授權的使用者資訊，如果使用者是使用 `identify` 權限範圍授權 |
+
+<ManualAnchor id="get-current-authorization-information-example-authorization-information" />
+###### 授權資訊範例 (Example Authorization Information)
+
+```json
+{
+    "application": {
+        "id": "159799960412356608",
+        "name": "AIRHORN SOLUTIONS",
+        "icon": "f03590d3eb764081d154a66340ea7d6d",
+        "description": "",
+        "hook": true,
+        "bot_public": true,
+        "bot_require_code_grant": false,
+        "verify_key": "c8cde6a3c8c6e49d86af3191287b3ce255872be1fff6dc285bdb420c06a2c3c8"
+    },
+    "scopes": [
+        "guilds.join",
+        "identify"
+    ],
+    "expires": "2021-01-23T02:33:17.017000+00:00",
+    "user": {
+        "id": "268473310986240001",
+        "username": "discord",
+        "avatar": "f749bb0cbeeb26ef21eca719337d20f1",
+        "discriminator": "0",
+        "global_name": "Discord",
+        "public_flags": 131072
+    }
+}
+```

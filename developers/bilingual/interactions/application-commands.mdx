@@ -1,0 +1,2483 @@
+---
+title: "Application Commands"
+sidebarTitle: "Application Commands"
+description: Complete guide to creating slash commands, user commands, and message commands.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ManualAnchor } from '/snippets/manualanchor.jsx'
+import { Route } from '/snippets/route.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/interactions/application-commands" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+Application commands are native ways to interact with apps in the Discord client. There are 3 types of commands accessible in different interfaces: the chat input, a message's context menu (top-right menu or right-clicking in a message), and a user's context menu (right-clicking on a user).
+
+![Client interfaces showing the different types of application commands](/images/command-types.png)
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+應用程式指令是與 Discord 用戶端中應用程式進行原生互動的方式。有 3 種指令類型可在不同的介面中存取：聊天輸入框、訊息的快顯功能表（點擊訊息右上角的選單或按右鍵），以及使用者的快顯功能表（右鍵點擊使用者）。
+
+![顯示不同類型應用程式指令的用戶端介面](/images/command-types.png)
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Application Command Object
+
+<ManualAnchor id="application-command-object-application-command-naming" />
+###### Application Command Naming
+
+`CHAT_INPUT` command names and command option names must match the following regex `^[-_'\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$` with the unicode flag set. If there is a lowercase variant of any letters used, you must use those. Characters with no lowercase variants and/or uncased letters are still allowed. `USER` and `MESSAGE` commands may be mixed case and can include spaces.
+
+<ManualAnchor id="application-command-object-application-command-structure" />
+###### Application Command Structure
+
+| Field                      | Type                                                                                                                                       | Description                                                                                                                                                                                                                                                                | Valid Types         |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| id                         | snowflake                                                                                                                                  | Unique ID of command                                                                                                                                                                                                                                                       | all                 |
+| type?                      | one of [command types](/developers/en-us/interactions/application-commands#application-command-object-application-command-types)                 | [Type of command](/developers/en-us/interactions/application-commands#application-command-object-application-command-types), defaults to `1`                                                                                                                                     | all                 |
+| application_id             | snowflake                                                                                                                                  | ID of the parent application                                                                                                                                                                                                                                               | all                 |
+| guild_id?                  | snowflake                                                                                                                                  | Guild ID of the command, if not global                                                                                                                                                                                                                                     | all                 |
+| name                       | string                                                                                                                                     | [Name of command](/developers/en-us/interactions/application-commands#application-command-object-application-command-naming), 1-32 characters                                                                                                                                    | all                 |
+| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                | Localization dictionary for `name` field. Values follow the same restrictions as `name`                                                                                                                                                                                    | all                 |
+| description                | string                                                                                                                                     | Description for `CHAT_INPUT` commands, 1-100 characters. Empty string for `USER` and `MESSAGE` commands                                                                                                                                                                    | all                 |
+| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                | Localization dictionary for `description` field. Values follow the same restrictions as `description`                                                                                                                                                                      | all                 |
+| options? \*                | array of [command options](/developers/en-us/interactions/application-commands#application-command-object-application-command-option-structure)  | Parameters for the command, max of 25                                                                                                                                                                                                                                      | CHAT_INPUT          |
+| default_member_permissions | ?string                                                                                                                                    | Set of [permissions](/developers/topics/permissions) represented as a bit set                                                                                                                                                                                              | all                 |
+| dm_permission?             | boolean                                                                                                                                    | **Deprecated (use `contexts` instead)**; Indicates whether the command is available in DMs with the app, only for globally-scoped commands. By default, commands are visible.                                                                                              | all                 |
+| default_permission?        | ?boolean                                                                                                                                   | Not recommended for use as field will soon be deprecated. Indicates whether the command is enabled by default when the app is added to a guild, defaults to `true`                                                                                                         | all                 |
+| nsfw?                      | boolean                                                                                                                                    | Indicates whether the command is [age-restricted](/developers/en-us/interactions/application-commands#agerestricted-commands), defaults to `false`                                                                                                                               | all                 |
+| integration_types?         | list of [integration types](/developers/resources/application#application-object-application-integration-types)                            | [Installation contexts](/developers/resources/application#installation-context) where the command is available, only for globally-scoped commands. Defaults to your app's [configured contexts](/developers/resources/application#setting-supported-installation-contexts) | all                 |
+| contexts?                  | ?list of [interaction context types](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types)       | [Interaction context(s)](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types) where the command can be used, only for globally-scoped commands.                                                                                 | all                 |
+| version                    | snowflake                                                                                                                                  | Autoincrementing version identifier updated during substantial record changes                                                                                                                                                                                              | all                 |
+| handler?                   | one of [command handler types](/developers/en-us/interactions/application-commands#application-command-object-entry-point-command-handler-types) | Determines whether the interaction is handled by the app's interactions handler or by Discord                                                                                                                                                                              | PRIMARY_ENTRY_POINT |
+
+<Danger>
+`default_permission` will soon be deprecated. You can instead set `default_member_permissions` to `"0"` to disable the command for everyone except admins by default, and/or use `contexts` to disable globally-scoped commands inside of DMs with your app
+</Danger>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 應用程式指令物件 (Application Command Object)
+
+<ManualAnchor id="application-command-object-application-command-naming" />
+###### 應用程式指令命名規約 (Application Command Naming)
+
+`CHAT_INPUT` 指令名稱和指令選項名稱必須符合以下正規表示式：`^[-_'\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$`（需設置 unicode 旗標）。如果所使用的任何字母有小寫變體，您必須使用小寫。不具有小寫變體的字元和/或無大小寫區分的字母仍然是允許的。`USER` 和 `MESSAGE` 指令可以混合大小寫且可以包含空格。
+
+<ManualAnchor id="application-command-object-application-command-structure" />
+###### 應用程式指令結構 (Application Command Structure)
+
+| 欄位 | 類型 | 說明 | 適用類型 |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| id                         | snowflake | 指令的唯一 ID | 所有類型 |
+| type?                      | [command types](/developers/bilingual/interactions/application-commands#application-command-object-application-command-types) 之一 | [指令類型](/developers/bilingual/interactions/application-commands#application-command-object-application-command-types)，預設為 `1` | 所有類型 |
+| application_id             | snowflake | 父應用程式的 ID | 所有類型 |
+| guild_id?                  | snowflake | 指令的伺服器 ID（如果不是全域指令） | 所有類型 |
+| name                       | string | [指令名稱](/developers/bilingual/interactions/application-commands#application-command-object-application-command-naming)，長度為 1-32 個字元 | 所有類型 |
+| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales) | `name` 欄位的本地化對照字典。值需遵循與 `name` 相同的限制 | 所有類型 |
+| description                | string | `CHAT_INPUT` 指令的說明，長度為 1-100 個字元。對於 `USER` 和 `MESSAGE` 指令，此值需為空字串 | 所有類型 |
+| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales) | `description` 欄位的本地化對照字典。值需遵循與 `description` 相同的限制 | 所有類型 |
+| options? \*                | array of [command options](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-structure) | 指令的參數，最多 25 個 | CHAT_INPUT          |
+| default_member_permissions | ?string | 以位元集表示的預設成員[權限設定](/developers/bilingual/topics/permissions) | 所有類型 |
+| dm_permission?             | boolean | **已棄用（請改用 `contexts`）**；指出該指令是否可在與 App 的私訊 (DM) 中使用，僅適用於全域範圍的指令。預設情況下，指令是顯示的。 | 所有類型 |
+| default_permission?        | ?boolean | 不建議使用，此欄位即將被棄用。指出當 App 被加入伺服器時是否預設啟用該指令，預設為 `true` | 所有類型 |
+| nsfw?                      | boolean | 指出該指令是否為[年齡限制指令](/developers/bilingual/interactions/application-commands#agerestricted-commands)，預設為 `false` | 所有類型 |
+| integration_types?         | list of [integration types](/developers/resources/application#application-object-application-integration-types) | 可使用該指令的[安裝上下文](/developers/resources/application#installation-context)（僅適用於全域範圍指令）。預設為您 App [配置的上下文](/developers/resources/application#setting-supported-installation-contexts) | 所有類型 |
+| contexts?                  | ?list of [interaction context types](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types) | 可使用該指令的[互動上下文](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types)（僅限於全域範圍指令）。 | 所有類型 |
+| version                    | snowflake | 當發生實質性記錄變更時更新的自動遞增版本識別碼 | 所有類型 |
+| handler?                   | [command handler types](/developers/bilingual/interactions/application-commands#application-command-object-entry-point-command-handler-types) 之一 | 決定該互動是由 App 的互動處理常式處理，還是由 Discord 直接處理 | PRIMARY_ENTRY_POINT |
+
+<Danger>
+`default_permission` 即將被棄用。您可以改為將 `default_member_permissions` 設定為 `"0"`，以預設對管理員之外的所有人停用該指令，和/或使用 `contexts` 來停用與您 App 私訊中全域範圍指令的顯示。
+</Danger>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+<ManualAnchor id="application-command-object-application-command-types" />
+###### Application Command Types
+
+| Name                | Type | Description                                                                                                       |
+|---------------------|------|-------------------------------------------------------------------------------------------------------------------|
+| CHAT_INPUT          | 1    | Slash commands; a text-based command that shows up when a user types `/`                                          |
+| USER                | 2    | A UI-based command that shows up when you right click or tap on a user                                            |
+| MESSAGE             | 3    | A UI-based command that shows up when you right click or tap on a message                                         |
+| PRIMARY_ENTRY_POINT | 4    | A UI-based command that represents the primary way to invoke an app's [Activity](/developers/en-us/activities/overview) |
+
+<ManualAnchor id="application-command-object-application-command-option-structure" />
+###### Application Command Option Structure
+
+<Warning>
+Required `options` must be listed before optional options
+</Warning>
+
+| Field                      | Type                                                                                                                                                               | Description                                                                                                                               | Valid Option Types                            |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| type                       | one of [application command option type](/developers/en-us/interactions/application-commands#application-command-object-application-command-option-type)                 | Type of option                                                                                                                            | all                                           |
+| name \*                    | string                                                                                                                                                             | [1-32 character name](/developers/en-us/interactions/application-commands#application-command-object-application-command-naming)                | all                                           |
+| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                                        | Localization dictionary for the `name` field. Values follow the same restrictions as `name`                                               | all                                           |
+| description                | string                                                                                                                                                             | 1-100 character description                                                                                                               | all                                           |
+| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                                        | Localization dictionary for the `description` field. Values follow the same restrictions as `description`                                 | all                                           |
+| required?                  | boolean                                                                                                                                                            | Whether the parameter is required or optional, default `false`                                                                            | all but `SUB_COMMAND` and `SUB_COMMAND_GROUP` |
+| choices?                   | array of [application command option choice](/developers/en-us/interactions/application-commands#application-command-object-application-command-option-choice-structure) | Choices for the user to pick from, max 25                                                                                                 | `STRING`, `INTEGER`, `NUMBER`                 |
+| options?                   | array of [application command option](/developers/en-us/interactions/application-commands#application-command-object-application-command-option-structure)               | If the option is a subcommand or subcommand group type, these nested options will be the parameters or subcommands respectively; up to 25 | `SUB_COMMAND` , `SUB_COMMAND_GROUP`           |
+| channel_types?             | array of [channel types](/developers/resources/channel#channel-object-channel-types)                                                                               | The channels shown will be restricted to these types                                                                                      | `CHANNEL`                                     |
+| min_value?                 | integer for `INTEGER` options, double for `NUMBER` options | The minimum value permitted | `INTEGER` , `NUMBER` |
+| max_value?                 | integer for `INTEGER` options, double for `NUMBER` options | The maximum value permitted | `INTEGER` , `NUMBER` |
+| min_length?                | integer | The minimum allowed length (minimum of `0`, maximum of `6000`) | `STRING` |
+| max_length?                | integer | The maximum allowed length (minimum of `1`, maximum of `6000`) | `STRING` |
+| autocomplete? \*\*         | boolean | If autocomplete interactions are enabled for this option | `STRING`, `INTEGER`, `NUMBER` |
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+<ManualAnchor id="application-command-object-application-command-types" />
+###### 應用程式指令類型 (Application Command Types)
+
+| 名稱 (Name)         | 類型 (Type) | 說明 (Description)                                                                                                       |
+|---------------------|------|-------------------------------------------------------------------------------------------------------------------|
+| CHAT_INPUT          | 1    | 斜線指令 (Slash commands)；當使用者輸入 `/` 時顯示的文字指令 |
+| USER                | 2    | UI 導向的指令；當您右鍵點擊或點按使用者時顯示 |
+| MESSAGE             | 3    | UI 導向的指令；當您右鍵點擊或點按訊息時顯示 |
+| PRIMARY_ENTRY_POINT | 4    | UI 導向的指令；代表啟動應用程式 [互動活動 (Activity)](/developers/bilingual/activities/overview) 的主要方式 |
+
+<ManualAnchor id="application-command-object-application-command-option-structure" />
+###### 應用程式指令選項結構 (Application Command Option Structure)
+
+<Warning>
+必填的 `options` 必須列在選填的選項之前
+</Warning>
+
+| 欄位 | 類型 | 說明 | 適用選項類型 |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| type                       | [application command option type](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-type) 之一 | 選項類型 | 所有類型 |
+| name \*                    | string | [1-32 個字元的名稱](/developers/bilingual/interactions/application-commands#application-command-object-application-command-naming) | 所有類型 |
+| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales) | `name` 欄位的本地化對照字典。值需遵循與 `name` 相同的限制 | 所有類型 |
+| description                | string | 1-100 個字元的說明 | 所有類型 |
+| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales) | `description` 欄位的本地化對照字典。值需遵循與 `description` 相同的限制 | 所有類型 |
+| required?                  | boolean | 該參數是必填還是選填，預設為 `false` | 除 `SUB_COMMAND` 和 `SUB_COMMAND_GROUP` 之外的所有類型 |
+| choices?                   | array of [application command option choice](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-choice-structure) | 供使用者挑選的選項清單，最多 25 個 | `STRING`, `INTEGER`, `NUMBER`                 |
+| options?                   | array of [application command option](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-structure) | 如果該選項是子指令或子指令群組類型，這些巢狀選項將分別是參數或子指令；最多 25 個 | `SUB_COMMAND` , `SUB_COMMAND_GROUP`           |
+| channel_types?             | array of [channel types](/developers/resources/channel#channel-object-channel-types) | 顯示的頻道將會被限制為這些類型 | `CHANNEL`                                     |
+| min_value?                 | integer for `INTEGER` options, double for `NUMBER` options | 允許的最小值 | `INTEGER` , `NUMBER`                          |
+| max_value?                 | integer for `INTEGER` options, double for `NUMBER` options | 允許的最大值 | `INTEGER` , `NUMBER`                          |
+| min_length?                | integer | 允許的最小長度（最小為 `0`，最大為 `6000`） | `STRING`                                      |
+| max_length?                | integer | 允許的最大長度（最小為 `1`，最大為 `6000`） | `STRING`                                      |
+| autocomplete? \*\*         | boolean | 是否為此選項啟用自動完成互動功能 | `STRING`, `INTEGER`, `NUMBER`                 |
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+<ManualAnchor id="application-command-object-application-command-option-type" />
+###### Application Command Option Type
+
+| Name              | Value | Note                                                                 |
+|-------------------|-------|----------------------------------------------------------------------|
+| SUB_COMMAND       | 1     |                                                                      |
+| SUB_COMMAND_GROUP | 2     |                                                                      |
+| STRING            | 3     |                                                                      |
+| INTEGER           | 4     | Any integer between -2^53+1 and 2^53-1                               |
+| BOOLEAN           | 5     |                                                                      |
+| USER              | 6     |                                                                      |
+| CHANNEL           | 7     | Includes all channel types + categories                              |
+| ROLE              | 8     |                                                                      |
+| MENTIONABLE       | 9     | Includes users and roles                                             |
+| NUMBER            | 10    | Any double between -2^53 and 2^53                                    |
+| ATTACHMENT        | 11    | [attachment](/developers/en-us/resources/message#attachment-object) object |
+
+<ManualAnchor id="application-command-object-application-command-option-choice-structure" />
+###### Application Command Option Choice Structure
+
+<Info>
+If you specify `choices` for an option, they are the **only** valid values for a user to pick
+</Info>
+
+| Field               | Type                                                                        | Description                                                                                 |
+|---------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| name                | string                                                                      | 1-100 character choice name                                                                 |
+| name_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales) | Localization dictionary for the `name` field. Values follow the same restrictions as `name` |
+| value               | string, integer, or double \*                                               | Value for the choice, up to 100 characters if string                                        |
+
+<ManualAnchor id="application-command-object-entry-point-command-handler-types" />
+###### Entry Point Command Handler Types
+
+| Name                    | Value | Note                                                                                                                       |
+|-------------------------|-------|----------------------------------------------------------------------------------------------------------------------------|
+| APP_HANDLER             | 1     | The app handles the interaction using an interaction token                                                                 |
+| DISCORD_LAUNCH_ACTIVITY | 2     | Discord handles the interaction by launching an Activity and sending a follow-up message without coordinating with the app |
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+<ManualAnchor id="application-command-object-application-command-option-type" />
+###### 應用程式指令選項類型 (Application Command Option Type)
+
+| 名稱 (Name)       | 數值 (Value) | 備註 (Note)                                                          |
+|-------------------|-------|----------------------------------------------------------------------|
+| SUB_COMMAND       | 1     | 子指令 |
+| SUB_COMMAND_GROUP | 2     | 子指令群組 |
+| STRING            | 3     | 字串 |
+| INTEGER           | 4     | 介於 -2^53+1 與 2^53-1 之間的任何整數 |
+| BOOLEAN           | 5     | 布林值 |
+| USER              | 6     | 使用者 |
+| CHANNEL           | 7     | 包含所有頻道類型與類別 |
+| ROLE              | 8     | 身分組 |
+| MENTIONABLE       | 9     | 包括使用者和身分組 |
+| NUMBER            | 10    | 介於 -2^53 與 2^53 之間的任何雙倍精確度實數 |
+| ATTACHMENT        | 11    | [附件 (attachment)](/developers/bilingual/resources/message#attachment-object) 物件 |
+
+<ManualAnchor id="application-command-object-application-command-option-choice-structure" />
+###### 應用程式指令選項選擇結構 (Application Command Option Choice Structure)
+
+<Info>
+如果您為某個選項指定了 `choices`，它們將是使用者**唯一**可以選擇的有效數值
+</Info>
+
+| 欄位 | 類型 | 說明 |
+|---------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| name                | string | 1-100 個字元的選項名稱 |
+| name_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales) | `name` 欄位的本地化對照字典。值需遵循與 `name` 相同的限制 |
+| value               | string, integer, or double \*                                               | 選項的數值，如果是字串，最多 100 個字元 |
+
+<ManualAnchor id="application-command-object-entry-point-command-handler-types" />
+###### 進入點指令處理常式類型 (Entry Point Command Handler Types)
+
+| 名稱 (Name)             | 數值 (Value) | 備註 (Note)                                                                                                                       |
+|-------------------------|-------|----------------------------------------------------------------------------------------------------------------------------|
+| APP_HANDLER             | 1     | App 使用互動權杖處理互動功能 |
+| DISCORD_LAUNCH_ACTIVITY | 2     | Discord 藉由啟動互動活動並發送後續訊息來自動處理互動，而無需與 App 進行協調 |
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Authorizing Your Application
+
+Application commands do not depend on a bot user in the guild; they use the [interactions](/developers/en-us/interactions/receiving-and-responding) model. To create commands in a guild, your app must be authorized with the `applications.commands` scope which can be used independently, but is also automatically included with the `bot` scope.
+
+When requesting this scope, we "shortcut" the OAuth2 flow similar to adding a bot. You don't need to complete the flow, exchange for a token, or any of that.
+
+If your application does not require a bot user in the guild for its commands to work, **you don't need to add the bot scope or a permission bitfield to the URL**.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 授權您的應用程式 (Authorizing Your Application)
+
+應用程式指令不依賴於伺服器中的 Bot 使用者；它們使用 [互動 (interactions)](/developers/bilingual/interactions/receiving-and-responding) 模型。要在伺服器中建立指令，您的應用程式必須獲得 `applications.commands` 權限範圍的授權，該 Scope 可以單獨使用，但也自動包含在 `bot` 權限範圍中。
+
+當請求此 Scope 時，我們「簡化」了 OAuth2 流程，類似於新增 Bot。您不需要完成整個流程、兌換權杖，或執行任何此類操作。
+
+如果您的應用程式的指令運作不需要伺服器中的 Bot 使用者，**您不需要在網址中新增 bot 權限範圍或權限位元欄位**。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Registering a Command
+
+<Info>
+Commands can only be registered via HTTP endpoint.
+</Info>
+
+Commands can be scoped either globally or to a specific guild. Global commands are available for every guild that adds your app. An individual app's global commands are also available in DMs if that app has a bot that shares a mutual guild with the user.
+
+Guild commands are specific to the guild you specify when making them. Guild commands are not available in DMs. Command names are unique per application, per type, within each scope (global and guild). That means:
+
+- Your app **cannot** have two global `CHAT_INPUT` commands with the same name
+- Your app **cannot** have two guild `CHAT_INPUT` commands within the same name **on the same guild**
+- Your app **cannot** have two global `USER` commands with the same name
+- Your app **can** have a global and guild `CHAT_INPUT` command with the same name
+- Your app **can** have a global `CHAT_INPUT` and `USER` command with the same name
+- Your app **cannot** have a `PRIMARY_ENTRY_POINT` guild command
+- Multiple apps **can** have commands with the same names
+
+An app can have the following number of commands:
+
+- 100 global `CHAT_INPUT` commands
+- 15 global `USER` commands
+- 15 global `MESSAGE` commands
+- 1 global `PRIMARY_ENTRY_POINT` command
+
+For all command types except `PRIMARY_ENTRY_POINT`, you can have the same amount of guild-specific commands per guild.
+
+<Danger>
+There is a global rate limit of 200 application command creates per day, per guild
+</Danger>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 註冊指令 (Registering a Command)
+
+<Info>
+指令只能透過 HTTP 端點進行註冊。
+</Info>
+
+指令的範圍可以是全域性的，也可以是針對特定伺服器的。全域指令適用於新增您應用程式的每個伺服器。如果該 App 擁有與使用者共享共同伺服器的 Bot，則個別 App 的全域指令也可用於私訊中。
+
+伺服器指令僅適用於您在建立時指定的伺服器。伺服器指令在私訊中不可用。在每個範圍（全域與伺服器）內，每個應用程式、每個類型的指令名稱都是唯一的。這意味著：
+
+- 您的 App **不能**擁有兩個同名的全域 `CHAT_INPUT` 指令
+- 您的 App **不能**在**同一個伺服器上**擁有兩個同名的伺服器 `CHAT_INPUT` 指令
+- 您的 App **不能**擁有兩個同名的全域 `USER` 指令
+- 您的 App **可以**擁有一個同名的全域與伺服器 `CHAT_INPUT` 指令
+- 您的 App **可以**擁有一個同名的全域 `CHAT_INPUT` 與 `USER` 指令
+- 您的 App **不能**擁有 `PRIMARY_ENTRY_POINT` 伺服器指令
+- 多個 App **可以**擁有同名的指令
+
+一個應用程式可以擁有以下數量的指令：
+
+- 100 個全域 `CHAT_INPUT` 指令
+- 15 個全域 `USER` 指令
+- 15 個全域 `MESSAGE` 指令
+- 1 個全域 `PRIMARY_ENTRY_POINT` 指令
+
+對於除了 `PRIMARY_ENTRY_POINT` 之外的所有指令類型，您在每個伺服器中也可以擁有相同數量的伺服器專屬指令。
+
+<Danger>
+每個伺服器、每天有 200 個應用程式指令建立次數的全域速率限制
+</Danger>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Making a Global Command
+
+Global commands are available on _all_ your app's guilds.
+
+Global commands have inherent read-repair functionality. That means that if you make an update to a global command, and a user tries to use that command before it has updated for them, Discord will do an internal version check and reject the command, and trigger a reload for that command.
+
+To make a **global** command, make an HTTP POST call like this:
+
+```py
+import requests
+
+
+url = "https://discord.com/api/v10/applications/<my_application_id>/commands"
+
+# This is an example CHAT_INPUT or Slash Command, with a type of 1
+json = {
+    "name": "blep",
+    "type": 1,
+    "description": "Send a random adorable animal photo",
+    "options": [
+        {
+            "name": "animal",
+            "description": "The type of animal",
+            "type": 3,
+            "required": True,
+            "choices": [
+                {
+                    "name": "Dog",
+                    "value": "animal_dog"
+                },
+                {
+                    "name": "Cat",
+                    "value": "animal_cat"
+                },
+                {
+                    "name": "Penguin",
+                    "value": "animal_penguin"
+                }
+            ]
+        },
+        {
+            "name": "only_smol",
+            "description": "Whether to show only baby animals",
+            "type": 5,
+            "required": False
+        }
+    ]
+}
+
+# For authorization, you can use either your bot token
+headers = {
+    "Authorization": "Bot <my_bot_token>"
+}
+
+# or a client credentials token for your app with the applications.commands.update scope
+headers = {
+    "Authorization": "Bearer <my_credentials_token>"
+}
+
+r = requests.post(url, headers=headers, json=json)
+```
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 建立全域指令 (Making a Global Command)
+
+全域指令在您應用程式的*所有*伺服器上均可用。
+
+全域指令具有內置的讀取修復 (read-repair) 功能。這意味著如果您更新了某個全域指令，而使用者在該指令對他們進行更新之前嘗試使用它，Discord 將會執行內部版本檢查並拒絕該指令，並觸發該指令的重新載入。
+
+要建立**全域**指令，請發送如下的 HTTP POST 呼叫：
+
+```py
+import requests
+
+
+url = "https://discord.com/api/v10/applications/<my_application_id>/commands"
+
+# 這是一個 CHAT_INPUT（斜線指令）範例，類型為 1
+json = {
+    "name": "blep",
+    "type": 1,
+    "description": "Send a random adorable animal photo",
+    "options": [
+        {
+            "name": "animal",
+            "description": "The type of animal",
+            "type": 3,
+            "required": True,
+            "choices": [
+                {
+                    "name": "Dog",
+                    "value": "animal_dog"
+                },
+                {
+                    "name": "Cat",
+                    "value": "animal_cat"
+                },
+                {
+                    "name": "Penguin",
+                    "value": "animal_penguin"
+                }
+            ]
+        },
+        {
+            "name": "only_smol",
+            "description": "Whether to show only baby animals",
+            "type": 5,
+            "required": False
+        }
+    ]
+}
+
+# 授權方面，您可以使用您的 Bot token
+headers = {
+    "Authorization": "Bot <my_bot_token>"
+}
+
+# 或者使用具有 applications.commands.update 範圍之 App 的用戶端憑證 token
+headers = {
+    "Authorization": "Bearer <my_credentials_token>"
+}
+
+r = requests.post(url, headers=headers, json=json)
+```
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Making a Guild Command
+
+Guild commands are available only within the guild specified on creation. Guild commands update **instantly**. We recommend you use guild commands for quick testing, and global commands when they're ready for public use.
+
+To make a **guild** command, make a similar HTTP POST call, but scope it to a specific `guild_id`:
+
+```py
+import requests
+
+
+url = "https://discord.com/api/v10/applications/<my_application_id>/guilds/<guild_id>/commands"
+
+# This is an example USER command, with a type of 2
+json = {
+    "name": "High Five",
+    "type": 2
+}
+
+# For authorization, you can use either your bot token
+headers = {
+    "Authorization": "Bot <my_bot_token>"
+}
+
+# or a client credentials token for your app with the applications.commands.update scope
+headers = {
+    "Authorization": "Bearer <my_credentials_token>"
+}
+
+r = requests.post(url, headers=headers, json=json)
+```
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 建立伺服器指令 (Making a Guild Command)
+
+伺服器指令僅在建立時指定的伺服器中可用。伺服器指令會**立即**更新。我們建議您使用伺服器指令進行快速測試，並在全域指令準備好供大眾使用時再行發布。
+
+要建立**伺服器**指令，請發送類似的 HTTP POST 呼叫，但將其範圍限制在特定的 `guild_id`：
+
+```py
+import requests
+
+
+url = "https://discord.com/api/v10/applications/<my_application_id>/guilds/<guild_id>/commands"
+
+# 這是一個 USER 指令範例，類型為 2
+json = {
+    "name": "High Five",
+    "type": 2
+}
+
+# 授權方面，您可以使用您的 Bot token
+headers = {
+    "Authorization": "Bot <my_bot_token>"
+}
+
+# 或者使用具有 applications.commands.update 範圍之 App 的用戶端憑證 token
+headers = {
+    "Authorization": "Bearer <my_credentials_token>"
+}
+
+r = requests.post(url, headers=headers, json=json)
+```
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Updating and Deleting a Command
+
+Commands can be deleted and updated by making `DELETE` and `PATCH` calls to the command endpoint. Those endpoints are
+
+- `applications/<my_application_id>/commands/<command_id>` for global commands, or
+- `applications/<my_application_id>/guilds/<guild_id>/commands/<command_id>` for guild commands
+
+Because commands have unique names within a type and scope, we treat `POST` requests for new commands as upserts. That means **making a new command with an already-used name for your application will update the existing command**.
+
+Detailed documentation about application command endpoints and their parameters are [in the endpoints section](/developers/en-us/interactions/application-commands#endpoints).
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 更新與刪除指令 (Updating and Deleting a Command)
+
+您可以透過向指令端點發送 `DELETE` 和 `PATCH` 呼叫來刪除和更新指令。這些端點分別是：
+
+- 用於全域指令的 `applications/<my_application_id>/commands/<command_id>`，或
+- 用於伺服器指令的 `applications/<my_application_id>/guilds/<guild_id>/commands/<command_id>`
+
+由於指令在類型和範圍內具有唯一的名稱，因此我們將新指令的 `POST` 請求視為更新或新增 (upsert)。這意味著**以已在您應用程式中使用的名稱建立新指令將會更新現有的指令**。
+
+有關應用程式指令端點及其參數的詳細文件位於[端點章節](/developers/bilingual/interactions/application-commands#endpoints)。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Contexts
+
+Commands have two sets of contexts on the [application command object](/developers/en-us/interactions/application-commands#application-command-object) that let you to configure when and where it can be used:
+- `integration_types` defines the **[installation contexts](/developers/en-us/interactions/application-commands#installation-context)** that a command supports
+- `contexts` defines the **[interaction contexts](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types)** where a command can be used
+
+Details for both types of command contexts are in the sections below.
+
+<Info>
+Contexts are distinct from, and do not affect, any [command permissions](/developers/en-us/interactions/application-commands#permissions) for apps installed to a server.
+</Info>
+
+### Installation Context
+
+The [installation context](/developers/resources/application#installation-context) is where your app was installed—to a server, a user, or both. If your app supports both installation contexts, there may be cases where you want some of your app's commands to only be available for one or the other. For example, maybe your app has a `/profile` command that is only relevant when it's installed to a user.
+
+A command's supported installation context(s) can be set using the [`integration_types` field](/developers/en-us/interactions/application-commands#application-command-object-application-command-structure) when creating or updating a command as long as any included contexts are already [supported on the application-level](/developers/resources/application#setting-supported-installation-contexts).
+
+A command's value for `integration_types` may affect which [interaction contexts](/developers/en-us/interactions/application-commands#interaction-contexts) a command is visible in.
+
+### Interaction Contexts
+
+The interaction contexts for a command determines where in the Discord client it can be used, and can be configured by setting the [`contexts` field](/developers/en-us/interactions/application-commands#application-command-object-application-command-structure) when creating or updating a command.
+
+There are three [interaction context types](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types) that correspond to different surfaces: `GUILD` (`0`), `BOT_DM` (`1`), and `PRIVATE_CHANNEL` (`2`). However, the `PRIVATE_CHANNEL` interaction context is only meaningful for commands installed to a user (when the command's `integration_types` includes `USER_INSTALL`).
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 上下文環境 (Contexts)
+
+指令在[應用程式指令物件](/developers/bilingual/interactions/application-commands#application-command-object)上具有兩組上下文設定，可供您配置何時何地可以使用它：
+- `integration_types` 定義了指令所支援的**[安裝上下文 (installation contexts)](/developers/bilingual/interactions/application-commands#installation-context)**
+- `contexts` 定義了指令可被使用的**[互動上下文 (interaction contexts)](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types)**
+
+這兩類指令上下文的詳細資訊位於以下章節。
+
+<Info>
+上下文與安裝在伺服器中 App 的任何 [指令權限 (command permissions)](/developers/bilingual/interactions/application-commands#permissions) 是不同的，且不會對其造成影響。
+</Info>
+
+### 安裝上下文 (Installation Context)
+
+[安裝上下文](/developers/bilingual/resources/application#installation-context)是您 App 安裝的位置 —— 安裝在伺服器、使用者，或兩者皆是。如果您的 App 同時支援這兩種安裝上下文，在某些情況下，您可能會希望 App 的某些指令僅適用於其中一種上下文。例如，您的 App 可能有一個 `/profile` 指令，僅在將其安裝到使用者帳戶時才有意義。
+
+實作上，只要任何包含的上下文在 [應用程式層級已被支援](/developers/bilingual/resources/application#setting-supported-installation-contexts)，即可在建立或更新指令時，使用 [`integration_types` 欄位](/developers/bilingual/interactions/application-commands#application-command-object-application-command-structure) 來設定指令所支援的安裝上下文。
+
+一個指令在 `integration_types` 中的設定值可能會影響該指令在哪個[互動上下文](/developers/bilingual/interactions/application-commands#interaction-contexts)中可見。
+
+### 互動上下文 (Interaction Contexts)
+
+指令的互動上下文決定了它在 Discord 用戶端的何處可以使用，且可以藉由在建立或更新指令時設定 [`contexts` 欄位](/developers/bilingual/interactions/application-commands#application-command-object-application-command-structure) 來配置。
+
+有三種 [互動上下文類型](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types) 對應於不同的介面：`GUILD` (`0`)、`BOT_DM` (`1`) 以及 `PRIVATE_CHANNEL` (`2`)。然而，`PRIVATE_CHANNEL` 互動上下文僅對安裝到使用者的指令有意義（當該指令的 `integration_types` 包含 `USER_INSTALL` 時）。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Permissions
+
+Application command permissions allow your app to enable or disable commands for up to 100 users, roles, and channels within a guild. Command permissions can also be updated by users in the client if they have the necessary permissions.
+
+<Warning>
+Command permissions can only be updated using a [Bearer token](/developers/en-us/topics/oauth2#client-credentials-grant). Authenticating with a bot token will result in an error.
+</Warning>
+
+A command's current permissions can be retrieved using the [`GET /applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions`](/developers/en-us/interactions/application-commands#get-application-command-permissions) endpoint. The response will include an array called `permissions` with associated IDs and permission types.
+
+Command permissions can be updated with the [`PUT /applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions`](/developers/en-us/interactions/application-commands#edit-application-command-permissions) endpoint. To call the endpoint, apps must use a Bearer token that's authorized with the [`applications.commands.permissions.update`](/developers/en-us/topics/oauth2#shared-resources-oauth2-scopes) scope from a user with sufficient permissions. For their permissions to be considered sufficient, all of the following must be true for **the authenticating user** (not your app or bot user):
+- Has [permission to Manage Guild and Manage Roles](/developers/en-us/topics/permissions) in the guild where the command is being edited
+- Has the ability to run the command being edited
+- Has permission to manage the resources that will be affected (roles, users, and/or channels depending on the [permission types](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permission-type))
+
+### Syncing and Unsyncing Permissions
+
+The command permissions interface can be accessed in the client by navigating to `Server Settings` > `Integrations`, then clicking `Manage` to the right of an installed app. At the top of the interface, users can edit permissions for a specific user, role, or channel. By default, these top-level permissions will apply to all of an app's commands. However, each permission can also be unsynced and customized for individual commands to provide more granular control.
+
+When the permissions for a specific command are unsynced, meaning it doesn't align with the top-level permissions, the interface will display "Not Synced" to users.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 權限 (Permissions)
+
+應用程式指令權限允許您的 App 在伺服器中為最多 100 個使用者、身分組和頻道啟用或停用指令。如果使用者擁有必要的權限，他們也可以在用戶端中更新指令權限。
+
+<Warning>
+指令權限僅能使用 [Bearer token](/developers/bilingual/topics/oauth2#client-credentials-grant) 進行更新。使用 Bot token 進行驗證將會導致錯誤。
+</Warning>
+
+可以使用 [`GET /applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions`](/developers/bilingual/interactions/application-commands#get-application-command-permissions) 端點來獲取指令的當前權限。回應將包含一個名為 `permissions` 的陣列，其中包含關聯的 ID 與權限類型。
+
+可以使用 [`PUT /applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions`](/developers/bilingual/interactions/application-commands#edit-application-command-permissions) 端點來更新指令權限。要呼叫此端點，App 必須使用經具有足夠權限的使用者授權之 [`applications.commands.permissions.update`](/developers/bilingual/topics/oauth2#shared-resources-oauth2-scopes) 範圍的 Bearer 權杖。要使他們的權限被視為足夠，**進行驗證的使用者**（非您的 App 或 Bot 使用者）必須滿足以下所有條件：
+- 在編輯該指令所在的伺服器中擁有 [管理伺服器 (Manage Guild) 與管理身分組 (Manage Roles) 權限](/developers/bilingual/topics/permissions)
+- 具有執行正在編輯之指令的能力
+- 擁有管理將受影響之資源（身分組、使用者和/或頻道，取決於 [權限類型](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permission-type)）的權限
+
+### 同步與取消同步權限 (Syncing and Unsyncing Permissions)
+
+可以在用戶端中透過導覽至 `伺服器設定` > `整合`，然後點擊已安裝 App 右側的 `管理` 來存取指令權限介面。在介面最上方，使用者可以編輯特定使用者、身分組或頻道的權限。預設情況下，這些最上層的權限會套用到 App 的所有指令。然而，每項權限也都可以取消同步，並為個別指令進行自訂，以提供更細緻的控制。
+
+當特定指令的權限與最上層權限不同（即去同步）時，介面會向使用者顯示「未同步」。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Application Command Permissions Object
+
+<ManualAnchor id="application-command-permissions-object-guild-application-command-permissions-structure" />
+###### Guild Application Command Permissions Structure
+
+Returned when fetching the permissions for an app's command(s) in a guild.
+
+| Field          | Type                                                                                                                                                                       | Description                                          |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| id             | snowflake                                                                                                                                                                  | ID of the command or the application ID              |
+| application_id | snowflake                                                                                                                                                                  | ID of the application the command belongs to         |
+| guild_id       | snowflake                                                                                                                                                                  | ID of the guild                                      |
+| permissions    | array of [application command permissions](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure) | Permissions for the command in the guild, max of 100 |
+
+When the `id` field is the application ID instead of a command ID, the permissions apply to all commands that do not contain explicit overwrites.
+
+<ManualAnchor id="application-command-permissions-object-application-command-permissions-structure" />
+###### Application Command Permissions Structure
+
+Application command permissions allow you to enable or disable commands for specific users, roles, or channels within a guild.
+
+| Field      | Type                                                                                                                                                            | Description                                                                                                                                                                                              |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id         | snowflake                                                                                                                                                       | ID of the role, user, or channel. It can also be a [permission constant](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permissions-constants) |
+| type       | [application command permission type](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permission-type) | role (`1`), user (`2`), or channel (`3`)                                                                                                                                                                 |
+| permission | boolean                                                                                                                                                         | `true` to allow, `false`, to disallow                                                                                                                                                                    |
+
+###### Application Command Permissions Constants
+
+The following constants can be used in the `id` field for command permissions payloads.
+
+| Permission   | Value          | Type      | Description             |
+|--------------|----------------|-----------|-------------------------|
+| `@everyone`  | `guild_id`     | snowflake | All members in a guild  |
+| All Channels | `guild_id - 1` | snowflake | All channels in a guild |
+
+<ManualAnchor id="application-command-permissions-object-application-command-permission-type" />
+###### Application Command Permission Type
+
+| Name    | Value |
+|---------|-------|
+| ROLE    | 1     |
+| USER    | 2     |
+| CHANNEL | 3     |
+
+To allow for fine-tuned access to commands, application command permissions are supported for guild and global commands of all types. Guild members and apps with the [necessary permissions](/developers/en-us/interactions/application-commands#permissions) can allow or deny specific users and roles from using a command, or toggle commands for entire channels.
+
+Similar to how threads [inherit user and role permissions from the parent channel](/developers/topics/threads#permissions), any command permissions for a channel will apply to the threads it contains.
+
+<Info>
+If you don't have permission to use a command, it will not show up in the command picker. Members with the Administrator permission can use all commands.
+</Info>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 應用程式指令權限物件 (Application Command Permissions Object)
+
+<ManualAnchor id="application-command-permissions-object-guild-application-command-permissions-structure" />
+###### 伺服器應用程式指令權限結構 (Guild Application Command Permissions Structure)
+
+在伺服器中獲取 App 指令的權限時傳回。
+
+| 欄位 | 類型 | 說明 |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| id             | snowflake | ID of the command or the application ID |
+| application_id | snowflake | ID of the application the command belongs to |
+| guild_id       | snowflake | ID of the guild |
+| permissions    | array of [application command permissions](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure) | 指令在伺服器中的權限設定，最多 100 個 |
+
+當 `id` 欄位是應用程式 ID 而非指令 ID 時，權限將套用到所有不包含明確覆寫設定的指令。
+
+<ManualAnchor id="application-command-permissions-object-application-command-permissions-structure" />
+###### 應用程式指令權限結構 (Application Command Permissions Structure)
+
+應用程式指令權限允許您在伺服器中為特定使用者、身分組或頻道啟用或停用指令。
+
+| 欄位 | 類型 | 說明 |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id         | snowflake | ID of the role, user, or channel. It can also be a [permission constant](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permissions-constants) |
+| type       | [application command permission type](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permission-type) | role (`1`), user (`2`), or channel (`3`) |
+| permission | boolean | `true` to allow, `false`, to disallow |
+
+###### 應用程式指令權限常數 (Application Command Permissions Constants)
+
+以下常數可用於指令權限 payload 的 `id` 欄位。
+
+| 權限 | 數值 | 類型 | 說明 |
+|--------------|----------------|-----------|-------------------------|
+| `@everyone`  | `guild_id`     | snowflake | All members in a guild  |
+| All Channels | `guild_id - 1` | snowflake | All channels in a guild |
+
+<ManualAnchor id="application-command-permissions-object-application-command-permission-type" />
+###### 應用程式指令權限類型 (Application Command Permission Type)
+
+| 名稱 (Name) | 數值 (Value) |
+|---------|-------|
+| ROLE    | 1     |
+| USER    | 2     |
+| CHANNEL | 3     |
+
+為了提供對指令的微調存取權限，所有類型的伺服器和全域指令都支援應用程式指令權限。具有 [必要權限](/developers/bilingual/interactions/application-commands#permissions) 的伺服器成員和 App 可以允許或拒絕特定使用者和身分組使用某個指令，或者為整個頻道切換指令的啟用狀態。
+
+類似於貼文/執行緒 [從父頻道繼承使用者與身分組權限](/developers/topics/threads#permissions) 的方式，頻道的任何指令權限都將套用到其所包含的貼文/執行緒中。
+
+<Info>
+如果您沒有使用某個指令的權限，它將不會顯示在指令選取器中。具有 Administrator 權限的成員可以使用所有指令。
+</Info>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+###### Using Default Permissions
+
+Default permissions can be added to a command during creation using the `default_member_permissions` and `context` fields. Adding default permissions doesn't require any Bearer token since it's configured during command creation and isn't targeting specific roles, users, or channels.
+
+The `default_member_permissions` field can be used when creating a command to set the permissions a user must have to use it. The value for `default_member_permissions` is a bitwise OR-ed set of [permissions](/developers/topics/permissions#permissions-bitwise-permission-flags), serialized as a string. Setting it to `"0"` will prohibit anyone in a guild from using the command unless a specific overwrite is configured or the user has admin permissions.
+
+You can also include `BOT_DM` (`1`) in `contexts` when setting a global command's [interaction contexts](/developers/en-us/interactions/application-commands#interaction-contexts) to control whether it can be run in DMs with your app. Guild commands don't support the `BOT_DM` interaction context.
+
+###### Example of editing permissions
+
+As an example, the following command would not be usable by anyone except admins in any guilds by default:
+
+```json
+{
+    "name": "permissions_test",
+    "description": "A test of default permissions",
+    "type": 1,
+    "default_member_permissions": "0"
+}
+```
+
+Or this would enable it just for users that have the `MANAGE_GUILD` permission:
+
+```py
+permissions = str(1 << 5)
+
+command = {
+    "name": "permissions_test",
+    "description": "A test of default permissions",
+    "type": 1,
+    "default_member_permissions": permissions
+}
+```
+
+And the following would disable a command for a specific channel:
+
+```py
+A_SPECIFIC_CHANNEL = "<channel_id>"
+url = "https://discord.com/api/v10/applications/<application_id>/guilds/<my_guild_id>/commands/<my_command_id>/permissions"
+
+json = {
+    "permissions": [
+        {
+            "id": A_SPECIFIC_CHANNEL,
+            "type": 3,
+            "permission": False
+        }
+    ]
+}
+
+headers = {
+    "Authorization": "Bearer <my_bearer_token>"
+}
+
+r = requests.put(url, headers=headers, json=json)
+```
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+###### 使用預設權限 (Using Default Permissions)
+
+預設權限可以在建立指令時，透過使用 `default_member_permissions` 和 `context` 欄位新增至指令中。新增預設權限不需要任何 Bearer token，因為它是在指令配置期間設定的，而不是針對特定的身分組、使用者或頻道。
+
+建立指令時可以使用 `default_member_permissions` 欄位來設定使用者必須擁有的權限才能使用它。`default_member_permissions` 的值是按位 OR 運算後的 [權限旗標](/developers/topics/permissions#permissions-bitwise-permission-flags) 組合，序列化為字串。將其設定為 `"0"` 將禁止伺服器中的任何人使用該指令，除非配置了特定的覆寫或使用者具有管理員權限。
+
+在設定全域指令的 [互動上下文](/developers/bilingual/interactions/application-commands#interaction-contexts) 時，您也可以在 `contexts` 中包含 `BOT_DM` (`1`)，以控制是否可以在與您 App 的私訊中執行該指令。伺服器指令不支援 `BOT_DM` 互動上下文。
+
+###### 編輯權限範例 (Example of editing permissions)
+
+例如，以下指令預設在任何伺服器中除了管理員之外，任何人都無法使用：
+
+```json
+{
+    "name": "permissions_test",
+    "description": "A test of default permissions",
+    "type": 1,
+    "default_member_permissions": "0"
+}
+```
+
+或者，這將僅為具有 `MANAGE_GUILD` 權限的使用者啟用該指令：
+
+```py
+permissions = str(1 << 5)
+
+command = {
+    "name": "permissions_test",
+    "description": "A test of default permissions",
+    "type": 1,
+    "default_member_permissions": permissions
+}
+```
+
+以下將會對特定頻道停用某個指令：
+
+```py
+A_SPECIFIC_CHANNEL = "<channel_id>"
+url = "https://discord.com/api/v10/applications/<application_id>/guilds/<my_guild_id>/commands/<my_command_id>/permissions"
+
+json = {
+    "permissions": [
+        {
+            "id": A_SPECIFIC_CHANNEL,
+            "type": 3,
+            "permission": False
+        }
+    ]
+}
+
+headers = {
+    "Authorization": "Bearer <my_bearer_token>"
+}
+
+r = requests.put(url, headers=headers, json=json)
+```
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Slash Commands
+
+Slash commands—the `CHAT_INPUT` type—are a type of application command. They're made up of a name, description, and a block of `options`, which you can think of like arguments to a function. The name and description help users find your command among many others, and the `options` validate user input as they fill out your command.
+
+Slash commands can also have groups and subcommands to further organize commands. More on those later.
+
+<Warning>
+Slash commands can have a maximum of 8000 characters for combined name, description, and value properties for each command, its options (including subcommands and groups), and choices.
+</Warning>
+
+###### Example Slash Command
+
+```json
+{
+    "name": "blep",
+    "type": 1,
+    "description": "Send a random adorable animal photo",
+    "options": [
+        {
+            "name": "animal",
+            "description": "The type of animal",
+            "type": 3,
+            "required": true,
+            "choices": [
+                {
+                    "name": "Dog",
+                    "value": "animal_dog"
+                },
+                {
+                    "name": "Cat",
+                    "value": "animal_cat"
+                },
+                {
+                    "name": "Penguin",
+                    "value": "animal_penguin"
+                }
+            ]
+        },
+        {
+            "name": "only_smol",
+            "description": "Whether to show only baby animals",
+            "type": 5,
+            "required": false
+        }
+    ]
+}
+```
+
+When someone uses a slash command, your application will receive an interaction:
+
+###### Example Interaction
+
+<Accordion title="Slash Command Interaction" description="View sample payload for Slash Command interactions" icon="code">
+
+```json
+{
+    "type": 2,
+    "token": "A_UNIQUE_TOKEN",
+    "member": {
+        "user": {
+            "id": "53908232506183680",
+            "username": "Mason",
+            "avatar": "a_d5efa99b3eeaa7dd43acca82f5692432",
+            "discriminator": "1337",
+            "public_flags": 131141
+        },
+        "roles": ["539082325061836999"],
+        "premium_since": null,
+        "permissions": "2147483647",
+        "pending": false,
+        "nick": null,
+        "mute": false,
+        "joined_at": "2017-03-13T19:19:14.040000+00:00",
+        "is_pending": false,
+        "deaf": false
+    },
+    "id": "786008729715212338",
+    "guild_id": "290926798626357999",
+    "app_permissions": "442368",
+    "guild_locale": "en-US",
+    "locale": "en-US",
+    "data": {
+        "options": [{
+            "type": 3,
+            "name": "cardname",
+            "value": "The Gitrog Monster"
+        }],
+        "type": 1,
+        "name": "cardsearch",
+        "id": "771825006014889984"
+    },
+    "channel_id": "645027906669510667"
+}
+```
+
+</Accordion>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 斜線指令 (Slash Commands)
+
+斜線指令 —— 即 `CHAT_INPUT` 類型 —— 是應用程式指令的一種。它們由名稱、說明和一個 `options` 區塊組成，您可以將其視為函式的參數。名稱和說明可協助使用者在眾多指令中找到您的指令，而 `options` 則在使用者填寫您的指令時驗證其輸入。
+
+斜線指令還可以具有群組與子指令，以進一步組織指令。
+
+<Warning>
+斜線指令的每個指令、其選項（包括子指令與群組）以及選擇的名稱、說明和值屬性組合起來最多隻能有 8000 個字元。
+</Warning>
+
+###### 斜線指令範例 (Example Slash Command)
+
+```json
+{
+    "name": "blep",
+    "type": 1,
+    "description": "Send a random adorable animal photo",
+    "options": [
+        {
+            "name": "animal",
+            "description": "The type of animal",
+            "type": 3,
+            "required": true,
+            "choices": [
+                {
+                    "name": "Dog",
+                    "value": "animal_dog"
+                },
+                {
+                    "name": "Cat",
+                    "value": "animal_cat"
+                },
+                {
+                    "name": "Penguin",
+                    "value": "animal_penguin"
+                }
+            ]
+        },
+        {
+            "name": "only_smol",
+            "description": "Whether to show only baby animals",
+            "type": 5,
+            "required": false
+        }
+    ]
+}
+```
+
+當有人使用斜線指令時，您的應用程式將會收到一個互動：
+
+###### 互動範例 (Example Interaction)
+
+<Accordion title="斜線指令互動" description="檢視斜線指令互動的範例 payload" icon="code">
+
+```json
+{
+    "type": 2,
+    "token": "A_UNIQUE_TOKEN",
+    "member": {
+        "user": {
+            "id": "53908232506183680",
+            "username": "Mason",
+            "avatar": "a_d5efa99b3eeaa7dd43acca82f5692432",
+            "discriminator": "1337",
+            "public_flags": 131141
+        },
+        "roles": ["539082325061836999"],
+        "premium_since": null,
+        "permissions": "2147483647",
+        "pending": false,
+        "nick": null,
+        "mute": false,
+        "joined_at": "2017-03-13T19:19:14.040000+00:00",
+        "is_pending": false,
+        "deaf": false
+    },
+    "id": "786008729715212338",
+    "guild_id": "290926798626357999",
+    "app_permissions": "442368",
+    "guild_locale": "en-US",
+    "locale": "en-US",
+    "data": {
+        "options": [{
+            "type": 3,
+            "name": "cardname",
+            "value": "The Gitrog Monster"
+        }],
+        "type": 1,
+        "name": "cardsearch",
+        "id": "771825006014889984"
+    },
+    "channel_id": "645027906669510667"
+}
+```
+
+</Accordion>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Subcommands and Subcommand Groups
+
+<Warning>
+Currently, subcommands and subcommand groups all appear at the top level in the command explorer.
+</Warning>
+
+For those developers looking to make more organized and complex groups of commands, look no further than subcommands and groups.
+
+**Subcommands** organize your commands by **specifying actions within a command or group**.
+
+**Subcommand Groups** organize your **subcommands** by **grouping subcommands by similar action or resource within a command**.
+
+<Danger>
+Using subcommands or subcommand groups will make your base command unusable. You can't send the base `/permissions` command as a valid command if you also have `/permissions add | remove` as subcommands or subcommand groups
+</Danger>
+
+We support nesting one level deep within a group, meaning your top level command can contain subcommand groups, and those groups can contain subcommands. **That is the only kind of nesting supported.** Here's some visual examples:
+
+```
+VALID
+
+command
+|
+|__ subcommand
+|
+|__ subcommand
+
+----
+
+VALID
+
+command
+|
+|__ subcommand-group
+    |
+    |__ subcommand
+|
+|__ subcommand-group
+    |
+    |__ subcommand
+```
+
+### Example Walkthrough
+
+Let's look at an example. Let's imagine you run a moderation bot. You want to make a `/permissions` command that can do the following:
+
+- Get the guild permissions for a user or a role
+- Get the permissions for a user or a role on a specific channel
+- Change the guild permissions for a user or a role
+- Change the permissions for a user or a role on a specific channel
+
+We'll start by defining the top-level information for `/permissions`:
+
+```js
+{
+    "name": "permissions",
+    "description": "Get or edit permissions for a user or a role",
+    "options": []
+}
+```
+
+![A command with no arguments. It says /permissions](/images/command.png)
+
+Now we have a command named `permissions`. We want this command to be able to affect users and roles. Rather than making two separate commands, we can use subcommand groups. We want to use subcommand groups here because we are grouping commands on a similar resource: `user` or `role`.
+
+```js
+{
+    "name": "permissions",
+    "description": "Get or edit permissions for a user or a role",
+    "options": [
+        {
+            "name": "user",
+            "description": "Get or edit permissions for a user",
+            "type": 2 // 2 is type SUB_COMMAND_GROUP
+        },
+        {
+            "name": "role",
+            "description": "Get or edit permissions for a role",
+            "type": 2
+        }
+    ]
+}
+```
+
+You'll notice that a command like this **will not show up** in the command explorer. That's because groups are effectively "folders" for commands, and we've made two empty folders. So let's continue.
+
+Now that we've effectively made `user` and `role` "folders", we want to be able to either `get` and `edit` permissions. Within the subcommand groups, we can make subcommands for `get` and `edit`:
+
+```js
+{
+    "name": "permissions",
+    "description": "Get or edit permissions for a user or a role",
+    "options": [
+        {
+            "name": "user",
+            "description": "Get or edit permissions for a user",
+            "type": 2, // 2 is type SUB_COMMAND_GROUP
+            "options": [
+                {
+                    "name": "get",
+                    "description": "Get permissions for a user",
+                    "type": 1 // 1 is type SUB_COMMAND
+                },
+                {
+                    "name": "edit",
+                    "description": "Edit permissions for a user",
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "name": "role",
+            "description": "Get or edit permissions for a role",
+            "type": 2,
+            "options": [
+                {
+                    "name": "get",
+                    "description": "Get permissions for a role",
+                    "type": 1
+                },
+                {
+                    "name": "edit",
+                    "description": "Edit permissions for a role",
+                    "type": 1
+                }
+            ]
+        }
+    ]
+}
+```
+
+![A command with grouped subcommands. It says /permissions user get](/images/command-with-groups-subcommands.png)
+
+Now, we need some arguments! If we chose `user`, we need to be able to pick a user; if we chose `role`, we need to be able to pick a role. We also want to be able to pick between guild-level permissions and channel-specific permissions. For that, we can use optional arguments:
+
+```js
+{
+    "name": "permissions",
+    "description": "Get or edit permissions for a user or a role",
+    "options": [
+        {
+            "name": "user",
+            "description": "Get or edit permissions for a user",
+            "type": 2, // 2 is type SUB_COMMAND_GROUP
+            "options": [
+                {
+                    "name": "get",
+                    "description": "Get permissions for a user",
+                    "type": 1, // 1 is type SUB_COMMAND
+                    "options": [
+                        {
+                            "name": "user",
+                            "description": "The user to get",
+                            "type": 6, // 6 is type USER
+                            "required": true
+                        },
+                        {
+                            "name": "channel",
+                            "description": "The channel permissions to get. If omitted, the guild permissions will be returned",
+                            "type": 7, // 7 is type CHANNEL
+                            "required": false
+                        }
+                    ]
+                },
+                {
+                    "name": "edit",
+                    "description": "Edit permissions for a user",
+                    "type": 1,
+                    "options": [
+                        {
+                            "name": "user",
+                            "description": "The user to edit",
+                            "type": 6,
+                            "required": true
+                        },
+                        {
+                            "name": "channel",
+                            "description": "The channel permissions to edit. If omitted, the guild permissions will be edited",
+                            "type": 7,
+                            "required": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "role",
+            "description": "Get or edit permissions for a role",
+            "type": 2,
+            "options": [
+                {
+                    "name": "get",
+                    "description": "Get permissions for a role",
+                    "type": 1,
+                    "options": [
+                        {
+                            "name": "role",
+                            "description": "The role to get",
+                            "type": 8, // 8 is type ROLE
+                            "required": true
+                        },
+                        {
+                            "name": "channel",
+                            "description": "The channel permissions to get. If omitted, the guild permissions will be returned",
+                            "type": 7,
+                            "required": false
+                        }
+                    ]
+                },
+                {
+                    "name": "edit",
+                    "description": "Edit permissions for a role",
+                    "type": 1,
+                    "options": [
+                        {
+                            "name": "role",
+                            "description": "The role to edit",
+                            "type": 8,
+                            "required": true
+                        },
+                        {
+                            "name": "channel",
+                            "description": "The channel permissions to edit. If omitted, the guild permissions will be edited",
+                            "type": 7,
+                            "required": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+
+![A command with grouped subcommands and parameters. It says /permissions user get with arguments for a user and a channel.](/images/command-with-groups-subcommands-parameters.png)
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 子指令與子指令群組 (Subcommands and Subcommand Groups)
+
+<Warning>
+目前，子指令與子指令群組全部顯示在指令瀏覽器的最上層。
+</Warning>
+
+對於那些希望建立更有組織且更複雜之指令群組的開發者而言，子指令和群組是最佳選擇。
+
+**子指令 (Subcommands)** 藉由**指定指令或群組內的操作**來組織您的指令。
+
+**子指令群組 (Subcommand Groups)** 藉由**將指令內具有相似操作或資源的子指令進行分組**來組織您的**子指令**。
+
+<Danger>
+使用子指令或子指令群組將會使您的基本指令無法使用。如果您同時擁有 `/permissions add | remove` 作為子指令或子指令群組，您將無法發送基本的 `/permissions` 作為有效指令。
+</Danger>
+
+我們支援在群組內進行一層深度的巢狀結構，這意味著您的最上層指令可以包含子指令群組，而這些群組可以包含子指令。**這是唯一支援的巢狀形式。** 以下是一些視覺範例：
+
+```
+有效 (VALID)
+
+command
+|
+|__ subcommand
+|
+|__ subcommand
+
+----
+
+有效 (VALID)
+
+command
+|
+|__ subcommand-group
+    |
+    |__ subcommand
+|
+|__ subcommand-group
+    |
+    |__ subcommand
+```
+
+### 範例逐步說明 (Example Walkthrough)
+
+讓我們看一個範例。假設您運行一個管理 Bot。您想建立一個可以執行以下操作的 `/permissions` 指令：
+
+- 獲取使用者或身分組的伺服器權限
+- 獲取使用者或身分組在特定頻道上的權限
+- 變更使用者或身分組的伺服器權限
+- 變更使用者或身分組在特定頻道上的權限
+
+我們將從定義 `/permissions` 的最上層資訊開始：
+
+```js
+{
+    "name": "permissions",
+    "description": "Get or edit permissions for a user or a role",
+    "options": []
+}
+```
+
+![一個沒有參數的指令。上面寫著 /permissions](/images/command.png)
+
+Now we have a command named `permissions`. We want this command to be able to affect users and roles. Rather than making two separate commands, we can use subcommand groups. We want to use subcommand groups here because we are grouping commands on a similar resource: `user` or `role`.
+
+```js
+{
+    "name": "permissions",
+    "description": "Get or edit permissions for a user or a role",
+    "options": [
+        {
+            "name": "user",
+            "description": "Get or edit permissions for a user",
+            "type": 2 // 2 是 SUB_COMMAND_GROUP 類型
+        },
+        {
+            "name": "role",
+            "description": "Get or edit permissions for a role",
+            "type": 2
+        }
+    ]
+}
+```
+
+您會注意到這樣的指令**不會顯示**在指令瀏覽器中。這是因為群組實際上是指令的「資料夾」，而我們建立了兩個空資料夾。所以讓我們繼續。
+
+既然我們已經有效地建立了 `user` 和 `role` 的「資料夾」，我們希望能夠進行 `get` 和 `edit` 權限。在子指令群組內，我們可以為 `get` 和 `edit` 建立子指令：
+
+```js
+{
+    "name": "permissions",
+    "description": "Get or edit permissions for a user or a role",
+    "options": [
+        {
+            "name": "user",
+            "description": "Get or edit permissions for a user",
+            "type": 2, // 2 是 SUB_COMMAND_GROUP 類型
+            "options": [
+                {
+                    "name": "get",
+                    "description": "Get permissions for a user",
+                    "type": 1 // 1 是 SUB_COMMAND 類型
+                },
+                {
+                    "name": "edit",
+                    "description": "Edit permissions for a user",
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "name": "role",
+            "description": "Get or edit permissions for a role",
+            "type": 2,
+            "options": [
+                {
+                    "name": "get",
+                    "description": "Get permissions for a role",
+                    "type": 1
+                },
+                {
+                    "name": "edit",
+                    "description": "Edit permissions for a role",
+                    "type": 1
+                }
+            ]
+        }
+    ]
+}
+```
+
+![具有分組子指令的指令。上面寫著 /permissions user get](/images/command-with-groups-subcommands.png)
+
+現在，我們需要一些參數！如果我們選擇了 `user`，我們需要能夠挑選一個使用者；如果我們選擇了 `role`，我們需要能夠挑選一個身分組。我們還希望能夠在伺服器級別權限和頻道特定權限之間進行選擇。為此，我們可以使用選填參數：
+
+```js
+{
+    "name": "permissions",
+    "description": "Get or edit permissions for a user or a role",
+    "options": [
+        {
+            "name": "user",
+            "description": "Get or edit permissions for a user",
+            "type": 2, // 2 是 SUB_COMMAND_GROUP 類型
+            "options": [
+                {
+                    "name": "get",
+                    "description": "Get permissions for a user",
+                    "type": 1, // 1 是 SUB_COMMAND 類型
+                    "options": [
+                        {
+                            "name": "user",
+                            "description": "The user to get",
+                            "type": 6, // 6 是 USER 類型
+                            "required": true
+                        },
+                        {
+                            "name": "channel",
+                            "description": "The channel permissions to get. If omitted, the guild permissions will be returned",
+                            "type": 7, // 7 是 CHANNEL 類型
+                            "required": false
+                        }
+                    ]
+                },
+                {
+                    "name": "edit",
+                    "description": "Edit permissions for a user",
+                    "type": 1,
+                    "options": [
+                        {
+                            "name": "user",
+                            "description": "The user to edit",
+                            "type": 6,
+                            "required": true
+                        },
+                        {
+                            "name": "channel",
+                            "description": "The channel permissions to edit. If omitted, the guild permissions will be edited",
+                            "type": 7,
+                            "required": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "role",
+            "description": "Get or edit permissions for a role",
+            "type": 2,
+            "options": [
+                {
+                    "name": "get",
+                    "description": "Get permissions for a role",
+                    "type": 1,
+                    "options": [
+                        {
+                            "name": "role",
+                            "description": "The role to get",
+                            "type": 8, // 8 是 ROLE 類型
+                            "required": true
+                        },
+                        {
+                            "name": "channel",
+                            "description": "The channel permissions to get. If omitted, the guild permissions will be returned",
+                            "type": 7,
+                            "required": false
+                        }
+                    ]
+                },
+                {
+                    "name": "edit",
+                    "description": "Edit permissions for a role",
+                    "type": 1,
+                    "options": [
+                        {
+                            "name": "role",
+                            "description": "The role to edit",
+                            "type": 8,
+                            "required": true
+                        },
+                        {
+                            "name": "channel",
+                            "description": "The channel permissions to edit. If omitted, the guild permissions will be edited",
+                            "type": 7,
+                            "required": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+
+![具有分組子指令和參數的指令。上面寫著 /permissions user get 並帶有 user 和 channel 的參數。](/images/command-with-groups-subcommands-parameters.png)
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## User Commands
+
+User commands are application commands that appear on the context menu (right click or tap) of users. They're a great way to surface quick actions for your app that target users. They don't take any arguments, and will return the user on whom you clicked or tapped in the interaction response.
+
+<Warning>
+A user must have permission to send text messages in the channel they invoke a user command in. If they don't have this permission, they will receive a 'Permission Denied' error from the interaction.
+</Warning>
+
+<Danger>
+The `description` field is not allowed when creating user commands. However, to avoid breaking changes to data models, `description` will be an **empty string** (instead of `null`) when fetching commands.
+</Danger>
+
+<ManualAnchor id="user-commands-example-user-command" />
+###### Example User Command
+
+```json
+{
+    "name": "View Stats",
+    "type": 2
+}
+```
+
+![An example user command. The context menu has an Apps section open to a High Five command](/images/user-command.webp)
+
+When someone uses a user command, your application will receive an interaction:
+
+<ManualAnchor id="user-commands-example-interaction" />
+###### Example Interaction
+
+<Accordion title="User Command Interaction" description="View sample payload for User Command interactions" icon="code">
+
+```json
+{
+    "application_id": "775799577604522054",
+    "channel_id": "772908445358620702",
+    "data": {
+        "id": "866818195033292850",
+        "name": "context-menu-user-2",
+        "resolved": {
+            "members": {
+                "809850198683418695": {
+                    "avatar": null,
+                    "is_pending": false,
+                    "joined_at": "2021-02-12T18:25:07.972000+00:00",
+                    "nick": null,
+                    "pending": false,
+                    "permissions": "246997699136",
+                    "premium_since": null,
+                    "roles": []
+                }
+            },
+            "users": {
+                "809850198683418695": {
+                    "avatar": "afc428077119df8aabbbd84b0dc90c74",
+                    "bot": true,
+                    "discriminator": "7302",
+                    "id": "809850198683418695",
+                    "public_flags": 0,
+                    "username": "VoltyDemo"
+                }
+            }
+        },
+        "target_id": "809850198683418695",
+        "type": 2
+    },
+    "guild_id": "772904309264089089",
+    "guild_locale": "en-US",
+    "app_permissions": "442368",
+    "id": "867794291820986368",
+    "locale": "en-US",
+    "member": {
+        "avatar": null,
+        "deaf": false,
+        "is_pending": false,
+        "joined_at": "2020-11-02T20:46:57.364000+00:00",
+        "mute": false,
+        "nick": null,
+        "pending": false,
+        "permissions": "274877906943",
+        "premium_since": null,
+        "roles": ["785609923542777878"],
+        "user": {
+            "avatar": "a_f03401914fb4f3caa9037578ab980920",
+            "discriminator": "6538",
+            "id": "167348773423415296",
+            "public_flags": 1,
+            "username": "ian"
+        }
+    },
+    "token": "UNIQUE_TOKEN",
+    "type": 2,
+    "version": 1
+}
+```
+
+</Accordion>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 使用者指令 (User Commands)
+
+使用者指令是顯示在使用者快顯功能表（右鍵點擊或觸按）上的應用程式指令。它們是為您的 App 顯示針對使用者的快速操作的極佳方式。它們不接受任何參數，並將在互動回應中傳回您所點擊或觸按的使用者。
+
+<Warning>
+使用者必須在他們啟動使用者指令的頻道中擁有傳送文字訊息的權限。如果他們沒有此權限，他們將會收到來自互動的「權限不足 (Permission Denied)」錯誤。
+</Warning>
+
+<Danger>
+建立使用者指令時不允許使用 `description` 欄位。然而，為了避免對資料模型造成破壞性變更，獲取指令時 `description` 將會是一個**空字串**（而非 `null`）。
+</Danger>
+
+<ManualAnchor id="user-commands-example-user-command" />
+###### 使用者指令範例 (Example User Command)
+
+```json
+{
+    "name": "View Stats",
+    "type": 2
+}
+```
+
+![一個使用者指令範例。快顯功能表中有一個開啟 High Five 指令的應用程式區段](/images/user-command.webp)
+
+當有人使用使用者指令時，您的應用程式將會收到一個互動：
+
+<ManualAnchor id="user-commands-example-interaction" />
+###### 互動範例 (Example Interaction)
+
+<Accordion title="使用者指令互動" description="檢視使用者指令互動的範例 payload" icon="code">
+
+```json
+{
+    "application_id": "775799577604522054",
+    "channel_id": "772908445358620702",
+    "data": {
+        "id": "866818195033292850",
+        "name": "context-menu-user-2",
+        "resolved": {
+            "members": {
+                "809850198683418695": {
+                    "avatar": null,
+                    "is_pending": false,
+                    "joined_at": "2021-02-12T18:25:07.972000+00:00",
+                    "nick": null,
+                    "pending": false,
+                    "permissions": "246997699136",
+                    "premium_since": null,
+                    "roles": []
+                }
+            },
+            "users": {
+                "809850198683418695": {
+                    "avatar": "afc428077119df8aabbbd84b0dc90c74",
+                    "bot": true,
+                    "discriminator": "7302",
+                    "id": "809850198683418695",
+                    "public_flags": 0,
+                    "username": "VoltyDemo"
+                }
+            }
+        },
+        "target_id": "809850198683418695",
+        "type": 2
+    },
+    "guild_id": "772904309264089089",
+    "guild_locale": "en-US",
+    "app_permissions": "442368",
+    "id": "867794291820986368",
+    "locale": "en-US",
+    "member": {
+        "avatar": null,
+        "deaf": false,
+        "is_pending": false,
+        "joined_at": "2020-11-02T20:46:57.364000+00:00",
+        "mute": false,
+        "nick": null,
+        "pending": false,
+        "permissions": "274877906943",
+        "premium_since": null,
+        "roles": ["785609923542777878"],
+        "user": {
+            "avatar": "a_f03401914fb4f3caa9037578ab980920",
+            "discriminator": "6538",
+            "id": "167348773423415296",
+            "public_flags": 1,
+            "username": "ian"
+        }
+    },
+    "token": "UNIQUE_TOKEN",
+    "type": 2,
+    "version": 1
+}
+```
+
+</Accordion>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Message Commands
+
+Message commands are application commands that appear on the context menu (right click or tap) of messages. They're a great way to surface quick actions for your app that target messages. They don't take any arguments, and will return the message on whom you clicked or tapped in the interaction response.
+
+<Danger>
+The `description` field is not allowed when creating message commands. However, to avoid breaking changes to data models, `description` will be an **empty string** (instead of `null`) when fetching commands.
+</Danger>
+
+<ManualAnchor id="message-commands-example-message-command" />
+###### Example Message Command
+
+```json
+{
+    "name": "Challenge",
+    "type": 3
+}
+```
+
+![An example message command. The context menu has an Apps section open to a Bookmark command](/images/message-command.webp)
+
+When someone uses a message command, your application will receive an interaction:
+
+<ManualAnchor id="message-commands-example-interaction" />
+###### Example Interaction
+
+<Accordion title="Message Command Interaction" description="View sample payload for Message Command interactions" icon="code">
+
+```json
+{
+    "application_id": "775799577604522054",
+    "channel_id": "772908445358620702",
+    "data": {
+        "id": "866818195033292851",
+        "name": "context-menu-message-2",
+        "resolved": {
+            "messages": {
+                "867793854505943041": {
+                    "attachments": [],
+                    "author": {
+                        "avatar": "a_f03401914fb4f3caa9037578ab980920",
+                        "discriminator": "6538",
+                        "id": "167348773423415296",
+                        "public_flags": 1,
+                        "username": "ian"
+                    },
+                    "channel_id": "772908445358620702",
+                    "components": [],
+                    "content": "some message",
+                    "edited_timestamp": null,
+                    "embeds": [],
+                    "flags": 0,
+                    "id": "867793854505943041",
+                    "mention_everyone": false,
+                    "mention_roles": [],
+                    "mentions": [],
+                    "pinned": false,
+                    "timestamp": "2021-07-22T15:42:57.744000+00:00",
+                    "tts": false,
+                    "type": 0
+                }
+            }
+        },
+        "target_id": "867793854505943041",
+        "type": 3
+    },
+    "guild_id": "772904309264089089",
+    "guild_locale": "en-US",
+    "app_permissions": "442368",
+    "id": "867793873336926249",
+    "locale": "en-US",
+    "member": {
+        "avatar": null,
+        "deaf": false,
+        "is_pending": false,
+        "joined_at": "2020-11-02T20:46:57.364000+00:00",
+        "mute": false,
+        "nick": null,
+        "pending": false,
+        "permissions": "274877906943",
+        "premium_since": null,
+        "roles": ["785609923542777878"],
+        "user": {
+            "avatar": "a_f03401914fb4f3caa9037578ab980920",
+            "discriminator": "6538",
+            "id": "167348773423415296",
+            "public_flags": 1,
+            "username": "ian"
+        }
+    },
+    "token": "UNIQUE_TOKEN",
+    "type": 2,
+    "version": 1
+}
+```
+
+</Accordion>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 訊息指令 (Message Commands)
+
+訊息指令是顯示在訊息快顯功能表（右鍵點擊或觸按）上的應用程式指令。它們是為您的 App 顯示針對訊息的快速操作的極佳方式。它們不接受任何參數，並將在互動回應中傳回您所點擊或觸按的訊息。
+
+<Danger>
+建立訊息指令時不允許使用 `description` 欄位。然而，為了避免對資料模型造成破壞性變更，獲取指令時 `description` 將會是一個**空字串**（而非 `null`）。
+</Danger>
+
+<ManualAnchor id="message-commands-example-message-command" />
+###### 訊息指令範例 (Example Message Command)
+
+```json
+{
+    "name": "Challenge",
+    "type": 3
+}
+```
+
+![一個訊息指令範例。快顯功能表中有一個開啟 Bookmark 指令的應用程式區段](/images/message-command.webp)
+
+當有人使用訊息指令時，您的應用程式將會收到一個互動：
+
+<ManualAnchor id="message-commands-example-interaction" />
+###### 互動範例 (Example Interaction)
+
+<Accordion title="訊息指令互動" description="檢視訊息指令互動的範例 payload" icon="code">
+
+```json
+{
+    "application_id": "775799577604522054",
+    "channel_id": "772908445358620702",
+    "data": {
+        "id": "866818195033292851",
+        "name": "context-menu-message-2",
+        "resolved": {
+            "messages": {
+                "867793854505943041": {
+                    "attachments": [],
+                    "author": {
+                        "avatar": "a_f03401914fb4f3caa9037578ab980920",
+                        "discriminator": "6538",
+                        "id": "167348773423415296",
+                        "public_flags": 1,
+                        "username": "ian"
+                    },
+                    "channel_id": "772908445358620702",
+                    "components": [],
+                    "content": "some message",
+                    "edited_timestamp": null,
+                    "embeds": [],
+                    "flags": 0,
+                    "id": "867793854505943041",
+                    "mention_everyone": false,
+                    "mention_roles": [],
+                    "mentions": [],
+                    "pinned": false,
+                    "timestamp": "2021-07-22T15:42:57.744000+00:00",
+                    "tts": false,
+                    "type": 0
+                }
+            }
+        },
+        "target_id": "867793854505943041",
+        "type": 3
+    },
+    "guild_id": "772904309264089089",
+    "guild_locale": "en-US",
+    "app_permissions": "442368",
+    "id": "867793873336926249",
+    "locale": "en-US",
+    "member": {
+        "avatar": null,
+        "deaf": false,
+        "is_pending": false,
+        "joined_at": "2020-11-02T20:46:57.364000+00:00",
+        "mute": false,
+        "nick": null,
+        "pending": false,
+        "permissions": "274877906943",
+        "premium_since": null,
+        "roles": ["785609923542777878"],
+        "user": {
+            "avatar": "a_f03401914fb4f3caa9037578ab980920",
+            "discriminator": "6538",
+            "id": "167348773423415296",
+            "public_flags": 1,
+            "username": "ian"
+        }
+    },
+    "token": "UNIQUE_TOKEN",
+    "type": 2,
+    "version": 1
+}
+```
+
+</Accordion>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Entry Point Commands
+
+An Entry Point command serves as the primary way for users to open an app's [Activity](/developers/en-us/activities/overview) from the [App Launcher](https://support.discord.com/hc/articles/21334461140375-Using-Apps-on-Discord#h_01HRQSA6C8TRHS722P1H3HW1TV).
+
+For the Entry Point command to be visible to users, an app must have [Activities](/developers/en-us/activities/overview) enabled.
+
+![Entry Point command in App Launcher](/images/command-entry-point.png)
+
+<ManualAnchor id="entry-point-commands-example-entry-point-command" />
+###### Example Entry Point Command
+
+```json
+{
+    "name": "launch",
+    "description": "Launch Racing with Friends",
+    "type": 4,
+    "handler": 2
+}
+```
+
+### Entry Point handlers
+
+When a user invokes an app's Entry Point command, the value of [`handler`](/developers/en-us/interactions/application-commands#application-command-object-application-command-structure) will determine how the interaction is handled:
+
+- For `APP_HANDLER` (`1`), the app is responsible for [responding to the interaction](/developers/en-us/interactions/receiving-and-responding#responding-to-an-interaction). It can respond by launching the app's associated Activity using the `LAUNCH_ACTIVITY` [interaction callback type](/developers/en-us/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type), or take another action.
+- For `DISCORD_LAUNCH_ACTIVITY` (`2`), Discord will handle the interaction automatically by launching the associated Activity.
+
+### Default Entry Point command
+
+When you enable Activities, an Entry Point command (named "Launch") is automatically created for your app with  `DISCORD_LAUNCH_ACTIVITY` set as the [Entry Point handler](/developers/en-us/interactions/application-commands#entry-point-handlers).
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 進入點指令 (Entry Point Commands)
+
+一個進入點指令是使用者從 [應用程式啟動器 (App Launcher)](https://support.discord.com/hc/articles/21334461140375-Using-Apps-on-Discord#h_01HRQSA6C8TRHS722P1H3HW1TV) 開啟 App 的 [互動活動 (Activity)](/developers/bilingual/activities/overview) 的主要方式。
+
+要使進入點指令對使用者可見，App 必須啟用了 [互動活動 (Activities)](/developers/bilingual/activities/overview)。
+
+![應用程式啟動器中的進入點指令](/images/command-entry-point.png)
+
+<ManualAnchor id="entry-point-commands-example-entry-point-command" />
+###### 進入點指令範例 (Example Entry Point Command)
+
+```json
+{
+    "name": "launch",
+    "description": "Launch Racing with Friends",
+    "type": 4,
+    "handler": 2
+}
+```
+
+### 進入點處理常式 (Entry Point Handlers)
+
+當使用者啟動 App 的進入點指令時，[`handler`](/developers/bilingual/interactions/application-commands#application-command-object-application-command-structure) 的值將決定如何處理該互動：
+
+- 對於 `APP_HANDLER` (`1`)，App 負責 [回應互動](/developers/bilingual/interactions/receiving-and-responding#responding-to-an-interaction)。它可以透過使用 `LAUNCH_ACTIVITY` [互動回呼類型](/developers/bilingual/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type) 啟動 App 關聯的互動活動來做出回應，或者採取其他操作。
+- 對於 `DISCORD_LAUNCH_ACTIVITY` (`2`)，Discord 將會自動處理該互動，啟動關聯的互動活動。
+
+### 預設進入點指令 (Default Entry Point Command)
+
+當您啟用互動活動時，系統會自動為您的 App 建立一個名為 "Launch" 的進入點指令，並將 `DISCORD_LAUNCH_ACTIVITY` 設定為其 [進入點處理常式](/developers/bilingual/interactions/application-commands#entry-point-handlers)。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Autocomplete
+
+Autocomplete interactions allow your application to dynamically return option suggestions to a user as they type.
+
+An autocomplete interaction **can return partial data** for option values. Your application will receive partial data for any existing user input, as long as that input passes client-side validation.
+
+```json
+{
+  "type": 4,
+  "data": {
+    "id": "816437322781949972",
+    "name": "airhorn",
+    "type": 1,
+    "version": "847194950382780532",
+    "options": [
+      {
+        "type": 3,
+        "name": "variant",
+        "value": "data a user is typ",
+        "focused": true
+      }
+    ]
+  }
+}
+```
+
+## Localization
+
+Application commands can be localized, which will cause them to use localized names and descriptions depending on the client's selected language. This is entirely optional. Localization is available for names and descriptions of commands, subcommands, and options, as well as the names of choices, by submitting the appropriate `name_localizations` and `description_localizations` fields when creating or updating the application command.
+
+An application command furnished with localizations might look like this:
+
+```json
+{
+  "name": "birthday",
+  "type": 1,
+  "description": "Wish a friend a happy birthday",
+  "name_localizations": {
+    "zh-CN": "生日",
+    "el": "γενέθλια"
+  },
+  "description_localizations": {
+    "zh-CN": "祝你朋友生日快乐"
+  },
+  "options": [
+    {
+      "name": "age",
+      "type": 4,
+      "description": "Your friend's age",
+      "name_localizations": {
+        "zh-CN": "岁数"
+      },
+      "description_localizations": {
+        "zh-CN": "你朋友的岁数"
+      }
+    }
+  ]
+}
+```
+
+### Locale fallbacks
+
+For application commands, there are built-in fallbacks in case a user's locale isn't present in the localizations. If the fallback locale is also missing, it will use the default.
+
+<Warning>
+You should make sure to include your default value in its proper locale key, otherwise it may use a fallback value unexpectedly.
+</Warning>
+
+| Locale | Fallback |
+|--------|----------|
+| en-US  | en-GB    |
+| en-GB  | en-US    |
+| es-419 | es-ES    |
+
+### Retrieving localized commands
+
+While most endpoints that return application command objects will return the `name_localizations` and `description_localizations` fields, some will not by default. This includes `GET` endpoints that return all of an application's guild or global commands. Instead, those endpoints will supply additional `name_localized` or `description_localized` fields, which only contain the localization relevant to the requester's locale.
+
+For example, if a batch `GET` request were made with locale `zh-CN`, including the above command, the returned object would look as follows:
+
+```json
+{
+  "name": "birthday",
+  "type": 1,
+  "description": "Wish a friend a happy birthday",
+  "name_localized": "生日",
+  "description_localized": "祝你朋友生日快乐",
+  "options": [
+    {
+      "name": "age",
+      "type": 4,
+      "description": "Your friend's age",
+      "name_localized": "岁数",
+      "description_localized": "你朋友的岁数",
+    }
+  ]
+}
+```
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 自動完成 (Autocomplete)
+
+自動完成互動功能允許您的應用程式在使用者輸入時，動態地向使用者傳回選項建議。
+
+自動完成互動**可以為選項值傳回部分資料**。只要該輸入通過用戶端驗證，您的應用程式就會收到任何現有使用者輸入的部分資料。
+
+```json
+{
+  "type": 4,
+  "data": {
+    "id": "816437322781949972",
+    "name": "airhorn",
+    "type": 1,
+    "version": "847194950382780532",
+    "options": [
+      {
+        "type": 3,
+        "name": "variant",
+        "value": "data a user is typ",
+        "focused": true
+      }
+    ]
+  }
+}
+```
+
+## 本地化語系 (Localization)
+
+應用程式指令可以進行本地化，這將會使其根據用戶端選擇的語言使用本地化名稱與說明。這完全是選填的。透過在建立或更新應用程式指令時提交適當的 `name_localizations` 和 `description_localizations` 欄位，即可為指令、子指令與選項的名稱和說明進行本地化。
+
+配備了本地化對照的應用程式指令可能如下所示：
+
+```json
+{
+  "name": "birthday",
+  "type": 1,
+  "description": "Wish a friend a happy birthday",
+  "name_localizations": {
+    "zh-CN": "生日",
+    "el": "γενέθλια"
+  },
+  "description_localizations": {
+    "zh-CN": "祝你朋友生日快乐"
+  },
+  "options": [
+    {
+      "name": "age",
+      "type": 4,
+      "description": "Your friend's age",
+      "name_localizations": {
+        "zh-CN": "岁数"
+      },
+      "description_localizations": {
+        "zh-CN": "你朋友的岁数"
+      }
+    }
+  ]
+}
+```
+
+### 語言語系退回機制 (Locale fallbacks)
+
+對於應用程式指令，如果使用者的語言語系不存在於本地化設定中，則存在內置的退回 (fallback) 機制。如果退回語系也缺失，它將使用預設值。
+
+<Warning>
+您應該確保在適當的語系 Key 中包含您的預設值，否則它可能會意外地使用退回值。
+</Warning>
+
+| 語言語系 | 退回語系 |
+|--------|----------|
+| en-US  | en-GB    |
+| en-GB  | en-US    |
+| es-419 | es-ES    |
+
+### 獲取本地化指令 (Retrieving localized commands)
+
+雖然大部分傳回應用程式指令物件的端點都會傳回 `name_localizations` 和 `description_localizations` 欄位，但有些端點預設不會傳回。這包括傳回應用程式所有伺服器或全域指令的 `GET` 端點。
+
+例如，如果以 `zh-CN` 語系發送批次 `GET` 請求，且包含上述指令，則傳回的物件將如下所示：
+
+```json
+{
+  "name": "birthday",
+  "type": 1,
+  "description": "Wish a friend a happy birthday",
+  "name_localized": "生日",
+  "description_localized": "祝你朋友生日快乐",
+  "options": [
+    {
+      "name": "age",
+      "type": 4,
+      "description": "Your friend's age",
+      "name_localized": "岁数",
+      "description_localized": "你朋友的岁数"
+    }
+  ]
+}
+```
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Get Global Application Commands
+<Route method="GET">/applications/[\{application.id\}](/developers/en-us/resources/application#application-object)/commands</Route>
+
+Fetch all of the global commands for your application. Returns an array of [application command](/developers/en-us/interactions/application-commands#application-command-object) objects.
+
+## Create Global Application Command
+<Route method="POST">/applications/[\{application.id\}](/developers/en-us/resources/application#application-object)/commands</Route>
+
+Create a new global command. Returns `201` if a command with the same name does not already exist, or a `200` if it does.
+
+## Get Global Application Command
+<Route method="GET">/applications/[\{application.id\}](/developers/en-us/resources/application#application-object)/commands/[\{command.id\}](/developers/en-us/interactions/application-commands#application-command-object)</Route>
+
+Fetch a global command for your application. Returns an [application command](/developers/en-us/interactions/application-commands#application-command-object) object.
+
+## Edit Global Application Command
+<Route method="PATCH">/applications/[\{application.id\}](/developers/en-us/resources/application#application-object)/commands/[\{command.id\}](/developers/en-us/interactions/application-commands#application-command-object)</Route>
+
+Edit a global command. Returns `200` and an [application command](/developers/en-us/interactions/application-commands#application-command-object) object.
+
+## Delete Global Application Command
+<Route method="DELETE">/applications/[\{application.id\}](/developers/en-us/resources/application#application-object)/commands/[\{command.id\}](/developers/en-us/interactions/application-commands#application-command-object)</Route>
+
+Deletes a global command. Returns `204 No Content` on success.
+
+## Bulk Overwrite Global Application Commands
+<Route method="PUT">/applications/[\{application.id\}](/developers/en-us/resources/application#application-object)/commands</Route>
+
+Takes a list of application commands, overwriting the existing global command list for this application. Returns `200` and a list of [application command](/developers/en-us/interactions/application-commands#application-command-object) objects.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 獲取全域應用程式指令 (Get Global Application Commands)
+<Route method="GET">/applications/[\{application.id\}](/developers/bilingual/resources/application#application-object)/commands</Route>
+
+獲取您應用程式的所有全域指令。傳回一個 [應用程式指令](/developers/bilingual/interactions/application-commands#application-command-object) 物件陣列。
+
+## 建立全域應用程式指令 (Create Global Application Command)
+<Route method="POST">/applications/[\{application.id\}](/developers/bilingual/resources/application#application-object)/commands</Route>
+
+建立一個新的全域指令。如果尚不存在同名指令，則傳回 `201`，如果已存在，則傳回 `200`（在此情況下，先前的指令將被覆寫）。
+
+## 獲取全域應用程式指令 (Get Global Application Command)
+<Route method="GET">/applications/[\{application.id\}](/developers/bilingual/resources/application#application-object)/commands/[\{command.id\}](/developers/bilingual/interactions/application-commands#application-command-object)</Route>
+
+獲取您應用程式的全域指令。傳回一個 [應用程式指令](/developers/bilingual/interactions/application-commands#application-command-object) 物件。
+
+## 編輯全域應用程式指令 (Edit Global Application Command)
+<Route method="PATCH">/applications/[\{application.id\}](/developers/bilingual/resources/application#application-object)/commands/[\{command.id\}](/developers/bilingual/interactions/application-commands#application-command-object)</Route>
+
+編輯一個全域指令。傳回 `200` 和一個 [應用程式指令](/developers/bilingual/interactions/application-commands#application-command-object) 物件。
+
+## 刪除全域應用程式指令 (Delete Global Application Command)
+<Route method="DELETE">/applications/[\{application.id\}](/developers/bilingual/resources/application#application-object)/commands/[\{command.id\}](/developers/bilingual/interactions/application-commands#application-command-object)</Route>
+
+刪除一個全域指令。成功時傳回 `204 No Content`。
+
+## 批次覆寫全域應用程式指令 (Bulk Overwrite Global Application Commands)
+<Route method="PUT">/applications/[\{application.id\}](/developers/bilingual/resources/application#application-object)/commands</Route>
+
+接受一個應用程式指令列表，覆寫此應用程式現有的全域指令列表。傳回 `200` 和一個 [應用程式指令](/developers/bilingual/interactions/application-commands#application-command-object) 物件清單。
+
+</div>
+
+</div>

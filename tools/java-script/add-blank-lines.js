@@ -10,7 +10,13 @@ const FILES_TO_FIX = [
   './developers/bilingual/activities/development-guides/mobile.mdx',
   './developers/bilingual/activities/development-guides/networking.mdx',
   './developers/bilingual/activities/development-guides/user-actions.mdx',
-  './developers/bilingual/activities/how-activities-work.mdx'
+  './developers/bilingual/activities/how-activities-work.mdx',
+  './developers/bilingual/topics/rate-limits.mdx',
+  './developers/bilingual/topics/oauth2.mdx',
+  './developers/bilingual/topics/permissions.mdx',
+  './developers/bilingual/interactions/overview.mdx',
+  './developers/bilingual/interactions/receiving-and-responding.mdx',
+  './developers/bilingual/interactions/application-commands.mdx'
 ];
 
 FILES_TO_FIX.forEach(filePath => {

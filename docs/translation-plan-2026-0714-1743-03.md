@@ -62,29 +62,29 @@
 - `[COMPLETED]` [zh-tw/bilingual] `rich-presence/using-with-the-embedded-app-sdk.mdx`
 - `[COMPLETED]` [en-us] 對應的 7 個英文檔案（已成功引入 `LanguageSelector`）
 
-### [Batch 4.5] 歷史頁面結構補全與語法修復 (修復與銜接階段 🛠️)
+### [Batch 4.5] 歷史頁面結構補全與語法修復 (修復與銜接階段 🛠️) ➔ [✅ 已完成 / COMPLETED]
 修正並補齊 Batch 1-3 完成頁面中因 Token 限制截斷或模板簡化產生的內容落差，特別是補齊 `using-community-invites.mdx` 截斷所致的語法錯誤與 10 個 Activities Guides 的中英雙欄平行對稱。
-- `[MODIFY]` [zh-tw/bilingual] `activities/building-an-activity.mdx`
-- `[MODIFY]` [bilingual] `activities/development-guides/assets-and-metadata.mdx`
-- `[MODIFY]` [zh-tw/bilingual] `activities/development-guides/growth-and-referrals.mdx`
-- `[MODIFY]` [bilingual] `activities/development-guides/layout.mdx`
-- `[MODIFY]` [bilingual] `activities/development-guides/mobile.mdx`
-- `[MODIFY]` [zh-tw/bilingual] `activities/development-guides/multiplayer-experience.mdx`
-- `[MODIFY]` [zh-tw/bilingual] `activities/development-guides/networking.mdx`
-- `[MODIFY]` [zh-tw/bilingual] `activities/development-guides/user-actions.mdx`
-- `[MODIFY]` [bilingual] `activities/development-guides.mdx`
-- `[MODIFY]` [zh-tw/bilingual] `activities/how-activities-work.mdx`
-- `[MODIFY]` [zh-tw] `tutorials/using-community-invites.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `activities/building-an-activity.mdx`
+- `[COMPLETED]` [bilingual] `activities/development-guides/assets-and-metadata.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `activities/development-guides/growth-and-referrals.mdx`
+- `[COMPLETED]` [bilingual] `activities/development-guides/layout.mdx`
+- `[COMPLETED]` [bilingual] `activities/development-guides/mobile.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `activities/development-guides/multiplayer-experience.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `activities/development-guides/networking.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `activities/development-guides/user-actions.mdx`
+- `[COMPLETED]` [bilingual] `activities/development-guides.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `activities/how-activities-work.mdx`
+- `[COMPLETED]` [zh-tw] `tutorials/using-community-invites.mdx`
 
-### [Batch 5] 核心開發通識與基礎 (優先級：P0 ~ P2 💡)
+### [Batch 5] 核心開發通識與基礎 (優先級：P0 ~ P2 💡) ➔ [✅ 已完成 / COMPLETED]
 API 速率限制限制、OAuth2 授權流與互動回覆指令。
-- `[NEW]` [zh-tw/bilingual] `topics/rate-limits.mdx`
-- `[NEW]` [zh-tw/bilingual] `topics/oauth2.mdx`
-- `[NEW]` [zh-tw/bilingual] `topics/permissions.mdx`
-- `[NEW]` [zh-tw/bilingual] `interactions/overview.mdx`
-- `[NEW]` [zh-tw/bilingual] `interactions/receiving-and-responding.mdx`
-- `[NEW]` [zh-tw/bilingual] `interactions/application-commands.mdx`
-- `[MODIFY]` [en-us] 對應的 6 個英文檔案（引入 `LanguageSelector`）
+- `[COMPLETED]` [zh-tw/bilingual] `topics/rate-limits.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `topics/oauth2.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `topics/permissions.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `interactions/overview.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `interactions/receiving-and-responding.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `interactions/application-commands.mdx`
+- `[COMPLETED]` [en-us] 對應的 6 個英文檔案（引入 `LanguageSelector`）
 
 ### [Batch 6] 探索推廣與平台其他功能 (優先級：P1 ~ P2)
 發布、探索發現與平台通用功能。

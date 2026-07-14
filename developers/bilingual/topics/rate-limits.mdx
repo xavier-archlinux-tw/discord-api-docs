@@ -1,0 +1,376 @@
+---
+title: "Rate Limits (雙語/Bilingual)"
+sidebarTitle: "Rate Limits (雙語)"
+description: Understand Discord's rate limiting system including per-route and global limits.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ManualAnchor } from '/snippets/manualanchor.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/topics/rate-limits" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+Rate limits exist across Discord's APIs to prevent spam, abuse, and service overload. Limits are applied to individual bots and users both on a per-route basis and globally. Individuals are determined using a request's authentication—for example, a bot token for a bot.
+
+<Info>
+Because rate limits depend on a variety of factors and are subject to change, **rate limits should not be hard coded into your app**. Instead, your app should parse [response headers](/developers/en-us/topics/rate-limits#header-format-rate-limit-header-examples) to prevent hitting the limit, and to respond accordingly in case you do.
+</Info>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+Discord 的 API 設有速率限制，以防止垃圾訊息、惡意濫用以及服務過載。這些限制同時適用於獨立的 Bot 和使用者，並區分為單一路由 (per-route) 限制與全域 (global) 限制。系統會透過請求的身份驗證資訊（例如 Bot 的權杖）來判定發送請求的個體。
+
+<Info>
+由於速率限制取決於多種因素且可能會有所變動，**因此請勿將速率限制數值寫死 (hard-coded) 在您的應用程式中**。相反地，您的應用程式應該解析 [回應標頭 (response headers)](/developers/bilingual/topics/rate-limits#header-format-rate-limit-header-examples) 以防止觸發限制，並在觸發限制時做出相對應的處理。
+</Info>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+**Per-route rate limits** exist for many individual endpoints, and may include the HTTP method (`GET`, `POST`, `PUT`, or `DELETE`). In some cases, per-route limits will be shared across a set of similar endpoints, indicated in the `X-RateLimit-Bucket` header. It's recommended to use this header as a unique identifier for a rate limit, which will allow you to group shared limits as you encounter them.
+
+During calculation, per-route rate limits often account for top-level resources within the path using an identifier—for example, `guild_id` when calling [`/guilds/{guild.id}/channels`](/developers/en-us/resources/guild#get-guild-channels). Top-level resources are currently limited to channels (`channel_id`), guilds (`guild_id`), and webhooks (`webhook_id` or `webhook_id + webhook_token`). This means that an endpoint with two different top-level resources may calculate limits independently. As an example, if you exceeded a rate limit when calling one endpoint `/channels/1234`, you could still call another similar endpoint like `/channels/9876` without a problem.
+
+**Global rate limits** apply to the total number of requests a bot or user makes, independent of any per-route limits. You can read more on [global rate limits](/developers/en-us/topics/rate-limits#global-rate-limit) below.
+
+<Warning>
+[Routes for controlling emojis](/developers/en-us/resources/emoji#list-guild-emojis) do not follow the normal rate limit conventions. These routes are specifically limited on a per-guild basis to prevent abuse. This means that the quota returned by our APIs may be inaccurate, and you may encounter 429s.
+</Warning>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+針對許多獨立的端點都設有**單一路由速率限制 (Per-route rate limits)**，其中可能也包含 HTTP 方法（`GET`、`POST`、`PUT` 或 `DELETE`）。在某些情況下，多個相似端點可能會共享同一個單一路由限制，這會透過 `X-RateLimit-Bucket` 標頭來表示。建議將此標頭視為速率限制的唯一識別碼，以便在遇到共享限制時將其歸類在一起。
+
+在計算單一路由速率限制時，通常會使用識別碼來識別路徑中的頂層資源（例如呼叫 [`/guilds/{guild.id}/channels`](/developers/bilingual/resources/guild#get-guild-channels) 時的 `guild_id`）。目前頂層資源僅限於頻道 (`channel_id`)、伺服器 (`guild_id`) 和 Webhook (`webhook_id` 或 `webhook_id + webhook_token`)。這意味著具有兩個不同頂層資源的端點可能會獨立計算限制。舉例來說，如果您在呼叫端點 `/channels/1234` 時超出了速率限制，您仍然可以正常呼叫另一個相似端點 `/channels/9876` 而不會有問題。
+
+**全域速率限制 (Global rate limits)** 適用於 Bot 或使用者發送的總請求數，獨立於任何單一路由限制之外。您可以在下方閱讀更多關於 [全域速率限制](/developers/bilingual/topics/rate-limits#global-rate-limit) 的資訊。
+
+<Warning>
+[用來控制表情符號 (emojis) 的路由](/developers/bilingual/resources/emoji#list-guild-emojis) 並不遵循一般的速率限制慣例。為了防止濫用，這些路由是針對單一伺服器進行特別限制的。這意味著我們的 API 傳回的配額可能會不準確，且您可能會遇到 429 錯誤。
+</Warning>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Header Format
+
+For most API requests made, we return optional HTTP response headers containing the rate limit encountered during your request.
+
+<ManualAnchor id="header-format-rate-limit-header-examples" />
+###### Rate Limit Header Examples
+
+```
+X-RateLimit-Limit: 5
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1470173023
+X-RateLimit-Reset-After: 1
+X-RateLimit-Bucket: abcd1234
+```
+
+- **X-RateLimit-Limit** - The number of requests that can be made
+- **X-RateLimit-Remaining** - The number of remaining requests that can be made
+- **X-RateLimit-Reset** - Epoch time (seconds since 00:00:00 UTC on January 1, 1970) at which the rate limit resets
+- **X-RateLimit-Reset-After** - Total time (in seconds) of when the current rate limit bucket will reset. Can have decimals to match previous millisecond ratelimit precision
+- **X-RateLimit-Bucket** - A unique string denoting the rate limit being encountered (non-inclusive of top-level resources in the path)
+- **X-RateLimit-Global** - Returned only on HTTP 429 responses if the rate limit encountered is the global rate limit (not per-route)
+- **X-RateLimit-Scope** - Returned only on HTTP 429 responses. Value can be `user` (per bot or user limit), `global` (per bot or user global limit), or `shared` (per resource limit)
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 標頭格式 (Header Format)
+
+對於大多數發送的 API 請求，我們會傳回選用的 HTTP 回應標頭，其中包含您在請求期間遇到的速率限制資訊。
+
+<ManualAnchor id="header-format-rate-limit-header-examples" />
+###### 速率限制標頭範例 (Rate Limit Header Examples)
+
+```
+X-RateLimit-Limit: 5
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1470173023
+X-RateLimit-Reset-After: 1
+X-RateLimit-Bucket: abcd1234
+```
+
+- **X-RateLimit-Limit** - 可以發送的請求數量上限
+- **X-RateLimit-Remaining** - 剩餘可以發送的請求數量
+- **X-RateLimit-Reset** - 速率限制重設的 Unix 時間戳記（自 1970 年 1 月 1 日 00:00:00 UTC 起算的秒數）
+- **X-RateLimit-Reset-After** - 當前速率限制桶 (bucket) 重設前的總時間（以秒為單位）。可以包含小數以匹配先前的毫秒速率限制精度
+- **X-RateLimit-Bucket** - 表示所遇到之速率限制的唯一字串（不包含路徑中的頂層資源）
+- **X-RateLimit-Global** - 僅在 HTTP 429 回應中傳回，如果遇到的限制是全域速率限制（而非單一路由）
+- **X-RateLimit-Scope** - 僅在 HTTP 429 回應中傳回。數值可以為 `user`（Bot 或使用者限制）、`global`（Bot 或使用者全域限制）或 `shared`（資源共享限制）
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Exceeding A Rate Limit
+
+In the case that a rate limit is exceeded, the API will return a HTTP 429 response code with a JSON body. Your application should rely on the `Retry-After` header or `retry_after` field to determine when to retry the request.
+
+<ManualAnchor id="exceeding-a-rate-limit-rate-limit-response-structure" />
+###### Rate Limit Response Structure
+
+| Field       | Type    | Description                                                                       |
+|-------------|---------|-----------------------------------------------------------------------------------|
+| message     | string  | A message saying you are being rate limited.                                      |
+| retry_after | float   | The number of seconds to wait before submitting another request.                  |
+| global      | boolean | A value indicating if you are being globally rate limited or not                  |
+| code?       | integer | An [error code](/developers/en-us/topics/opcodes-and-status-codes#json) for some limits |
+
+Note that normal route rate-limiting headers will also be sent in this response. The rate-limiting response will look something like the following:
+
+<ManualAnchor id="exceeding-a-rate-limit-example-exceeded-user-rate-limit-response" />
+###### Example Exceeded User Rate Limit Response
+
+```
+< HTTP/1.1 429 TOO MANY REQUESTS
+< Content-Type: application/json
+< Retry-After: 65
+< X-RateLimit-Limit: 10
+< X-RateLimit-Remaining: 0
+< X-RateLimit-Reset: 1470173023.123
+< X-RateLimit-Reset-After: 64.57
+< X-RateLimit-Bucket: abcd1234
+< X-RateLimit-Scope: user
+{
+  "message": "You are being rate limited.",
+  "retry_after": 64.57,
+  "global": false
+}
+```
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 超出速率限制 (Exceeding A Rate Limit)
+
+在超出速率限制的情況下，API 將傳回 HTTP 429 回應代碼與 JSON 格式的主體。您的 application 應依賴 `Retry-After` 標頭或 `retry_after` 欄位來決定何時重新嘗試發送請求。
+
+<ManualAnchor id="exceeding-a-rate-limit-rate-limit-response-structure" />
+###### 速率限制回應結構 (Rate Limit Response Structure)
+
+| 欄位 | 類型 | 說明 |
+|-------------|---------|-----------------------------------------------------------------------------------|
+| message     | string  | 表示您正受到速率限制的訊息。 |
+| retry_after | float   | 在提交另一個請求之前需要等待的秒數。 |
+| global      | boolean | 指明您是否正受到全域速率限制的值。 |
+| code?       | integer | 適用於某些限制的 [錯誤代碼 (error code)](/developers/bilingual/topics/opcodes-and-status-codes#json) |
+
+請注意，一般的路由速率限制標頭也將在此回應中一併發送。速率限制回應將如下所示：
+
+<ManualAnchor id="exceeding-a-rate-limit-example-exceeded-user-rate-limit-response" />
+###### 超出使用者速率限制回應範例 (Example Exceeded User Rate Limit Response)
+
+```
+< HTTP/1.1 429 TOO MANY REQUESTS
+< Content-Type: application/json
+< Retry-After: 65
+< X-RateLimit-Limit: 10
+< X-RateLimit-Remaining: 0
+< X-RateLimit-Reset: 1470173023.123
+< X-RateLimit-Reset-After: 64.57
+< X-RateLimit-Bucket: abcd1234
+< X-RateLimit-Scope: user
+{
+  "message": "You are being rate limited.",
+  "retry_after": 64.57,
+  "global": false
+}
+```
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+<ManualAnchor id="exceeding-a-rate-limit-example-exceeded-resource-rate-limit-response" />
+###### Example Exceeded Resource Rate Limit Response
+
+```
+< HTTP/1.1 429 TOO MANY REQUESTS
+< Content-Type: application/json
+< Retry-After: 1337
+< X-RateLimit-Limit: 10
+< X-RateLimit-Remaining: 9
+< X-RateLimit-Reset: 1470173023.123
+< X-RateLimit-Reset-After: 64.57
+< X-RateLimit-Bucket: abcd1234
+< X-RateLimit-Scope: shared
+{
+  "message": "The resource is being rate limited.",
+  "retry_after": 1336.57,
+  "global": false
+}
+```
+
+<ManualAnchor id="exceeding-a-rate-limit-example-exceeded-global-rate-limit-response" />
+###### Example Exceeded Global Rate Limit Response
+
+```
+< HTTP/1.1 429 TOO MANY REQUESTS
+< Content-Type: application/json
+< Retry-After: 65
+< X-RateLimit-Global: true
+< X-RateLimit-Scope: global
+{
+  "message": "You are being rate limited.",
+  "retry_after": 64.57,
+  "global": true
+}
+```
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+<ManualAnchor id="exceeding-a-rate-limit-example-exceeded-resource-rate-limit-response" />
+###### 超出資源速率限制回應範例 (Example Exceeded Resource Rate Limit Response)
+
+```
+< HTTP/1.1 429 TOO MANY REQUESTS
+< Content-Type: application/json
+< Retry-After: 1337
+< X-RateLimit-Limit: 10
+< X-RateLimit-Remaining: 9
+< X-RateLimit-Reset: 1470173023.123
+< X-RateLimit-Reset-After: 64.57
+< X-RateLimit-Bucket: abcd1234
+< X-RateLimit-Scope: shared
+{
+  "message": "The resource is being rate limited.",
+  "retry_after": 1336.57,
+  "global": false
+}
+```
+
+<ManualAnchor id="exceeding-a-rate-limit-example-exceeded-global-rate-limit-response" />
+###### 超出全域速率限制回應範例 (Example Exceeded Global Rate Limit Response)
+
+```
+< HTTP/1.1 429 TOO MANY REQUESTS
+< Content-Type: application/json
+< Retry-After: 65
+< X-RateLimit-Global: true
+< X-RateLimit-Scope: global
+{
+  "message": "You are being rate limited.",
+  "retry_after": 64.57,
+  "global": true
+}
+```
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Global Rate Limit
+
+All bots can make up to 50 requests per second to our API. If no authorization header is provided, then the limit is applied to the IP address. This is independent of any individual rate limit on a route. If your bot gets big enough, based on its functionality, it may be impossible to stay below 50 requests per second during normal operations.
+
+Global rate limit issues generally show up as repeatedly getting banned from the Discord API when your bot starts (see below). If your bot gets temporarily Cloudflare banned from the Discord API every once in a while, it is most likely **not** a global rate limit issue. You probably had a spike of errors that was not properly handled and hit our error threshold.
+
+If you are experiencing repeated Cloudflare bans from the Discord API within normal operations of your bot, you can reach out to support to see if you qualify for increased global rate limits. You can contact Discord support using [https://dis.gd/rate-limit](https://dis.gd/rate-limit).
+
+[Interaction endpoints](/developers/en-us/interactions/receiving-and-responding#endpoints) are not bound to the bot's Global Rate Limit.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 全域速率限制 (Global Rate Limit)
+
+所有 Bot 對我們的 API 每秒最多可進行 50 次請求。如果未提供 Authorization 標頭，則該限制將套用至 IP 位址。這與路由上的任何單一速率限制無關。如果您的 Bot 規模隨其功能增長到足夠大，在正常運行期間可能會無法將請求保持在每秒 50 次以下。
+
+全域速率限制問題通常表現為當您的 Bot 啟動時反覆被 Discord API 封鎖（見下文）。如果您的 Bot 只是偶爾被 Discord API 暫時性以 Cloudflare 封鎖，這極有可能**不是**全域速率限制問題。您可能只是遇到了未妥善處理的錯誤突發高峰，進而觸發了我們的錯誤門檻。
+
+如果您在 Bot 的正常運行中反覆遇到 Cloudflare 對 Discord API 的封鎖，您可以聯絡支援團隊以了解您是否符合提高全域速率限制的資格。您可以使用 [https://dis.gd/rate-limit](https://dis.gd/rate-limit) 聯絡 Discord 支援團隊。
+
+[互動 (Interaction) 端點](/developers/bilingual/interactions/receiving-and-responding#endpoints) 並不受 Bot 全域速率限制的約束。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Invalid Request Limit aka Cloudflare bans
+
+IP addresses that make too many invalid HTTP requests are automatically and temporarily restricted from accessing the Discord API. Currently, this limit is **10,000 per 10 minutes**. An invalid request is one that results in **401**, **403**, or **429** statuses.	
+
+All applications should make reasonable attempts to avoid making invalid requests. For example:	
+
+- **401** responses are avoided by providing a valid token in the authorization header when required and by stopping further requests after a token becomes invalid	
+- **403** responses are avoided by inspecting role or channel permissions and by not making requests that are restricted by such permissions
+- **429** responses are avoided by inspecting the rate limit headers documented above and by not making requests on exhausted buckets until after they have reset. *429 errors returned with `X-RateLimit-Scope: shared` are not counted against you.*
+
+Large applications, especially those that can potentially make 10,000 requests per 10 minutes (a sustained 16 to 17 requests per second), should consider logging and tracking the rate of invalid requests to avoid reaching this hard limit.
+
+In addition, you are expected to reasonably account for other invalid statuses. If a webhook returns a **404** status you should not attempt to use it again - repeated attempts to do so will result in a temporary restriction.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 無效請求限制，又稱 Cloudflare 封鎖 (Invalid Request Limit aka Cloudflare bans)
+
+發送過多無效 HTTP 請求的 IP 位址將自動且暫時被限制存取 Discord API。目前此限制為 **每 10 分鐘 10,000 次**。無效請求是指導致 **401**、**403** 或 **429** 狀態的請求。
+
+所有應用程式都應做出合理的嘗試以避免發送無效請求。例如：
+
+- **401** 回應：當需要時，透過在 Authorization 標頭中提供有效的權杖，並在權杖失效後停止發送進一步請求來避免。
+- **403** 回應：透過檢查身分組或頻道權限，且不發送受這些權限限制的請求來避免。
+- **429** 回應：透過檢查上述說明的速率限制標頭，且在耗盡的儲存桶重設之前不發送請求來避免。*帶有 `X-RateLimit-Scope: shared` 傳回的 429 錯誤不會計入您的無效請求限制中。*
+
+大型應用程式，尤其是那些每 10 分鐘可能發送 10,000 次請求的應用程式（持續每秒 16 到 17 次請求），應考慮記錄並追蹤無效請求的速率，以避免達到此硬性限制。
+
+此外，您應合理解決其他無效狀態。如果 Webhook 傳回 **404** 狀態，您不應再次嘗試使用它——反覆嘗試將導致暫時性限制。
+
+</div>
+
+</div>

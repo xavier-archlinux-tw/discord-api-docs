@@ -730,29 +730,10 @@
   },
   {
     "relPath": "developers/interactions/application-commands.mdx",
-    "zhExists": false,
-    "biExists": false,
+    "zhExists": true,
+    "biExists": true,
     "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/interactions/overview.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/interactions/receiving-and-responding.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
+      "zh-tw has fewer headings than en-us (75 vs 77)"
     ]
   },
   {
@@ -1161,34 +1142,7 @@
     ]
   },
   {
-    "relPath": "developers/topics/oauth2.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
     "relPath": "developers/topics/opcodes-and-status-codes.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/topics/permissions.mdx",
-    "zhExists": false,
-    "biExists": false,
-    "issues": [
-      "Missing zh-tw translation file",
-      "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/topics/rate-limits.mdx",
     "zhExists": false,
     "biExists": false,
     "issues": [

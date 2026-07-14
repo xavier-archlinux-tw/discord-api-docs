@@ -1,0 +1,450 @@
+---
+title: "Interactions Overview (雙語/Bilingual)"
+sidebarTitle: "Interactions Overview (雙語)"
+description: Learn about Discord's interactive features including commands and message components.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ManualAnchor } from '/snippets/manualanchor.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/interactions/overview" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+Interactive features like commands and message components allows users to invoke an app natively within Discord. When a user engages with one of your app's interactive features, your app will receive an [interaction](/developers/en-us/interactions/receiving-and-responding#interaction-object).
+
+This overview includes an overview of the main types of interactions, and steps for you to prepare your app to use and receive interactions. Reference documentation and details about handling interactions are in [Receiving and Responding](/developers/en-us/interactions/receiving-and-responding).
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+像是指令與訊息組件等互動式功能，能讓使用者在 Discord 中以原生方式啟動應用程式。當使用者與您應用程式的其中一個互動功能進行互動時，您的應用程式將會收到一個 [互動 (interaction)](/developers/bilingual/interactions/receiving-and-responding#interaction-object)。
+
+此總覽包含主要互動類型的概述，以及為您的應用程式做準備以使用和接收互動的步驟。處理互動的詳細參考文件和細節請參閱 [接收與回覆 (Receiving and Responding)](/developers/bilingual/interactions/receiving-and-responding)。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Types of Interactions
+
+There are different types of interactions in your app's toolbelt that can pick and choose to build engaging, interactive experiences in Discord.
+
+### Commands
+
+**[Application commands](/developers/en-us/interactions/application-commands)** provide users a native way to invoke an app in Discord. They often map to an app's core features or functionality.
+
+![Command launcher in the Desktop client](/images/overview-command-desktop.png)
+
+When an app creates a command it can choose the command's type, which determines where it appears in the Discord client and the metadata the app will receive when the command is invoked. There are three types for application commands:
+
+- **Slash commands** are the most common type of command and are accessed by typing `/` in the chat input, or by opening the command picker.
+- **Message commands** are commands related to a message or a message's content. They're accessed by clicking on the context menu (the three dots) at the top-right of a message (or right clicking on a message), then navigating to the "Apps" section.
+- **User commands** are commands that related to a user in Discord. They're accessed by right clicking on a user profile, then navigating to the "Apps" section.
+- **Entry Point commands** are commands used as the primary way to launch [Activities](/developers/en-us/activities/overview) from the App Launcher.
+
+Details about creating commands and handling command interactions are in the [Application Commands](/developers/en-us/interactions/application-commands) documentation.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 互動類型 (Types of Interactions)
+
+在您應用程式的工具箱中，有不同類型的互動功能可供挑選，以在 Discord 中建置吸引人且具備互動性的體驗。
+
+### 指令 (Commands)
+
+**[應用程式指令 (Application commands)](/developers/bilingual/interactions/application-commands)** 為使用者提供在 Discord 中原生啟動應用程式的方法。它們通常對應於應用程式的核心特徵或功能。
+
+![電腦版用戶端中的指令啟動器](/images/overview-command-desktop.png)
+
+當應用程式建立指令時，可以選擇指令的類型，這決定了它在 Discord 用戶端中顯示的位置，以及在啟動該指令時應用程式會收到的中繼資料。應用程式指令有三種類型：
+
+- **斜線指令 (Slash commands)** 是最常見的指令類型，可藉由在聊天輸入框中輸入 `/` 或開啟指令選取器來存取。
+- **訊息指令 (Message commands)** 是與訊息或訊息內容相關的指令。它們可以透過點擊訊息右上角的快顯功能表（三個點，或右鍵點擊訊息），然後導覽至「應用程式 (Apps)」區段來存取。
+- **使用者指令 (User commands)** 是與 Discord 使用者相關的指令。它們可以透過右鍵點擊使用者個人資料，然後導覽至「應用程式 (Apps)」區段來存取。
+- **進入點指令 (Entry Point commands)** 是使用者從應用程式啟動器 (App Launcher) 啟動 [互動活動 (Activities)](/developers/bilingual/activities/overview) 的主要方式。
+
+有關建立指令與處理指令互動的詳細資訊，請參閱 [應用程式指令 (Application Commands)](/developers/bilingual/interactions/application-commands) 說明文件。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Message Components
+
+**[Message components](/developers/en-us/components/reference)** are interactive elements that can be included in the content of a message that your app sends in Discord. 
+
+![Button message components in a message](/images/overview-components.png)
+
+The main interactive components that apps can send in messages include:
+
+- [Buttons](/developers/en-us/components/reference#button) are clickable components that can be customized with different styles, texts, and emoji.
+- [Static select menus](/developers/en-us/components/reference#string-select) are components that a user can open to see a list of developer-defined select options with custom labels and descriptions.
+- [Auto-populated select menus](/developers/en-us/components/reference#string-select) are a set of four different select components that are populated with contextual Discord resources, like a list of users or channels in a server.
+
+A list of all message components and details on sending and receiving component interactions is in the [Message Components](/developers/en-us/components/reference) documentation.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 訊息組件 (Message Components)
+
+**[訊息組件 (Message components)](/developers/bilingual/components/reference)** 是可包含在您應用程式在 Discord 中傳送的訊息內容裡的互動元素。
+
+![訊息中的按鈕訊息組件](/images/overview-components.png)
+
+應用程式可在訊息中傳送的主要互動組件包括：
+
+- [按鈕 (Buttons)](/developers/bilingual/components/reference#button) 是可點擊的組件，能以不同的樣式、文字和表情符號進行自訂。
+- [靜態選單 (Static select menus)](/developers/bilingual/components/reference#string-select) 是使用者可以開啟的組件，以檢視帶有自訂標籤和說明的開發者定義選取選項列表。
+- [自動填入選單 (Auto-populated select menus)](/developers/bilingual/components/reference#string-select) 是一組四種不同的選取組件，會自動填入 Discord 的上下文資源（例如伺服器中的使用者或頻道列表）。
+
+所有訊息組件的列表以及傳送與接收組件互動的詳細資訊，請參閱 [訊息組件 (Message Components)](/developers/bilingual/components/reference) 說明文件。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+### Modals
+
+**[Modals](/developers/en-us/interactions/receiving-and-responding#interaction-response-object-modal)** are single-user pop-up interfaces that allow apps to collect form-like data. Modals can only be opened in response to a user invoking one of your app's commands or message components.
+
+![Modals in the Discord client](/images/overview-modals.png)
+
+The only interactive component that modals can contain are [text inputs](/developers/en-us/components/reference#text-input), which allow users to fill out single-or-multi line form inputs.
+
+Details about creating and using modals is in the [Receiving and Responding](/developers/en-us/interactions/receiving-and-responding#interaction-response-object-modal) documentation.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+### 互動視窗 (Modals)
+
+**[互動視窗 (Modals)](/developers/bilingual/interactions/receiving-and-responding#interaction-response-object-modal)** 是單一使用者的彈出式介面，允許應用程式收集類似表單的資料。互動視窗只能在回應使用者啟動您應用程式的其中一個指令或訊息組件時被開啟。
+
+![Discord 用戶端中的互動視窗](/images/overview-modals.png)
+
+互動視窗可以包含的唯一互動組件是 [文字輸入框 (text inputs)](/developers/bilingual/components/reference#text-input), 允許使用者填寫單行或多行表單輸入。
+
+有關建立與使用互動視窗的詳細資訊，請參閱 [接收與回覆 (Receiving and Responding)](/developers/bilingual/interactions/receiving-and-responding#interaction-response-object-modal) 說明文件。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Preparing for Interactions
+
+When a user interacts with your app, you have the option for your app to receive interactions in two mutually-exclusive ways:
+- WebSocket-based Gateway connection
+- HTTP via outgoing webhooks
+
+By default your app will receive interactions via a Gateway connection, but you can opt-in to HTTP-based interactions by adding a **Interactions Endpoint URL** to your app's settings. Technical details about handling interactions is in the [Receiving and Responding](/developers/en-us/interactions/receiving-and-responding) documentation.
+
+### Configuring an Interactions Endpoint URL
+
+A **Interactions Endpoint URL** is a public endpoint for your app where Discord can send your app HTTP-based interactions. If your app is using [Gateway](/developers/en-us/events/gateway)-based interactions, you don't need to configure an Interactions Endpoint URL.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 為互動功能做準備 (Preparing for Interactions)
+
+當使用者與您的應用程式進行互動時，您可以選擇透過以下兩種互斥方式之一來接收互動：
+- 基於 WebSocket 的閘道器 (Gateway) 連線
+- 透過連出 Webhooks 的 HTTP 協定
+
+預設情況下，您的應用程式將透過閘道器連線接收互動，但您可以透過在應用程式設定中新增 **Interactions Endpoint URL (互動端點網址)** 來選擇使用基於 HTTP 的互動。處理互動的技術細節請參閱 [接收與回覆 (Receiving and Responding)](/developers/bilingual/interactions/receiving-and-responding) 說明文件。
+
+### 配置互動端點網址 (Configuring an Interactions Endpoint URL)
+
+**互動端點網址 (Interactions Endpoint URL)** 是您應用程式的公開端點，Discord 可以向其發送基於 HTTP 的互動請求。如果您的應用程式使用基於 [閘道器 (Gateway)](/developers/bilingual/events/gateway) 的互動，則不需要配置互動端點網址。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+#### Setting Up an Endpoint
+
+Before you can add your Interactions Endpoint URL to your app, your endpoint must be prepared for two things ahead of time:
+
+1. Acknowledging `PING` requests from Discord
+2. Validate security-related request headers (`X-Signature-Ed25519` and `X-Signature-Timestamp`)
+
+If either of these are not complete, your Interactions Endpoint URL will not be validated. Details on acknowledging PING requests and validating security-related headers are in the sections below.
+
+#### Acknowledging PING requests
+
+When adding your Interactions Endpoint URL, Discord will send a `POST` request with a `PING` payload with a `type: 1` to your endpoint. Your app is expected to acknowledge the request by returning a `200` response with a `PONG` payload (which has the same `type: 1`). Details about interaction responses are in the [Receiving and Responding documentation](/developers/en-us/interactions/receiving-and-responding).
+
+<Info>
+You must provide a valid `Content-Type` when responding to `PING`s. See [here](/developers/en-us/reference#http-api) for further information.
+</Info>
+
+<Accordion title="Responding to PING Requests" description="Code example for acknowledging PING interactions" icon="code">
+To properly acknowledge a `PING` payload, return a `200` response with a payload of `type: 1`:
+
+```py
+@app.route('/', methods=['POST'])
+def my_command():
+    if request.json["type"] == 1:
+        return jsonify({
+            "type": 1
+        })
+```
+</Accordion>
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+#### 設定端點 (Setting Up an Endpoint)
+
+在將您的互動端點網址新增至應用程式之前，您的端點必須預先做好兩件事：
+
+1. 回應來自 Discord 的 `PING` 請求
+2. 驗證與安全性相關的請求標頭 (`X-Signature-Ed25519` 與 `X-Signature-Timestamp`)
+
+如果這兩項都沒有完成，您的互動端點網址將無法通過驗證。有關確認 PING 請求和驗證安全相關標頭的詳細資訊，請參閱以下章節。
+
+#### 確認 PING 請求 (Acknowledging PING requests)
+
+新增互動端點網址時，Discord 會發送一個帶有 `PING` 承載資料（類型為 `type: 1`）的 `POST` 請求到您的端點。您的應用程式預期應藉由傳回一個 `type: 1` 的 `PONG` 承載資料與 `200` 回應來確認該請求。有關互動回應的詳細資訊，請參閱 [接收與回覆說明文件](/developers/bilingual/interactions/receiving-and-responding)。
+
+<Info>
+在回應 `PING` 時，您必須提供有效的 `Content-Type`。詳情請參閱[此處](/developers/bilingual/reference#http-api)。
+</Info>
+
+<Accordion title="回應 PING 請求" description="確認 PING 互動的程式碼範例" icon="code">
+要妥善確認 `PING` 承載資料，請傳回一個 `200` 回應，且承載資料之 `type` 為 `1`：
+
+```py
+@app.route('/', methods=['POST'])
+def my_command():
+    if request.json["type"] == 1:
+        return jsonify({
+            "type": 1
+        })
+```
+</Accordion>
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+<ManualAnchor id="setting-up-an-endpoint-validating-security-request-headers" />
+###### Validating Security Request Headers
+
+The internet is a scary place, especially for people hosting public, unauthenticated endpoints. To receive interactions via HTTP, there are some security steps you **must** take before your app is eligible to receive requests.
+
+Each interaction is sent with the following headers:
+
+-   `X-Signature-Ed25519` as a signature
+-   `X-Signature-Timestamp` as a timestamp
+
+Using your favorite security library, you **must validate the request each time you receive an [interaction](/developers/en-us/interactions/receiving-and-responding#interaction-object)**. If the signature fails validation, your app should respond with a `401` error code.
+
+<Accordion title="Validating Security Headers" description="Code example for validating security-related request headers" icon="code">
+Below are some code examples that show how to validate the headers sent in interactions requests.
+
+**JavaScript**
+
+```js
+const nacl = require("tweetnacl");
+
+// Your public key can be found on your application in the Developer Portal
+const PUBLIC_KEY = "APPLICATION_PUBLIC_KEY";
+
+const signature = req.get("X-Signature-Ed25519");
+const timestamp = req.get("X-Signature-Timestamp");
+const body = req.rawBody; // rawBody is expected to be a string, not raw bytes
+
+const isVerified = nacl.sign.detached.verify(
+    Buffer.from(timestamp + body),
+    Buffer.from(signature, "hex"),
+    Buffer.from(PUBLIC_KEY, "hex")
+);
+
+if (!isVerified) {
+    return res.status(401).end("invalid request signature");
+}
+```
+
+**Python**
+
+```py
+from nacl.signing import VerifyKey
+from nacl.exceptions import BadSignatureError
+
+# Your public key can be found on your application in the Developer Portal
+PUBLIC_KEY = 'APPLICATION_PUBLIC_KEY'
+
+verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
+
+signature = request.headers["X-Signature-Ed25519"]
+timestamp = request.headers["X-Signature-Timestamp"]
+body = request.data.decode("utf-8")
+
+try:
+    verify_key.verify(f'{timestamp}{body}'.encode(), bytes.fromhex(signature))
+except BadSignatureError:
+    abort(401, 'invalid request signature')
+```
+</Accordion>
+
+In addition to ensuring your app validates security-related request headers at the time of saving your endpoint, Discord will also perform automated, routine security checks against your endpoint, including purposefully sending you invalid signatures. If you fail the validation, we will remove your interactions URL and alert you via email and System DM.
+
+We highly recommend checking out our [Community Resources](/developers/en-us/developer-tools/community-resources#interactions) and the libraries found there. They not only provide typing for Interactions data models, but also include decorators for API frameworks like Flask and Express to make validation easy.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+<ManualAnchor id="setting-up-an-endpoint-validating-security-request-headers" />
+###### 驗證安全請求標頭 (Validating Security Request Headers)
+
+網路世界是個危險的地方，特別是對託管公開、未經驗證之端點的開發者而言。若要透過 HTTP 接收互動，在您的應用程式有資格接收請求之前，您**必須**採取一些安全性步驟。
+
+每個互動請求都會隨附以下標頭發送：
+
+-   以 `X-Signature-Ed25519` 作為簽章 (signature)
+-   以 `X-Signature-Timestamp` 作為時間戳記 (timestamp)
+
+使用您最喜愛的安全性函式庫，**每次收到 [互動 (interaction)](/developers/bilingual/interactions/receiving-and-responding#interaction-object) 時，您都必須驗證該請求**。如果簽章驗證失敗，您的應用程式應回應 `401` 錯誤碼。
+
+<Accordion title="驗證安全標頭" description="驗證安全相關請求標頭的程式碼範例" icon="code">
+以下是一些程式碼範例，示範如何驗證互動請求中發送的標頭。
+
+**JavaScript**
+
+```js
+const nacl = require("tweetnacl");
+
+// 您的公鑰可在開發者入口網站的應用程式設定中找到
+const PUBLIC_KEY = "APPLICATION_PUBLIC_KEY";
+
+const signature = req.get("X-Signature-Ed25519");
+const timestamp = req.get("X-Signature-Timestamp");
+const body = req.rawBody; // rawBody 預期應為字串，而非原始位元組
+
+const isVerified = nacl.sign.detached.verify(
+    Buffer.from(timestamp + body),
+    Buffer.from(signature, "hex"),
+    Buffer.from(PUBLIC_KEY, "hex")
+);
+
+if (!isVerified) {
+    return res.status(401).end("invalid request signature");
+}
+```
+
+**Python**
+
+```py
+from nacl.signing import VerifyKey
+from nacl.exceptions import BadSignatureError
+
+# 您的公鑰可在開發者入口網站的應用程式設定中找到
+PUBLIC_KEY = 'APPLICATION_PUBLIC_KEY'
+
+verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
+
+signature = request.headers["X-Signature-Ed25519"]
+timestamp = request.headers["X-Signature-Timestamp"]
+body = request.data.decode("utf-8")
+
+try:
+    verify_key.verify(f'{timestamp}{body}'.encode(), bytes.fromhex(signature))
+except BadSignatureError:
+    abort(401, 'invalid request signature')
+```
+</Accordion>
+
+除了在儲存端點時確保您的應用程式驗證安全相關的請求標頭外，Discord 也會對您的端點執行自動化、例行性的安全性檢查，包括故意發送無效的簽章給您。如果您驗證失敗，我們將移除您的互動網址，並透過電子郵件和系統私訊通知您。
+
+我們強烈建議查看我們的 [社群資源](/developers/bilingual/developer-tools/community-resources#interactions) 以及在其中找到的函式庫。它們不僅為互動資料模型提供類型定義，還包括適用於 Flask 和 Express 等 API 框架的裝飾器 (decorators)，以使驗證變取更加容易。
+
+</div>
+
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+#### Adding an Interactions Endpoint URL
+
+After you have a public endpoint to use as your app's Interactions Endpoint URL, you can add it to your app by going to your [app's settings](https://discord.com/developers/applications).
+
+On the [**General Information** page](https://discord.com/developers/applications/select/information), look for the **Interactive Endpoint URL** field. Paste your public URL that is set up to acknowledge `PING` messages and correctly handles security-related signature headers.
+
+---
+
+## Handling Interactions
+
+Once your app is prepared for interactions, you can explore the [Receiving and Responding](/developers/en-us/interactions/receiving-and-responding) documentation which goes into the technical details of handling interactions requests in your app.
+
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+#### 新增互動端點網址 (Adding an Interactions Endpoint URL)
+
+在您擁有可用作應用程式互動端點網址的公開端點後，您可以前往 [應用程式設定](https://discord.com/developers/applications) 將其新增至應用程式中。
+
+在 [**General Information** 頁面](https://discord.com/developers/applications/select/information) 上，尋找 **Interactive Endpoint URL** 欄位。貼上您已設定為確認 `PING` 訊息且正確處理安全相關簽章標頭的公開網址。
+
+---
+
+## 處理互動功能 (Handling Interactions)
+
+一旦您的應用程式為互動做好了準備，您可以探索 [接收與回覆 (Receiving and Responding)](/developers/bilingual/interactions/receiving-and-responding) 說明文件，該文件深入探討了在您應用程式中處理互動請求的技術細節。
+
+</div>
+
+</div>
