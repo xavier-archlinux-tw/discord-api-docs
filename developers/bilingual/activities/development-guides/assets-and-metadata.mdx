@@ -8,46 +8,143 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/assets-and-metadata" />
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <div>
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Setting Up Activity Metadata
 
-Navigate to `Settings -> General Information` to update:
-- **Application Name**: Publicly visible name
-- **Application Icon**: Publicly visible icon
-- **Application Description**: Shown in the Activity Shelf
-- **Max Participants**: Maximum number of players
+The Activity Shelf is where users can see what Activities can be played. It has various metadata and art assets that can be configured.
 
-## Setting Up Activity Art Assets
+To update your app's metadata in the Discord Developer Portal, navigate to the `Settings -> General Information` tab of your app.
 
-Navigate to [Activities -> Art Assets](https://discord.com/developers/applications/select/embedded/assets) to configure:
+- **Application Name:** The publicly visible name of your app.
+- **Application Icon:** The publicly visible icon for your app.
+- **Application Description:** The application description is shown in the view of the Activity Shelf Item.
+- **Max Participants:** The max participants indicate the maximum number of players for your application.
+  - Max Participants is displayed above the name in the 1-up view: `Up to X participants`.
+  - Leaving this field empty defaults to `Unlimited participants`.
+  - Max Participants is also displayed under the name in the 2-up view.
 
-- **Embedded Background**: 16:9, at least 1024px wide
-- **Cover Art**: 16:9 and 13:11, at least 1024px wide
-- **Video Preview**: 640x360, mp4, under 10s, under 1MB
-
-<br />
-  </div>
-  <div>
+<Info>
+An app can have a different application name and avatar from the application's bot username and avatar. Both sets of metadata are public-facing and may be visible in various situations when a user interacts with your app. You can view your bot's username on the `Settings -> Bot` tab.
+</Info>
+</div>
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 設定互動活動中繼資料 (Setting Up Activity Metadata)
 
-前往 `Settings -> General Information` 進行更新：
-- **應用程式名稱 (Application Name)**：公開顯示的名稱
-- **應用程式圖示 (Application Icon)**：公開顯示的圖示
-- **應用程式說明 (Application Description)**：顯示在互動活動書架中
-- **最多參與人數 (Max Participants)**：最大玩家數量
+互動活動書架 (Activity Shelf) 是使用者查看有哪些互動活動可以遊玩的地方。您可以在此設定各種中繼資料與美術素材。
+
+若要在 Discord 開發者入口網站中更新您的 App 中繼資料，請造訪您 App 的 `Settings -> General Information` 分頁。
+
+- **應用程式名稱 (Application Name)：** 您的 App 公開顯示的名稱。
+- **應用程式圖示 (Application Icon)：** 您的 App 公開顯示的圖示。
+- **應用程式說明 (Application Description)：** 應用程式說明會顯示在互動活動書架項目的視圖中。
+- **最多參與人數 (Max Participants)：** 最多參與人數表示您應用程式的最大玩家數量。
+  - 最多參與人數會顯示在 1-up 視圖中名稱的上方：`最多 X 位參與者`。
+  - 將此欄位保留空白預設為 `不限人數`。
+  - 最多參與人數也會顯示在 2-up 視圖中名稱的下方。
+
+<Info>
+應用程式可以擁有與應用程式機器人的使用者名稱及大頭貼不同的應用程式名稱及大頭貼。這兩組中繼資料都是公開的，並可能在使用者與您的 App 進行互動的各種情況下顯示。您可以在 `Settings -> Bot` 分頁上查看您的機器人使用者名稱。
+</Info>
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Setting Up Activity Art Assets
+
+The Activity Shelf is where users can see what Activities can be played. It has various metadata and art assets that can be configured.
+
+To update your app's embedded-specific art assets in the Discord Developer Portal, navigate to the [Activities -> Art Assets](https://discord.com/developers/applications/select/embedded/assets) tab of your app.
+
+## Embedded Background
+
+Used as a background overlay in Grid view. Artwork should be clustered around the edges of the image leaving space in the center of the image so the UI does not clash with it.
+
+#### Specifications
+- 16:9 aspect ratio
+- At least 1024 pixels wide
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 設定互動活動美術素材 (Setting Up Activity Art Assets)
 
-前往 [Activities -> Art Assets](https://discord.com/developers/applications/select/embedded/assets) 進行設定：
+互動活動書架是使用者查看有哪些互動活動可以遊玩的地方。您可以在此設定各種中繼資料與美術素材。
 
-- **嵌入式背景 (Embedded Background)**：16:9，寬度至少 1024 像素
-- **封面圖 (Cover Art)**：16:9 和 13:11，寬度至少 1024 像素
-- **影片預覽 (Video Preview)**：640x360，mp4，10 秒內，1MB 以內
+若要在 Discord 開發者入口網站中更新您的 App 嵌入式專屬美術素材，請造訪您 App 的 [Activities -> Art Assets](https://discord.com/developers/applications/select/embedded/assets) 分頁。
 
-<br />
-  </div>
+## 嵌入式背景 (Embedded Background)
+
+用作格狀 (Grid) 視圖中的背景重疊。美術設計應集中在圖像的邊緣，並在圖像中央留出空間，以免與 UI 產生視覺衝突。
+
+#### 規格
+- 16:9 寬高比
+- 寬度至少 1024 像素
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Cover Art
+
+Used as the main image in the Activity Shelf. It is suggested that this image contain the title and some art in the background.
+
+#### Specifications:
+- Image can be displayed at both 16:9 and 13:11 aspect ratios
+- At least 1024 pixels wide
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 封面圖 (Cover Art)
+
+用作互動活動書架中的主要圖像。建議此圖像包含標題以及背景中的一些美術設計。
+
+#### 規格：
+- 圖像可以以 16:9 和 13:11 兩種寬高比顯示
+- 寬度至少 1024 像素
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## App Tile
+
+There are two views of an application tile. The regular size tile (2-up tile) and the larger "featured" application tile (1-up tile).
+
+## Video Preview
+
+Hovering over the cover image should start playing a preview video of the Application. The preview videos should be no more than 10 seconds long. If no video is provided, nothing will happen as you hover over the application.
+
+#### Specifications: 640 x 360, mp4 format, under 10 seconds long, under 1 MB in size
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 應用程式拼貼 (App Tile)
+
+應用程式拼貼有兩種視圖。一般大小的拼貼 (2-up tile) 以及較大的「精選」應用程式拼貼 (1-up tile)。
+
+## 影片預覽 (Video Preview)
+
+將滑鼠懸停在封面圖像上時，應開始播放應用程式的預覽影片。預覽影片長度不應超過 10 秒。如果未提供影片，則懸停在應用程式上時不會有任何反應。
+
+#### 規格：640 x 360，mp4 格式，長度在 10 秒以內，大小在 1 MB 以內
+</div>
 </div>

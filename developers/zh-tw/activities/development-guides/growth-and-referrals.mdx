@@ -7,21 +7,35 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/growth-and-referrals" />
 
+
 ## 引導使用者分享獎勵連結 (Prompting Users to Share Incentivized Links)
 
-獎勵分享機制可透過網路效應協助您的互動活動成長。以下是幾種常見的連結用途：
+獎勵分享機制可透過網路效應協助您的互動活動成長。您可以透過多種不同方式使用連結，例如：
 
-- **推薦連結 (Referral Links)**：使用者可在您的互動活動中複製包含其 Discord 用戶 ID 的推薦連結（`https://discord.com/activities/<您的活動 ID>?referrer_id=123456789`），分享給朋友。當朋友接受並開始遊玩時，推薦者可在遊戲中獲得獎勵。
-- **促銷活動 (Promotions)**：您可在社群媒體上分享含自訂 `custom_id` 的連結（`https://discord.com/activities/<您的活動 ID>?custom_id=social012025`），讓點擊特定連結的使用者獲得遊戲內獎勵。
-- **社群深層連結 (Social Deep-links)**：您可建立指向遊戲中特定位置的深層連結，讓朋友直接抵達您所在的位置。
-- **回合制深層連結 (Turn-based Deep-links)**：當您向使用者發送「輪到你了」的私訊時，可附上直接帶他們前往正確遊戲實例和回合的連結。
-- **聯盟行銷 (Affiliate Marketing)**：為網紅或合作夥伴建立專屬連結（`https://discord.com/activities/<您的活動 ID>?custom_id=influencer1`），並根據帶來的新使用者給予分潤。
-- **來源歸因 (Source Attribution)**：使用 `custom_id` 參數追蹤來自不同行銷管道的流量。
+- **推薦連結 (Referral Links)**：使用者可在您的互動活動中複製包含其 Discord 使用者 ID 的推薦連結（`https://discord.com/activities/<您的活動 ID>?referrer_id=123456789`），並發送給朋友。當朋友接受並開始遊玩時，您可以在遊戲中給予推薦者特定的獎勵。
+- **促銷活動 (Promotions)**：您可以在社群媒體上運行臨時的促銷活動，並在使用者現在開始遊玩時提供獎勵。在您的社群媒體上分享自訂連結（`https://discord.com/activities/<您的活動 ID>?custom_id=social012025`）。點擊該特定連結的任何人都能在您的遊戲中獲得某些商品。
+- **社群深層連結 (Social Deep-links)**：目前當使用者啟動互動活動時，都會進入相同的入口。相反地，您可以開始深層連結到遊戲中與上下文相關的位置。例如，使用者 A 可以複製其互動活動中的連結以吸引其他使用者（`https://discord.com/activities/<您的活動 ID>?referrer_id=123456789&custom_id=visit-location`），並在私訊 (DM) 或頻道中發送該連結給朋友。接著，點擊該連結的使用者 B 將被直接帶到使用者 A 所在的遊戲位置。
+- **回合制深層連結 (Turn-based Deep-links)**：當您向使用者發送「輪到你了」的私訊時，可以附帶一個連結，直接將他們帶到正確的遊戲實例以及他們需要進行的回合。
+- **聯盟行銷 (Affiliate Marketing)**：您可以與合作夥伴（如網紅、公司等）合作，向他們的粉絲宣傳您的遊戲，並透過自訂連結給予獎勵（`https://discord.com/activities/<您的活動 ID>?custom_id=influencer1`）。接著，對於因該網紅而開始遊玩的每位使用者，您都可以向該網紅支付報酬。
+- **來源歸因 (Source Attribution)**：您可以使用 `custom_id` 參數來了解從不同行銷管道獲得了多少流量。
 
-#### 分享連結 (Sharing Links)
+本指南涵蓋實作推薦連結，其中將包含為分享連結的使用者以及點擊連結的使用者提供獎勵的系統。
+
+#### 實作概述
+
+1. 建立並追蹤推廣活動的獎勵連結，然後引導使用者分享該連結。
+2. 處理傳入的推薦並授予有效的獎勵。
+
+#### 分享連結
+
+在實作分享時，您需要：
+1. 生成一個用於追蹤推廣活動的唯一 ID。
+2. 呼叫 [`shareLink`](/developers/zh-tw/developer-tools/embedded-app-sdk#sharelink) 指令。
+3. 追蹤該分享嘗試。
 
 ```javascript
 // 為此次促銷活動生成唯一 ID
+// 這可以根據您的需求，按推廣活動、按使用者或按分享來生成
 const customId = await createPromotionalCustomId();
 
 try {
@@ -31,25 +45,29 @@ try {
     });
 
     if (success) {
-        // 追蹤成功分享以供分析/限流
+        // 追蹤成功分享以供分析/限制次數
         await trackSuccessfulShare(customId);
     }
 } catch (error) {
+    // 適當處理分享失敗
     console.error('分享連結失敗：', error);
 }
 ```
 
-#### 處理傳入的推薦 (Handling Incoming Referrals)
+#### 處理傳入的推薦
 
 當使用者點擊共享連結後，您的互動活動將在啟動時透過 SDK 取得推薦資料：
 
 ```javascript
+// 在您互動活動初始化的早期階段
 async function handleReferral() {
+    // 驗證推薦資料
     if (!discordSdk.customId || !discordSdk.referrerId) {
         return;
     }
 
     try {
+        // 驗證這是否為有效的促銷活動且尚未過期
         const promotion = await validatePromotion(discordSdk.customId);
         if (!promotion) {
             console.log('無效或已過期的促銷活動');
@@ -62,7 +80,7 @@ async function handleReferral() {
             return;
         }
 
-        // 給予雙方獎勵
+        // 給予雙方使用者獎勵
         await grantRewards({
             promotionId: discordSdk.customId,
             referrerId: discordSdk.referrerId,
@@ -76,47 +94,76 @@ async function handleReferral() {
 
 #### 連結分享最佳實踐
 
-- 生成唯一且不易被猜測的 `customId`
-- 追蹤並驗證推薦以防止濫用
-- 優雅地處理已過期促銷活動的邊緣情況
-- 考慮在分享之間實施冷卻期
+- 生成唯一且不易被猜測的 `customId`。
+- 追蹤並驗證推薦以防止濫用。
+- 優雅地處理已過期促銷活動等邊緣情況。
+- 考慮在分享之間實施冷卻時間。
+- 請勿直接覆寫 `referrer_id` 查詢參數。當存在時，`referrer_id` 預期會是 Discord 的 Snowflake 類型使用者 ID，否則它將被設定為訊息的作者 ID。
 
 ---
 
 ## 建立與管理自訂獎勵連結 (Creating and Managing Custom Incentivized Links)
 
-前往您應用程式入口網站中，在 Activities 導覽項下的 [Custom Links 頁面](https://discord.com/developers/applications/select/embedded/custom-links)進行設定。
+本指南涵蓋透過開發者入口網站建立可自訂的 [獎勵連結](/developers/zh-tw/activities/development-guides/growth-and-referrals#prompting-users-to-share-incentivized-links)，然後獲取該連結以便在平台外分享。獎勵連結用於自訂嵌入式卡片在使用者面前的呈現方式。
 
-#### 建立連結 (Creating a Link)
+#### 建立連結
 
-1. 點擊 `Create New` 建立新連結
-2. 上傳寬高比為 43:24 的圖片
-3. 填寫標題 (Title) 和說明 (Description)（必填）
-4. `custom_id` 為選填欄位
-5. 點擊儲存
+1. 在您的應用程式入口網站中，造訪導覽選單中 Activities 標題底下的 [Custom Links 頁面](https://discord.com/developers/applications/select/embedded/custom-links)。
+2. 在 Custom Links 頁面上，點擊 `Create New` 建立新連結。
+3. 您需要上傳一張寬高比為 43:24 的圖片。
+4. 標題 (Title) 和說明 (Description) 也是必填欄位。
+5. `custom_id` 為選填欄位，連結本身上明確指定的 `custom_id` 查詢參數將始終覆寫設定的 `custom_id`。
+6. 點擊儲存。
 
-#### 複製連結 (Copying a Link)
+#### 編輯連結
 
-完成後點擊該列的複製圖示，連結將複製至剪貼簿。連結格式為：`https://discord.com/activities/<您的活動 ID>?link_id=0-123456789`。
+1. 點擊該列以開啟對話框，其中已載入所有資料供您進行編輯。
+2. 將說明變更為其他內容。
+3. 點擊更新。
+
+#### 複製連結
+
+一旦您對變更感到滿意，可以點選該列上的複製圖示，它會變更為綠色代表已成功複製到您的剪貼簿。您現在可以在任何地方分享此連結。該連結的格式如下：`https://discord.com/activities/<您的活動 ID>?link_id=0-123456789`。即使您設定了 `custom_id`，它也不會明確包含在連結中，但會在使用者點擊該連結時被載入。如果需要，您可以進一步縮短此網址。
+
+#### 刪除連結
+
+1. 點擊您要刪除的連結該列上的垃圾桶圖示。
+2. 畫面會彈出一個確認對話框。
 
 <Warning>
 刪除操作不可逆且立即生效。請確保連結未在活躍使用中再進行刪除，並確保您的互動活動能優雅地處理已刪除連結的點擊流量。
 </Warning>
 
+#### 最佳實踐
+
+- 生成唯一且不易被猜測的 `customId`。
+- 追蹤並驗證推薦以防止濫用。
+- 優雅地處理您的互動活動中對於已過期但仍在平台外流傳的自訂連結之點擊。
+
+#### 使用者體驗
+
+![自訂連結嵌入卡片](/images/activities/custom-link-embed.png)
+
+使用者將會看到顯示您資訊的嵌入式卡片。點擊「Play」將開啟互動活動並傳遞您所設定的 `custom_id`。對於在 Discord 上分享的連結，將會帶有 `referrer_id`。
+
 ---
 
 ## 在互動活動中生成自訂連結 (Generating a Custom Link Within Your Activity)
 
-此方式可在互動活動中動態生成獎勵連結：
+本指南涵蓋在您的互動活動中建立一個可自訂的 [獎勵連結](/developers/zh-tw/activities/development-guides/growth-and-referrals#prompting-users-to-share-incentivized-links)，並使用 `shareLink` API 來分享該連結。
 
-- 可自訂連結在嵌入式預覽中的呈現方式
-- 可按需在互動活動中生成
-- 臨時性，有 30 天的 TTL（存活時間）
+- 允許您透過嵌入式卡片自訂連結向使用者呈現的方式
+- 可按需在您的互動活動中動態生成
+- 臨時性，擁有 30 天的 TTL（存活時間）
 - 不會顯示在開發者入口網站中
 
+#### 生成連結
+
 ```javascript
+// 將圖片的 Array Buffer 轉換為 Base64 字串
 const image = base64EncodedImage;
 
+// 生成臨時互動活動連結 (Quick Link)
 const linkIdResponse = await fetch(`${env.discordAPI}/applications/${env.applicationId}/quick-links/`, {
   method: 'POST',
   headers: {
@@ -132,6 +179,7 @@ const linkIdResponse = await fetch(`${env.discordAPI}/applications/${env.applica
 });
 const {link_id} = await linkIdResponse.json();
 
+// 開啟包含已生成連結的分享對話框
 const {success} = await discordSdk.commands.shareLink({
   message: '來看我的最高分！',
   link_id,

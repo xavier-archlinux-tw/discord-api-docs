@@ -7,6 +7,7 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="zh-tw" path="/developers/zh-tw/activities/development-guides/multiplayer-experience" />
 
+
 ## 活動實例管理 (Activity Instance Management)
 
 當使用者點擊「加入應用程式 (Join Application)」時，他們期望能進入與朋友相同的應用程式實例，無論是共享畫布、棋盤遊戲、協作播放清單或第一人稱射擊遊戲，兩位使用者都應能存取相同的共享資料。在本文件中，我們將此共享資料稱為**應用程式實例 (application instance)**。
@@ -60,6 +61,8 @@ discordSdk.unsubscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParti
 
 ## 渲染大頭貼與名稱 (Render Avatars and Names)
 
+請參閱 [此處](/developers/zh-tw/reference#image-formatting-cdn-endpoints) 以獲取關於 Discord 在何處以及如何儲存常見圖像資產的詳細說明文件。
+
 以下是擷取使用者大頭貼和使用者名稱的基本範例：
 
 ```javascript
@@ -85,18 +88,164 @@ const username = user.global_name ?? `${user.username}#${user.discriminator}`;
 
 #### 渲染伺服器專屬大頭貼與暱稱
 
-若要取得使用者的伺服器專屬大頭貼與暱稱，您的應用程式必須請求 `guilds.members.read` 權限範圍。請注意，此範圍僅能授予目前使用者的資料；若要顯示所有使用者的伺服器專屬資料，需透過應用程式伺服器來提供。
+若要取得使用者的伺服器（伺服器）專屬大頭貼與暱稱，您的應用程式必須請求 `guilds.members.read` 權限範圍。請注意，這僅能授予該應用程式使用者的特定實例資訊。若要顯示所有應用程式使用者的伺服器專屬大頭貼/暱稱，從 `guilds.members.read` 權限範圍的 API 呼叫中所獲取的任何資訊，都必須透過您應用程式的伺服器進行共享。
+
+以下是如何獲取使用者的伺服器專屬大頭貼與暱稱的範例：
+
+```javascript
+// 我們將參考從 authenticate 傳回的 user 物件
+const {user} = await discordSdk.commands.authenticate({
+  access_token: accessToken,
+});
+
+// 當使用代理伺服器時，您可以改為將 `https://discord.com` 替換為 `/discord`
+// 或任何您在開發者入口網站中選擇的網址映射
+fetch(`https://discord.com/api/users/@me/guilds/${discordSdk.guildId}/member`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+})
+  .then((response) => {
+    return response.json();
+  })
+  .then((guildsMembersRead) => {
+    let guildAvatarSrc = '';
+    // 獲取伺服器專屬大頭貼，若無則降級使用一般使用者大頭貼
+    if (guildsMembersRead?.avatar) {
+      guildAvatarSrc = `https://cdn.discordapp.com/guilds/${discordSdk.guildId}/users/${user.id}/avatars/${guildsMembersRead.avatar}.png?size=256`;
+    } else if (user.avatar) {
+      guildAvatarSrc = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+    } else {
+      const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n;
+      avatarSrc = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`;
+    }
+
+    // 獲取伺服器專屬暱稱，若無則降級使用 global_name 或 username#discriminator
+    const guildNickname = guildsMembersRead?.nick ?? (user.global_name ?? `${user.username}#${user.discriminator}`);
+  });
+```
+
+此範例完全是在用戶端執行的，然而，更常見的模式是改為執行以下操作：
+- 將使用者的存取憑證 (Access Token) 儲存在應用程式伺服器端。
+- 透過應用程式伺服器獲取使用者的伺服器專屬大頭貼與暱稱。
+- 透過應用程式伺服器提供所有應用程式的使用者大頭貼/暱稱。
 
 ---
 
 ## 防止未授權的活動連線 (Preventing Unwanted Activity Sessions)
 
-互動活動透過 Discord 中的 iframe 載入，其網站可公開存取於 `<application_id>.discordsays.com`。為了防止惡意客戶端偽造 RPC 協議，我們建議使用 Activity Instance API 進行活動連線驗證。
+互動活動是透過 Discord App 中的 iframe 呈現的。互動活動網站本身可在 `<application_id>.discordsays.com` 公開存取。互動活動預期能夠透過 Discord SDK 的 RPC 協定與 Discord 的網頁版或行動版用戶端進行通訊。如果使用者在一般瀏覽器中載入互動活動的網站，Discord RPC 伺服器將不存在，互動活動可能會以某種方式失敗。
+
+理論上，惡意用戶端有可能模擬 Discord 的 RPC 協定，或在啟動另一個互動活動時載入該活動的網站。因為該活動是在 Discord 內部載入的，RPC 協定是啟用狀態，互動活動對此一無所知。
 
 ### 使用 Activity Instance API
 
-透過 `discord.com/api/applications/<application_id>/activity-instances/<instance_id>` 端點，您的後端可在允許客戶端參與任何有意義的遊戲之前，驗證該客戶端是否確實在該活動的有效實例中。
+為了讓互動活動能夠「鎖定」存取權限，我們建議使用 `get_activity_instance` API，位於 `discord.com/api/applications/<application_id>/activity-instances/<instance_id>`。此路由需要應用程式的機器人憑證 (Bot token)。如果找到，它會傳回該應用程式序列化的作用中互動活動實例，否則傳回 404。以下是兩個回應範例：
 
-如果驗證失敗，您的 App 應以 `401` 錯誤碼回應。
+```javascript
+curl https://discord.com/api/applications/1215413995645968394/activity-instances/i-1234567890-gc-912952092627435520-912954213460484116 -H 'Authorization: Bot <bot token>'
+{"message": "404: Not Found", "code": 0}
 
-![activity-instance-validation](/images/activities/activity-instance-validation.jpg)
+curl https://discord.com/api/applications/1215413995645968394/activity-instances/i-1276580072400224306-gc-912952092627435520-912954213460484116 -H 'Authorization: Bot <bot token>'
+{"application_id":"1215413995645968394","instance_id":"i-1276580072400224306-gc-912952092627435520-912954213460484116","launch_id":"1276580072400224306","location":{"id":"gc-912952092627435520-912954213460484116","kind":"gc","channel_id":"912954213460484116","guild_id":"912952092627435520"},"users":["205519959982473217"]}
+```
+
+透過此 API，活動的後端可以在允許用戶端參與任何實質性遊戲內容之前，驗證該用戶端是否確實處於該活動的實例中。活動如何實作「階段驗證」由開發者自行決定。解決方案可以細緻到限制特定功能，也可以二分到只為有效的連線階段傳回活動 HTML。
+
+###### 驗證代理請求標頭
+
+對於想要額外安全驗證的 App，Discord 提供了一個選用的代理伺服器驗證系統。當您的嵌入式 App 透過 Discord 代理伺服器發送請求時，每個請求都可以包含證明該請求真實性的密碼學標頭。
+
+每個經過代理伺服器驗證的請求都會隨附以下標頭：
+- `X-Signature-Ed25519`：作為密碼學簽章
+- `X-Signature-Timestamp`：作為 Unix 時間戳記
+- `X-Discord-Proxy-Payload`：作為包含使用者上下文且經 Base64 編碼的 Payload
+
+如果您選擇使用代理伺服器驗證，您可以驗證這些標頭以確保請求合法。如果簽章驗證失敗，您的 App 應以 `401` 錯誤碼回應。
+
+<Accordion title="驗證代理標頭 (Validating Proxy Headers)" description="驗證代理伺服器驗證標頭的程式碼範例" icon="code">
+以下是一些程式碼範例，說明如何驗證代理伺服器驗證請求中傳送的標頭。
+
+**JavaScript**
+
+```js
+const nacl = require("tweetnacl");
+
+// 您的公鑰可以在開發者入口網站的應用程式中找到
+const PUBLIC_KEY = "APPLICATION_PUBLIC_KEY";
+
+const signature = req.get("X-Signature-Ed25519");
+const timestamp = req.get("X-Signature-Timestamp");
+const payload = req.get("X-Discord-Proxy-Payload");
+
+// 解碼 base64 payload
+const payloadBytes = Buffer.from(payload, "base64");
+const payloadString = payloadBytes.toString("utf-8");
+const payloadData = JSON.parse(payloadString);
+
+// 驗證時間戳記與 payload 相符
+if (payloadData.created_at.toString() !== timestamp) {
+    return res.status(401).end("invalid request timestamp");
+}
+
+// 檢查 Token 是否已過期
+if (payloadData.expires_at < Math.floor(Date.now() / 1000)) {
+    return res.status(401).end("expired proxy token");
+}
+
+// 使用 tweetnacl 驗證簽章
+const isVerified = nacl.sign.detached.verify(
+    payloadBytes,
+    Buffer.from(signature, "base64"),
+    Buffer.from(PUBLIC_KEY, "hex")
+);
+
+if (!isVerified) {
+    return res.status(401).end("invalid request signature");
+}
+```
+
+**Python**
+
+```py
+import json
+import base64
+import time
+from nacl.signing import VerifyKey
+from nacl.exceptions import BadSignatureError
+
+# 您的公鑰可以在開發者入口網站的應用程式中找到
+PUBLIC_KEY = 'APPLICATION_PUBLIC_KEY'
+
+verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
+
+signature = request.headers["X-Signature-Ed25519"]
+timestamp = request.headers["X-Signature-Timestamp"]
+payload = request.headers["X-Discord-Proxy-Payload"]
+
+# 解碼 base64 payload
+payload_bytes = base64.b64decode(payload)
+payload_string = payload_bytes.decode('utf-8')
+payload_data = json.loads(payload_string)
+
+# 驗證時間戳記與 payload 相符
+if str(payload_data['created_at']) != timestamp:
+    abort(401, 'invalid request timestamp')
+
+# 檢查 Token 是否已過期
+if payload_data['expires_at'] < int(time.time()):
+    abort(401, 'expired proxy token')
+
+try:
+    verify_key.verify(payload_bytes, bytes.fromhex(signature))
+except BadSignatureError:
+    abort(401, 'invalid request signature')
+```
+</Accordion>
+
+代理伺服器驗證完全是選用的，旨在為選擇實作的 App 提供額外的安全層級。
+
+在下方的流程圖中，我們展示了伺服器如何僅為有效活動實例中的有效使用者提供活動網站：
+
+![活動實例驗證流程](/images/activities/activity-instance-validation.jpg)

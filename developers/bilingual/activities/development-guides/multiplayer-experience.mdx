@@ -7,78 +7,562 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/multiplayer-experience" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Activity Instance Management
 
-When a user clicks "Join Application", they expect to enter the same application that their friends are participating in. The `instanceId` is the key for your application to identify which unique instance it is talking to.
+When a user clicks "Join Application", they expect to enter the same application that their friends are participating in. Whether the application is a shared drawing canvas, board game, collaborative playlist, or first-person shooter; the two users should have access to the same shared data. In this documentation, we refer to this shared data as an **application instance**.
+
+![join-application](/images/activities/join-application.png)
+
+The Embedded App SDK allows your app to talk bidirectionally with the Discord Client. The `instanceId` is necessary for your application, as well as Discord, to understand which unique instance of an application it is talking to.
+
+#### Using instanceId
+
+The `instanceId` attribute is available as soon as the SDK is constructed, and does not require the SDK to receive a `ready` payload from the Discord client.
 
 ```javascript
 import {DiscordSDK} from '@discord/embedded-app-sdk';
 const discordSdk = new DiscordSDK(clientId);
-const instanceId = discordSdk.instanceId; // available immediately
+// available immediately
+const instanceId = discordSdk.instanceId;
 ```
 
-**Instance ID Semantics:** Generated when a user launches an application. All joining users receive the same `instanceId`. Ends when all users leave.</div><div>
+The `instanceId` should be used as a key to save and load the shared data relevant to an application. This ensures that two users who are in the same application instance have access to the same shared data.
+
+##### Semantics of instanceId
+
+Instance IDs are generated when a user launches an application. Any users joining the same application will receive the same `instanceId`. When all the users of an application in a channel leave or close the application, that instance has finished its lifecycle, and will not be used again. The next time a user opens the application in that channel, a new `instanceId` will be generated.
+</div>
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 活動實例管理 (Activity Instance Management)
 
-當使用者點擊「加入應用程式」時，他們期望進入與朋友相同的應用程式實例。`instanceId` 是識別特定實例不可或缺的依據。
+當使用者點擊「加入應用程式 (Join Application)」時，他們期望能進入與朋友相同的應用程式實例，無論是共享畫布、棋盤遊戲、協作播放清單或第一人稱射擊遊戲，兩位使用者都應能存取相同的共享資料。在本文件中，我們將此共享資料稱為**應用程式實例 (application instance)**。
+
+![join-application](/images/activities/join-application.png)
+
+Embedded App SDK 可讓您的 App 與 Discord 用戶端進行雙向通訊。`instanceId` 是您的應用程式與 Discord 識別特定實例不可或缺的依據。
+
+#### 使用 instanceId
+
+`instanceId` 屬性在 SDK 建構完成後即可立即使用，無需等待 Discord 用戶端的 `ready` 事件。
 
 ```javascript
 import {DiscordSDK} from '@discord/embedded-app-sdk';
 const discordSdk = new DiscordSDK(clientId);
-const instanceId = discordSdk.instanceId; // 立即可用
+// 立即可用
+const instanceId = discordSdk.instanceId;
 ```
 
-**instanceId 的語義**：在使用者啟動應用程式時生成。所有加入的使用者收到相同的 `instanceId`。所有使用者離開後，該實例即結束。</div></div>
+`instanceId` 應作為儲存和載入應用程式共享資料的鍵值，以確保相同實例中的使用者能存取相同的共享資料。
+
+##### instanceId 的語義
+
+實例 ID 在使用者啟動應用程式時生成。加入同一應用程式的使用者將收到相同的 `instanceId`。當一個頻道中所有使用者離開或關閉應用程式後，該實例即結束其生命週期，不會再被使用。下次有使用者在該頻道開啟應用程式時，將產生新的 `instanceId`。
+</div>
+</div>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Instance Participants
 
+Instance Participants are any Discord user actively connected to the same Application Instance. This data can be fetched or subscribed to.
+
 ```javascript
+import {DiscordSDK, Events, type Types} from '@discord/embedded-app-sdk';
+
+const discordSdk = new DiscordSDK('...');
+await discordSdk.ready();
+
 // Fetch
 const participants = await discordSdk.commands.getInstanceConnectedParticipants();
 
 // Subscribe
+function updateParticipants(participants: Types.GetActivityInstanceConnectedParticipantsResponse) {
+  // Do something really cool
+}
 discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
+// Unsubscribe
+discordSdk.unsubscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
 ```
-
-## Render Avatars and Names
-
-```javascript
-const {user} = await discordSdk.commands.authenticate({ access_token: accessToken });
-
-let avatarSrc = user.avatar
-  ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
-  : `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`;
-
-const username = user.global_name ?? `${user.username}#${user.discriminator}`;
-```</div><div>
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 實例參與者 (Instance Participants)
 
+實例參與者是指所有正在連線至同一應用程式實例的 Discord 使用者。您可以透過主動查詢或訂閱事件來取得此資料。
+
 ```javascript
-// 主動查詢
+import {DiscordSDK, Events, type Types} from '@discord/embedded-app-sdk';
+
+const discordSdk = new DiscordSDK('...');
+await discordSdk.ready();
+
+// 主動查詢 (Fetch)
 const participants = await discordSdk.commands.getInstanceConnectedParticipants();
 
-// 訂閱事件
+// 訂閱事件 (Subscribe)
+function updateParticipants(participants: Types.GetActivityInstanceConnectedParticipantsResponse) {
+  // 做些很酷的事
+}
 discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
+// 取消訂閱 (Unsubscribe)
+discordSdk.unsubscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
 ```
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Render Avatars and Names
+
+Check out detailed documentation on where and how Discord stores common image assets [here](/developers/en-us/reference#image-formatting-cdn-endpoints).
+
+Here's a basic example for retrieving a user's avatar and username:
+
+```javascript
+// We'll be referencing the user object returned from authenticate
+const {user} = await discordSdk.commands.authenticate({
+  access_token: accessToken,
+});
+
+let avatarSrc = '';
+if (user.avatar) {
+  avatarSrc = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+} else {
+  const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n;
+  avatarSrc = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`
+}
+
+const username = user.global_name ?? `${user.username}#${user.discriminator}`;
+
+// Then in your HTML/JSX/etc...
+<img alt="avatar" src={avatarSrc} />
+<p>{username}</p>
+```
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 渲染大頭貼與名稱 (Render Avatars and Names)
 
-```javascript
-const {user} = await discordSdk.commands.authenticate({ access_token: accessToken });
+請參閱 [此處](/developers/bilingual/reference#image-formatting-cdn-endpoints) 以獲取關於 Discord 在何處以及如何儲存常見圖像資產的詳細說明文件。
 
-let avatarSrc = user.avatar
-  ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
-  : `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`;
+以下是擷取使用者大頭貼和使用者名稱的基本範例：
+
+```javascript
+// 使用 authenticate 返回的 user 物件
+const {user} = await discordSdk.commands.authenticate({
+  access_token: accessToken,
+});
+
+let avatarSrc = '';
+if (user.avatar) {
+  avatarSrc = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+} else {
+  const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n;
+  avatarSrc = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`
+}
 
 const username = user.global_name ?? `${user.username}#${user.discriminator}`;
-```</div></div>
+
+// 在 HTML/JSX 中使用...
+<img alt="avatar" src={avatarSrc} />
+<p>{username}</p>
+```
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+#### Rendering guild-specific avatars and nicknames
+
+In order to retrieve a user's guild-specific avatar and nickname, your application must request the `guilds.members.read` scope. Note, this only grants the information for that instance of the application's user. To display the guild-specific avatar/nickname for all application users, any info retrieved from `guilds.members.read` scope'd API calls must be shared via your application's server.
+
+Here's an example of how to retrieve the user's guild-specific avatar and nickname:
+
+```javascript
+// We'll be referencing the user object returned from authenticate
+const {user} = await discordSdk.commands.authenticate({
+  access_token: accessToken,
+});
+
+// When using the proxy, you may instead replace `https://discord.com` with `/discord`
+// or whatever url mapping you have chosen via the developer portal
+fetch(`https://discord.com/api/users/@me/guilds/${discordSdk.guildId}/member`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+})
+  .then((response) => {
+    return response.json();
+  })
+  .then((guildsMembersRead) => {
+    let guildAvatarSrc = '';
+    // Retrieve the guild-specific avatar, and fallback to the user's avatar
+    if (guildsMembersRead?.avatar) {
+      guildAvatarSrc = `https://cdn.discordapp.com/guilds/${discordSdk.guildId}/users/${user.id}/avatars/${guildsMembersRead.avatar}.png?size=256`;
+    } else if (user.avatar) {
+      guildAvatarSrc = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+    } else {
+      const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n;
+      avatarSrc = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`;
+    }
+
+    // Retrieve the guild-specific nickname, and fallback to the username#discriminator
+    const guildNickname = guildsMembersRead?.nick ?? (user.global_name ?? `${user.username}#${user.discriminator}`);
+  });
+```
+
+This example is being done entirely on the client, however, a more common pattern is to instead, do the following:
+
+- Store the user's access token on the application server
+- Retrieve the user's guild-specific avatar and nickname via the application's server
+- Serve all of the application's avatar/nicknames via the application's server
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+#### 渲染伺服器專屬大頭貼與暱稱 (Rendering guild-specific avatars and nicknames)
+
+若要獲取使用者的伺服器（伺服器）專屬大頭貼與暱稱，您的應用程式必須請求 `guilds.members.read` 權限範圍。請注意，這僅能授予該應用程式使用者的特定實例資訊。若要顯示所有應用程式使用者的伺服器專屬大頭貼/暱稱，從 `guilds.members.read` 權限範圍的 API 呼叫中所獲取的任何資訊，都必須透過您應用程式的伺服器進行共享。
+
+以下是如何獲取使用者的伺服器專屬大頭貼與暱稱的範例：
+
+```javascript
+// 我們將參考從 authenticate 傳回的 user 物件
+const {user} = await discordSdk.commands.authenticate({
+  access_token: accessToken,
+});
+
+// 當使用代理伺服器時，您可以改為將 `https://discord.com` 替換為 `/discord`
+// 或任何您在開發者入口網站中選擇的網址映射
+fetch(`https://discord.com/api/users/@me/guilds/${discordSdk.guildId}/member`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+})
+  .then((response) => {
+    return response.json();
+  })
+  .then((guildsMembersRead) => {
+    let guildAvatarSrc = '';
+    // 獲取伺服器專屬大頭貼，若無則降級使用一般使用者大頭貼
+    if (guildsMembersRead?.avatar) {
+      guildAvatarSrc = `https://cdn.discordapp.com/guilds/${discordSdk.guildId}/users/${user.id}/avatars/${guildsMembersRead.avatar}.png?size=256`;
+    } else if (user.avatar) {
+      guildAvatarSrc = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+    } else {
+      const defaultAvatarIndex = (BigInt(user.id) >> 22n) % 6n;
+      avatarSrc = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarIndex}.png`;
+    }
+
+    // 獲取伺服器專屬暱稱，若無則降級使用 global_name 或 username#discriminator
+    const guildNickname = guildsMembersRead?.nick ?? (user.global_name ?? `${user.username}#${user.discriminator}`);
+  });
+```
+
+此範例完全是在用戶端執行的，然而，更常見的模式是改為執行以下操作：
+
+- 將使用者的存取憑證 (Access Token) 儲存在應用程式伺服器端。
+- 透過應用程式伺服器獲取使用者的伺服器專屬大頭貼與暱稱。
+- 透過應用程式伺服器提供所有應用程式的使用者大頭貼/暱稱。
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Preventing unwanted activity sessions
+
+Activities are surfaced through iframes in the Discord app. The activity website itself is publicly reachable at `<application_id>.discordsays.com`. Activities will expect to be able to communicate with Discord's web or mobile client via the Discord SDK's RPC protocol. If a user loads the activity's website in a normal browser, the Discord RPC server will not be present, and the activity will likely fail in some way.
+
+It is theoretically possible for a malicious client to mock Discord's RPC protocol or load one activity website when launching another. Because the activity is loaded inside Discord, the RPC protocol is active, and the activity is none the wiser.
+
+### Using the Activity Instance API
+
+To enable an activity to "lock down" activity access, we encourage utilizing the `get_activity_instance` API, found at `discord.com/api/applications/<application_id>/activity-instances/<instance_id>'`. The route requires a Bot token of the application. It returns a serialized active activity instance for the given application, if found, otherwise it returns a 404. Here are two example responses:
+
+```javascript
+curl https://discord.com/api/applications/1215413995645968394/activity-instances/i-1234567890-gc-912952092627435520-912954213460484116 -H 'Authorization: Bot <bot token>'
+{"message": "404: Not Found", "code": 0}
+
+curl https://discord.com/api/applications/1215413995645968394/activity-instances/i-1276580072400224306-gc-912952092627435520-912954213460484116 -H 'Authorization: Bot <bot token>'
+{"application_id":"1215413995645968394","instance_id":"i-1276580072400224306-gc-912952092627435520-912954213460484116","launch_id":"1276580072400224306","location":{"id":"gc-912952092627435520-912954213460484116","kind":"gc","channel_id":"912954213460484116","guild_id":"912952092627435520"},"users":["205519959982473217"]}
+```
+
+With this API, the activity's backend can verify that a client is in fact in an instance of that activity before allowing the client to participate in any meaningful gameplay. How an activity implements "session verification" is left to the developer's discretion. The solution can be as granular as gating specific features or as binary as not returning the activity HTML except for valid sessions.
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 防止未授權的活動連線 (Preventing Unwanted Activity Sessions)
+
+互動活動是透過 Discord App 中的 iframe 呈現的。互動活動網站本身可在 `<application_id>.discordsays.com` 公開存取。互動活動預期能夠透過 Discord SDK 的 RPC 協定與 Discord 的網頁版或行動版用戶端進行通訊。如果使用者在一般瀏覽器中載入互動活動的網站，Discord RPC 伺服器將不存在，互動活動可能會以某種方式失敗。
+
+理論上，惡意用戶端有可能模擬 Discord 的 RPC 協定，或在啟動另一個互動活動時載入該活動的網站。因為該活動是在 Discord 內部載入的，RPC 協定是啟用狀態，互動活動對此一無所知。
+
+### 使用 Activity Instance API (Using the Activity Instance API)
+
+為了讓互動活動能夠「鎖定」存取權限，我們建議使用 `get_activity_instance` API，位於 `discord.com/api/applications/<application_id>/activity-instances/<instance_id>`。此路由需要應用程式的機器人憑證 (Bot token)。如果找到，它會傳回該應用程式序列化的作用中互動活動實例，否則傳回 404。以下是兩個回應範例：
+
+```javascript
+curl https://discord.com/api/applications/1215413995645968394/activity-instances/i-1234567890-gc-912952092627435520-912954213460484116 -H 'Authorization: Bot <bot token>'
+{"message": "404: Not Found", "code": 0}
+
+curl https://discord.com/api/applications/1215413995645968394/activity-instances/i-1276580072400224306-gc-912952092627435520-912954213460484116 -H 'Authorization: Bot <bot token>'
+{"application_id":"1215413995645968394","instance_id":"i-1276580072400224306-gc-912952092627435520-912954213460484116","launch_id":"1276580072400224306","location":{"id":"gc-912952092627435520-912954213460484116","kind":"gc","channel_id":"912954213460484116","guild_id":"912952092627435520"},"users":["205519959982473217"]}
+```
+
+透過此 API，活動的後端可以在允許用戶端參與任何實質性遊戲內容之前，驗證該用戶端是否確實處於該活動的實例中。活動如何實作「階段驗證」由開發者自行決定。解決方案可以細緻到限制特定功能，也可以二分到只為有效的連線階段傳回活動 HTML。
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+###### Validating Proxy Request Headers
+
+For apps that want additional security validation, Discord provides an optional proxy authentication system. When your embedded app makes requests through Discord's proxy, each request can include cryptographic headers that prove the request's authenticity.
+
+Each proxy-authenticated request is sent with the following headers:
+
+- `X-Signature-Ed25519` as a cryptographic signature
+- `X-Signature-Timestamp` as a Unix timestamp 
+- `X-Discord-Proxy-Payload` as a base64-encoded payload containing user context
+
+If you choose to use proxy authentication, you can validate these headers to ensure requests are legitimate. If the signature fails validation, your app should respond with a `401` error code.
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+###### 驗證代理請求標頭 (Validating Proxy Request Headers)
+
+對於想要額外安全驗證的 App，Discord 提供了一個選用的代理伺服器驗證系統。當您的嵌入式 App 透過 Discord 代理伺服器發送請求時，每個請求都可以包含證明該請求真實性的密碼學標頭。
+
+每個經過代理伺服器驗證的請求都會隨附以下標頭：
+
+- `X-Signature-Ed25519`：作為密碼學簽章
+- `X-Signature-Timestamp`：作為 Unix 時間戳記
+- `X-Discord-Proxy-Payload`：作為包含使用者上下文且經 Base64 編碼的 Payload
+
+如果您選擇使用代理伺服器驗證，您可以驗證這些標頭以確保請求合法。如果簽章驗證失敗，您的 App 應以 `401` 錯誤碼回應。
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+<Accordion title="Validating Proxy Headers" description="Code example for validating proxy authentication headers" icon="code">
+Below are some code examples that show how to validate the headers sent in proxy-authenticated requests.
+
+**JavaScript**
+
+```js
+const nacl = require("tweetnacl");
+
+// Your public key can be found on your application in the Developer Portal
+const PUBLIC_KEY = "APPLICATION_PUBLIC_KEY";
+
+const signature = req.get("X-Signature-Ed25519");
+const timestamp = req.get("X-Signature-Timestamp");
+const payload = req.get("X-Discord-Proxy-Payload");
+
+// Decode the base64 payload
+const payloadBytes = Buffer.from(payload, "base64");
+const payloadString = payloadBytes.toString("utf-8");
+const payloadData = JSON.parse(payloadString);
+
+// Verify timestamp matches payload
+if (payloadData.created_at.toString() !== timestamp) {
+    return res.status(401).end("invalid request timestamp");
+}
+
+// Check if token has expired
+if (payloadData.expires_at < Math.floor(Date.now() / 1000)) {
+    return res.status(401).end("expired proxy token");
+}
+
+// Verify the signature using tweetnacl
+const isVerified = nacl.sign.detached.verify(
+    payloadBytes,
+    Buffer.from(signature, "base64"),
+    Buffer.from(PUBLIC_KEY, "hex")
+);
+
+if (!isVerified) {
+    return res.status(401).end("invalid request signature");
+}
+```
+
+**Python**
+
+```py
+import json
+import base64
+import time
+from nacl.signing import VerifyKey
+from nacl.exceptions import BadSignatureError
+
+# Your public key can be found on your application in the Developer Portal
+PUBLIC_KEY = 'APPLICATION_PUBLIC_KEY'
+
+verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
+
+signature = request.headers["X-Signature-Ed25519"]
+timestamp = request.headers["X-Signature-Timestamp"]
+payload = request.headers["X-Discord-Proxy-Payload"]
+
+# Decode the base64 payload
+payload_bytes = base64.b64decode(payload)
+payload_string = payload_bytes.decode('utf-8')
+payload_data = json.loads(payload_string)
+
+# Verify timestamp matches payload
+if str(payload_data['created_at']) != timestamp:
+    abort(401, 'invalid request timestamp')
+
+# Check if token has expired
+if payload_data['expires_at'] < int(time.time()):
+    abort(401, 'expired proxy token')
+
+try:
+    verify_key.verify(payload_bytes, bytes.fromhex(signature))
+except BadSignatureError:
+    abort(401, 'invalid request signature')
+```
+</Accordion>
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+<Accordion title="驗證代理標頭 (Validating Proxy Headers)" description="驗證代理伺服器驗證標頭的程式碼範例" icon="code">
+以下是一些程式碼範例，說明如何驗證代理伺服器驗證請求中傳送的標頭。
+
+**JavaScript**
+
+```js
+const nacl = require("tweetnacl");
+
+// 您的公鑰可以在開發者入口網站的應用程式中找到
+const PUBLIC_KEY = "APPLICATION_PUBLIC_KEY";
+
+const signature = req.get("X-Signature-Ed25519");
+const timestamp = req.get("X-Signature-Timestamp");
+const payload = req.get("X-Discord-Proxy-Payload");
+
+// 解碼 base64 payload
+const payloadBytes = Buffer.from(payload, "base64");
+const payloadString = payloadBytes.toString("utf-8");
+const payloadData = JSON.parse(payloadString);
+
+// 驗證時間戳記與 payload 相符
+if (payloadData.created_at.toString() !== timestamp) {
+    return res.status(401).end("invalid request timestamp");
+}
+
+// 檢查 Token 是否已過期
+if (payloadData.expires_at < Math.floor(Date.now() / 1000)) {
+    return res.status(401).end("expired proxy token");
+}
+
+// 使用 tweetnacl 驗證簽章
+const isVerified = nacl.sign.detached.verify(
+    payloadBytes,
+    Buffer.from(signature, "base64"),
+    Buffer.from(PUBLIC_KEY, "hex")
+);
+
+if (!isVerified) {
+    return res.status(401).end("invalid request signature");
+}
+```
+
+**Python**
+
+```py
+import json
+import base64
+import time
+from nacl.signing import VerifyKey
+from nacl.exceptions import BadSignatureError
+
+# 您的公鑰可以在開發者入口網站的應用程式中找到
+PUBLIC_KEY = 'APPLICATION_PUBLIC_KEY'
+
+verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
+
+signature = request.headers["X-Signature-Ed25519"]
+timestamp = request.headers["X-Signature-Timestamp"]
+payload = request.headers["X-Discord-Proxy-Payload"]
+
+# 解碼 base64 payload
+payload_bytes = base64.b64decode(payload)
+payload_string = payload_bytes.decode('utf-8')
+payload_data = json.loads(payload_string)
+
+# 驗證時間戳記與 payload 相符
+if str(payload_data['created_at']) != timestamp:
+    abort(401, 'invalid request timestamp')
+
+# 檢查 Token 是否已過期
+if payload_data['expires_at'] < int(time.time()):
+    abort(401, 'expired proxy token')
+
+try:
+    verify_key.verify(payload_bytes, bytes.fromhex(signature))
+except BadSignatureError:
+    abort(401, 'invalid request signature')
+```
+</Accordion>
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+Proxy authentication is entirely optional and provided as an additional security layer for apps that choose to implement it.
+
+In the below flow diagram, we show how the server can deliver the activity website, only for valid users in a valid activity instance:
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+代理伺服器驗證完全是選用的，旨在為選擇實作的 App 提供額外的安全層級。
+
+在下方的流程圖中，我們展示了伺服器如何僅為有效活動實例中的有效使用者提供活動網站：
+</div>
+</div>
+
+![activity-instance-validation](/images/activities/activity-instance-validation.jpg)

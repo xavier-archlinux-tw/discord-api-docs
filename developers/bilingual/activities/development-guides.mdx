@@ -8,10 +8,11 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
-These guides include suggested development practices, SDK commands, and user flows for you to consider while building your Activity.
+These guides include suggested development practices, SDK commands, and user flows for you to consider while building your Activity. These will help to provide your users with a consistent and clear experience while interacting with your application.
 
 ## Local Development
 <CardGroup cols={1}>
@@ -21,6 +22,12 @@ These guides include suggested development practices, SDK commands, and user flo
   <Card title="Launch Your App from Discord" href="/developers/en-us/activities/development-guides/local-development#launch-your-application-from-the-discord-client">
     How to launch your app on mobile and desktop Discord clients.
   </Card>
+  <Card title="Setup URL Mapping" href="/developers/en-us/activities/development-guides/local-development#url-mapping">
+    Configure the Discord proxy to allow network requests to necessary external endpoints.
+  </Card>
+  <Card title="Logging" href="/developers/en-us/activities/development-guides/local-development#logging">
+    How to use the various levels of logging while building your application.
+  </Card>
 </CardGroup>
 
 ## User Actions
@@ -28,10 +35,128 @@ These guides include suggested development practices, SDK commands, and user flo
   <Card title="Open External Link" href="/developers/en-us/activities/development-guides/user-actions#open-external-link">
     Open an external link from within your app.
   </Card>
-</CardGroup></div><div>
+  <Card title="Open Invite Dialog" href="/developers/en-us/activities/development-guides/user-actions#open-invite-dialog">
+    Open the Application Channel Invite dialog within Discord.
+  </Card>
+  <Card title="Open Share Moment Dialog" href="/developers/en-us/activities/development-guides/user-actions#open-share-moment-dialog">
+    Open a dialog to share media from your application to a channel, DM, or GDM.
+  </Card>
+  <Card title="Setting Up an Entry Point Command" href="/developers/en-us/activities/development-guides/user-actions#setting-up-an-entry-point-command">
+    Configure a command that allows users to open your Activity from the App Launcher.
+  </Card>
+  <Card title="Encourage Hardware Acceleration" href="/developers/en-us/activities/development-guides/user-actions#encourage-hardware-acceleration">
+    Open a dialog to enable hardware acceleration for compute-intensive applications.
+  </Card>
+</CardGroup>
+
+## Mobile
+<CardGroup cols={1}>
+  <Card title="Supporting Mobile Platforms" href="/developers/en-us/activities/development-guides/mobile#supported-platforms-web-ios-android">
+    Update your application settings to support iOS and Android.
+  </Card>
+  <Card title="Mobile Safe Areas" href="/developers/en-us/activities/development-guides/mobile#mobile-safe-areas">
+    Ensure that your app's assets fall within mobile-safe areas.
+  </Card>
+  <Card title="Mobile Thermal States" href="/developers/en-us/activities/development-guides/mobile#mobile-thermal-states">
+    Respond to thermal state changes surfaced from iOS and Android.
+  </Card>
+</CardGroup>
+
+## Layout
+<CardGroup cols={1}>
+  <Card title="Application Orientation" href="/developers/en-us/activities/development-guides/layout#application-orientation">
+    Configure and subscribe to changes in application orientation.
+  </Card>
+  <Card title="Application Layout Mode" href="/developers/en-us/activities/development-guides/layout#application-layout-mode">
+    Subscribe to layout mode changes to update your application's user interface.
+  </Card>
+</CardGroup>
+
+## Networking
+<CardGroup cols={1}>
+  <Card title="Activity Proxy Considerations" href="/developers/en-us/activities/development-guides/networking#activity-proxy-considerations">
+    Working with our Activity Proxy
+  </Card>
+  <Card title="Construct a Full URL" href="/developers/en-us/activities/development-guides/networking#construct-a-full-url">
+    Generate a full URL when working with network requests.
+  </Card>
+  <Card title="Using External Resources" href="/developers/en-us/activities/development-guides/networking#using-external-resources">
+    Allow network requests to external resources from inside the Discord proxy.
+  </Card>
+  <Card title="Security Considerations" href="/developers/en-us/activities/development-guides/networking#security-considerations">
+    Keep things safe and secure in your Activity.
+  </Card>
+</CardGroup>
+
+## Multiplayer Experience
+<CardGroup cols={1}>
+  <Card title="Instance Management" href="/developers/en-us/activities/development-guides/multiplayer-experience#activity-instance-management">
+    Managing instances to ensure users join the same instance as their friends.
+  </Card>
+  <Card title="Instance Participants" href="/developers/en-us/activities/development-guides/multiplayer-experience#instance-participants">
+    Use the SDK to fetch the users currently connected to an instance.
+  </Card>
+  <Card title="Render Avatars and Names" href="/developers/en-us/activities/development-guides/multiplayer-experience#render-avatars-and-names">
+    Retrieve and render the usernames and avatars of users connected to your application.
+  </Card>
+  <Card title="Preventing Unwanted Activity Sessions" href="/developers/en-us/activities/development-guides/multiplayer-experience#preventing-unwanted-activity-sessions">
+    Validating activity sessions are via a Discord client before adding them to an instance's session.
+  </Card>
+</CardGroup>
+
+## Growth and Referrals
+<CardGroup cols={1}>
+  <Card title="Prompting Users to Share Incentivized Links" href="/developers/en-us/activities/development-guides/growth-and-referrals#prompting-users-to-share-incentivized-links">
+    Encourage your users to share links to your activity by adding tracking and offering rewards for engagement.
+  </Card>
+  <Card title="Creating and Managing Custom Incentivized Links" href="/developers/en-us/activities/development-guides/growth-and-referrals#creating-and-managing-custom-incentivized-links">
+    For off-platform sharing of rewards, promotions, or limited time experiences.
+  </Card>
+  <Card title="Generating a Custom Link Within Your Activity" href="/developers/en-us/activities/development-guides/growth-and-referrals#generating-a-custom-link-within-your-activity">
+    An API to be able to generate ephemeral links with a customizable embed.
+  </Card>
+</CardGroup>
+
+## Assets & Metadata
+<CardGroup cols={1}>
+  <Card title="Setting Up Activity Metadata" href="/developers/en-us/activities/development-guides/assets-and-metadata#setting-up-activity-metadata">
+    Best practices for configuring how your application shows up in Discord.
+  </Card>
+   <Card title="Setting Up Art Assets" href="/developers/en-us/activities/development-guides/assets-and-metadata#setting-up-activity-art-assets">
+    Best practices for configuring how your application shows up in Discord.
+  </Card>
+</CardGroup>
+
+## Rich Presence
+<CardGroup cols={1}>
+  <Card title="Integrating Rich Presence" href="/developers/en-us/rich-presence/using-with-the-embedded-app-sdk">
+    Display live activity data on user profiles while they play your Activity.
+  </Card>
+  <Card title="Rich Presence Best Practices" href="/developers/en-us/rich-presence/best-practices">
+    Design tips and a launch checklist for a polished Rich Presence integration.
+  </Card>
+</CardGroup>
+
+## Production Readiness
+<CardGroup cols={1}>
+  <Card title="Cache Busting" href="/developers/en-us/activities/development-guides/production-readiness#cache-busting">
+    Manage asset caching in your application and the Discord Activity proxy.
+  </Card>
+  <Card title="Handling Rate Limits" href="/developers/en-us/activities/development-guides/production-readiness#handling-rate-limits">
+    Stay within rate limits to keep the fun going in your Activity.
+  </Card>
+  <Card title="Static IP Addresses" href="/developers/en-us/activities/development-guides/production-readiness#static-ip-addresses">
+    Network routing considerations when preparing your Activity for production use.
+  </Card>
+  <Card title="Backward Compatibility" href="/developers/en-us/activities/development-guides/production-readiness#backward-compatibility">
+    Future-proof your application and support new commands as they become available in the SDK.
+  </Card>
+</CardGroup>
+</div>
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
-這些指南包含建議的開發實踐、SDK 指令以及使用者流程，供您在建置互動活動時考量。
+這些指南包含建議的開發實踐、SDK 指令以及使用者流程，供您在建置互動活動時考量。這些都有助於在使用者的互動過程中，為他們提供一致且清晰的使用者體驗。
 
 ## 本地開發
 <CardGroup cols={1}>
@@ -41,6 +166,12 @@ These guides include suggested development practices, SDK commands, and user flo
   <Card title="從 Discord 用戶端啟動您的 App" href="/developers/zh-tw/activities/development-guides/local-development#launch-your-application-from-the-discord-client">
     如何在行動版與電腦版 Discord 用戶端中啟動您的 App。
   </Card>
+  <Card title="設定網址映射 (URL Mappings)" href="/developers/zh-tw/activities/development-guides/local-development#url-mapping">
+    設定 Discord 代理伺服器以允許對必要外部端點的網路請求。
+  </Card>
+  <Card title="記錄與日誌 (Logging)" href="/developers/zh-tw/activities/development-guides/local-development#logging">
+    說明在建置應用程式時如何使用各個層級的記錄與日誌。
+  </Card>
 </CardGroup>
 
 ## 使用者動作
@@ -48,4 +179,122 @@ These guides include suggested development practices, SDK commands, and user flo
   <Card title="開啟外部連結" href="/developers/zh-tw/activities/development-guides/user-actions#open-external-link">
     在您的 App 內部開啟外部網頁連結。
   </Card>
-</CardGroup></div></div>
+  <Card title="開啟邀請視窗" href="/developers/zh-tw/activities/development-guides/user-actions#open-invite-dialog">
+    在 Discord 中開啟應用程式頻道邀請視窗。
+  </Card>
+  <Card title="開啟分享時刻視窗" href="/developers/zh-tw/activities/development-guides/user-actions#open-share-moment-dialog">
+    開啟一個對話框，將媒體從您的應用程式分享到頻道、私訊或群組私訊。
+  </Card>
+  <Card title="設定進入點指令" href="/developers/zh-tw/activities/development-guides/user-actions#setting-up-an-entry-point-command">
+    設定一個允許使用者從應用程式啟動器開啟您的互動活動的指令。
+  </Card>
+  <Card title="鼓勵啟用硬體加速" href="/developers/zh-tw/activities/development-guides/user-actions#encourage-hardware-acceleration">
+    開啟一個對話框，為運算密集型應用程式啟用硬體加速。
+  </Card>
+</CardGroup>
+
+## Mobile
+<CardGroup cols={1}>
+  <Card title="支援行動平台" href="/developers/zh-tw/activities/development-guides/mobile#supported-platforms-web-ios-android">
+    更新您的應用程式設定以支援 iOS 和 Android。
+  </Card>
+  <Card title="行動安全區域" href="/developers/zh-tw/activities/development-guides/mobile#mobile-safe-areas">
+    確保您的 App 資產位於行動安全區域內。
+  </Card>
+  <Card title="行動散熱狀態" href="/developers/zh-tw/activities/development-guides/mobile#mobile-thermal-states">
+    響應 iOS 和 Android 傳回的散熱狀態變更。
+  </Card>
+</CardGroup>
+
+## Layout
+<CardGroup cols={1}>
+  <Card title="應用程式方向鎖定" href="/developers/zh-tw/activities/development-guides/layout#application-orientation">
+    設定並訂閱應用程式方向變更。
+  </Card>
+  <Card title="應用程式版面配置模式" href="/developers/zh-tw/activities/development-guides/layout#application-layout-mode">
+    訂閱版面模式變更以更新您的應用程式使用者介面。
+  </Card>
+</CardGroup>
+
+## 網路通訊
+<CardGroup cols={1}>
+  <Card title="互動活動代理伺服器考量" href="/developers/zh-tw/activities/development-guides/networking#activity-proxy-considerations">
+    與我們的互動活動代理伺服器協同運作。
+  </Card>
+  <Card title="建構完整網址" href="/developers/zh-tw/activities/development-guides/networking#construct-a-full-url">
+    在進行網路請求時生成完整網址。
+  </Card>
+  <Card title="使用外部資源" href="/developers/zh-tw/activities/development-guides/networking#using-external-resources">
+    允許在 Discord 代理伺服器內部向外部資源發送網路請求。
+  </Card>
+  <Card title="安全考量" href="/developers/zh-tw/activities/development-guides/networking#security-considerations">
+    確保您互動活動的安全防護。
+  </Card>
+</CardGroup>
+
+## 多人遊戲體驗
+<CardGroup cols={1}>
+  <Card title="實例管理" href="/developers/zh-tw/activities/development-guides/multiplayer-experience#activity-instance-management">
+    管理實例以確保使用者與其朋友加入同一個實例。
+  </Card>
+  <Card title="實例參與者" href="/developers/zh-tw/activities/development-guides/multiplayer-experience#instance-participants">
+    使用 SDK 獲取目前連線至實例的使用者。
+  </Card>
+  <Card title="渲染大頭貼與名稱" href="/developers/zh-tw/activities/development-guides/multiplayer-experience#render-avatars-and-names">
+    獲取並渲染與您應用程式連線的使用者名稱與大頭貼。
+  </Card>
+  <Card title="防止未授權的活動連線" href="/developers/zh-tw/activities/development-guides/multiplayer-experience#preventing-unwanted-activity-sessions">
+    驗證活動連線是否經由 Discord 用戶端進行，再將其加入實例的連線階段中。
+  </Card>
+</CardGroup>
+
+## 成長與推薦機制
+<CardGroup cols={1}>
+  <Card title="引導使用者分享獎勵連結" href="/developers/zh-tw/activities/development-guides/growth-and-referrals#prompting-users-to-share-incentivized-links">
+    藉由新增追蹤並為參與提供獎勵，鼓勵您的使用者分享您互動活動的連結。
+  </Card>
+  <Card title="建立與管理自訂獎勵連結" href="/developers/zh-tw/activities/development-guides/growth-and-referrals#creating-and-managing-custom-incentivized-links">
+    用於在平台外分享獎勵、促銷活動或限時體驗。
+  </Card>
+  <Card title="在互動活動中生成自訂連結" href="/developers/zh-tw/activities/development-guides/growth-and-referrals#generating-a-custom-link-within-your-activity">
+    用於生成帶有自訂嵌入預覽的臨時連結之 API。
+  </Card>
+</CardGroup>
+
+## 資產與中繼資料
+<CardGroup cols={1}>
+  <Card title="設定互動活動中繼資料" href="/developers/zh-tw/activities/development-guides/assets-and-metadata#setting-up-activity-metadata">
+    設定您應用程式在 Discord 中顯示方式的最佳實踐。
+  </Card>
+   <Card title="設定美術素材" href="/developers/zh-tw/activities/development-guides/assets-and-metadata#setting-up-activity-art-assets">
+    設定您應用程式在 Discord 中顯示方式的美術素材最佳實踐。
+  </Card>
+</CardGroup>
+
+## 富有狀態 (Rich Presence)
+<CardGroup cols={1}>
+  <Card title="整合 Rich Presence" href="/developers/zh-tw/rich-presence/using-with-the-embedded-app-sdk">
+    當使用者遊玩您的互動活動時，在使用者個人資料中顯示即時活動資料。
+  </Card>
+  <Card title="Rich Presence 最佳做法" href="/developers/zh-tw/rich-presence/best-practices">
+    提供精美 Rich Presence 整合的設計提示與上線檢查清單。
+  </Card>
+</CardGroup>
+
+## 生產環境準備
+<CardGroup cols={1}>
+  <Card title="快取清理 (Cache Busting)" href="/developers/zh-tw/activities/development-guides/production-readiness#cache-busting">
+    在您的應用程式和 Discord 互動活動代理伺服器中管理資產快取。
+  </Card>
+  <Card title="處理速率限制 (Rate Limits)" href="/developers/zh-tw/activities/development-guides/production-readiness#handling-rate-limits">
+    遵守速率限制以維持您互動活動的正常運行。
+  </Card>
+  <Card title="靜態 IP 位址" href="/developers/zh-tw/activities/development-guides/production-readiness#static-ip-addresses">
+    準備將您的互動活動投入生產環境使用時的網路路由考量。
+  </Card>
+  <Card title="向後相容性" href="/developers/zh-tw/activities/development-guides/production-readiness#backward-compatibility">
+    確保您的應用程式具備前瞻性，並支援 SDK 中可用的新指令。
+  </Card>
+</CardGroup>
+</div>
+</div>

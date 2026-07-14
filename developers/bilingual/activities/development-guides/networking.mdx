@@ -7,14 +7,59 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/networking" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Activity Proxy Considerations
 
-All network traffic is routed through the Discord Proxy for various security reasons. WebRTC and WebTransport details are covered in the main guide.
+All network traffic is routed through the Discord Proxy for various security reasons.
+
+Under the hood we utilize Cloudflare Workers, which brings some restrictions, outlined below.
+
+#### WebTransport
+
+While we currently only support websockets, we're working with our upstream providers to enable WebTransport.
+
+#### WebRTC
+
+WebRTC is not supported.
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 互動活動代理伺服器考量 (Activity Proxy Considerations)
+
+基於安全原因，所有網路流量皆會透過 Discord 代理伺服器 (Discord Proxy) 進行路由。
+
+其底層使用 Cloudflare Workers，並帶來以下限制：
+
+#### WebTransport
+
+雖然目前僅支援 WebSocket，但我們正與上游供應商合作以支援 WebTransport。
+
+#### WebRTC
+
+目前不支援 WebRTC。
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Construct A Full URL
+
+There are scenarios where instead of using a relative url (`/path/to/my/thing`) you may want or need to reference the full url when making a network request. The URL is a combination of the following:
+
+1. The protocol you wish to use
+2. Your application's client id
+3. The discord proxy domain
+4. Whatever you need to list
+
+Here's an example of how to build a full url, using the URL constructor:
 
 ```javascript
 const protocol = `https`;
@@ -22,14 +67,27 @@ const clientId = '<YOUR CLIENT ID>';
 const proxyDomain = 'discordsays.com';
 const resourcePath = '/foo/bar.jpg';
 const url = new URL(`${protocol}://${clientId}.${proxyDomain}${resourcePath}`);
-```</div><div>
+```
+
+In other words, given an application client id of `12345678`:
+
+| Relative Path | Full Path                                    |
+|---------------|----------------------------------------------|
+| /foo/bar.jpg  | https://12345678.discordsays.com/foo/bar.jpg |
+</div>
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
-## 互動活動代理伺服器考量 (Activity Proxy Considerations)
-
-基於安全原因，所有網路流量皆會透過 Discord 代理伺服器 (Discord Proxy) 進行路由。相關 WebRTC 與 WebTransport 限制已在指南中說明。
-
 ## 建構完整網址 (Construct A Full URL)
+
+在某些情況下，您可能需要使用完整網址而非相對路徑。網址的組成如下：
+
+1. 您希望使用的協定 (Protocol)
+2. 您的應用程式用戶端 ID (Client ID)
+3. Discord 代理網域 (`discordsays.com`)
+4. 您的資源路徑
+
+#### 範例
 
 ```javascript
 const protocol = `https`;
@@ -37,4 +95,142 @@ const clientId = '<您的 CLIENT ID>';
 const proxyDomain = 'discordsays.com';
 const resourcePath = '/foo/bar.jpg';
 const url = new URL(`${protocol}://${clientId}.${proxyDomain}${resourcePath}`);
-```</div></div>
+```
+
+例如，假設應用程式用戶端 ID 為 `12345678`：
+
+| Relative Path | Full Path                                    |
+|---------------|----------------------------------------------|
+| /foo/bar.jpg  | https://12345678.discordsays.com/foo/bar.jpg |
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Using External Resources
+
+Activities in Discord are "sandboxed" via a Discord proxy. This is done to hide the users' IP addresses as well as block URLs from known malicious endpoints. To achieve this, the Discord Developer Portal has a section for [configuring URL Mappings](/developers/en-us/activities/development-guides/local-development#url-mapping) for your application.
+
+One edge-case of URL mappings is that third-party NPM modules or other resources may reference external (non-sandboxed) urls.
+
+For example, if your application has an npm module that attempts to make an http request to https://foo.library.com, the request will fail with a `blocked:csp` error.
+
+To get around this limitation there are several options to consider:
+
+- Fork the library (to use mapped urls)
+- Utilize a post-install utility such as [patch-package](https://www.npmjs.com/package/patch-package)
+- Use our Embedded App SDK's `patchUrlMappings` API
+
+In the above scenario, we recommend using the `patchUrlMappings` API, as it will allow a smooth transition from the non-sandboxed dev environment to the production environment.
+
+This method call takes an array of "mappings" which will transform any external network requests to the mappings you've defined.
+
+See the example below:
+
+- In this example, imagine you have a third-party library which makes an HTTP request to foo.com
+- In the developer portal, create a mapping like this: `/foo` -> `foo.com`
+- Then in your code, when initializing the SDK, you will make a function call.
+
+```javascript
+import {patchUrlMappings} from '@discord/embedded-app-sdk';
+const isProd = process.env.NODE_ENV === 'production'; // Actual dev/prod env check may vary for you
+
+async function setupApp() {
+  if (isProd) {
+    patchUrlMappings([{prefix: '/foo', target: 'foo.com'}]);
+  }
+  // start app initialization after this....
+}
+```
+
+<Info>
+Note: `patchUrlMappings` is modifying your browser's `fetch`, `WebSocket`, and `XMLHttpRequest.prototype.open` global variables. Depending on the library, you may see side effects from using this helper function. It should be used only when necessary.
+</Info>
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 使用外部資源 (Using External Resources)
+
+Discord 中的互動活動是透過 Discord 代理伺服器進行「沙盒化」的。這樣做是為了隱藏使用者的 IP 位址，並阻止來自已知惡意端點的網址。為此，Discord 開發者入口網站中設有為您的應用程式 [設定網址映射 (URL Mappings)](/developers/bilingual/activities/development-guides/local-development#url-mapping) 的區塊。
+
+網址映射的一個邊緣情況是，第三方 NPM 模組或其他資源可能會參考外部（非沙盒化）的網址。
+
+例如，如果您的應用程式中有一個 npm 模組嘗試向 https://foo.library.com 發送 HTTP 請求，該請求將會因 `blocked:csp` 錯誤而失敗。
+
+要解決此限制，有幾種方法可以考慮：
+
+- 分叉 (Fork) 該函式庫（以使用映射後的網址）
+- 使用安裝後公用程式，例如 [patch-package](https://www.npmjs.com/package/patch-package)
+- 使用我們的嵌入式 App SDK 中的 `patchUrlMappings` API
+
+在上述情況下，我們建議使用 `patchUrlMappings` API，因為這可以讓您從非沙盒化的開發環境無縫過渡到生產環境。
+
+此方法呼叫接受一個「映射 (mappings)」陣列，它會將任何外部網路請求轉換為您所定義的映射。
+
+請參閱下方範例：
+
+- 在此範例中，假設您有一個第三方函式庫會向 foo.com 發送 HTTP 請求。
+- 在開發者入口網站中，建立如下映射：`/foo` -> `foo.com`
+- 接著在程式碼中初始化 SDK 時，呼叫此函數。
+
+```javascript
+import {patchUrlMappings} from '@discord/embedded-app-sdk';
+const isProd = process.env.NODE_ENV === 'production'; // 實際的開發/生產環境檢查方式可能因您而異
+
+async function setupApp() {
+  if (isProd) {
+    patchUrlMappings([{prefix: '/foo', target: 'foo.com'}]);
+  }
+  // 在此之後開始初始化 App...
+}
+```
+
+<Info>
+注意：`patchUrlMappings` 會修改瀏覽器的 `fetch`、`WebSocket` 與 `XMLHttpRequest.prototype.open` 等全域變數。根據您使用的函式庫，使用此輔助函數可能會產生副作用。請僅在必要時使用。
+</Info>
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Security Considerations
+
+#### Trusting Client Data
+
+Do not trust data coming from the Discord client as truth. It's fine to use this data in your application locally, but assume any data coming from the Discord Client could be falsified. That includes data about the current user, their nitro status, their current channel, etc. If you need this information in a trusted manner, contact Discord API directly from your application's server, with the user token you received from completing the OAuth2 flow.
+
+Furthermore, data coming from the Discord client is not sanitized beforehand. Things like usernames and channel names are arbitrary user input. Make sure to sanitize these strings or use `.textContent` (for example) to display them safely in your UI.
+
+#### Using Cookies
+
+To set a cookie for your activity to use in network requests through the proxy, make sure the cookie's domain matches your app's full `{clientId}.discordsays.com` domain. You will also need to explicitly set `SameSite=None; Partitioned` on the cookie. `SameSite=None` is needed as browsers refuse to store or send cookies with higher restriction levels for any navigation within an iframe. `Partitioned` then limits the use of that cookie to only Discord's iframes.
+
+Rest assured: other activities will not be able to make requests with your activity's cookie, thanks to the Content Security Policy (CSP) limiting requests only to your own app's proxy.
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 安全考量 (Security Considerations)
+
+#### 信任用戶端資料
+
+請勿將來自 Discord 用戶端的資料視為絕對真實。在應用程式本地端使用這些資料是可以的，但請假設任何來自 Discord 用戶端的資料都有可能被偽造。這包括關於目前使用者、其 Nitro 狀態、目前所在的頻道等資料。如果您需要以可信賴的方式獲取這些資訊，請在完成 OAuth2 流程後，使用您取得的使用者憑證 (User Token)，從您的應用程式伺服器端直接呼叫 Discord API。
+
+此外，來自 Discord 用戶端的資料事前並未經過消毒 (Sanitize) 清理。例如使用者名稱和頻道名稱都是任意的使用者輸入。請務必清理這些字串或使用如 `.textContent`（例如）來安全地在 UI 中顯示它們。
+
+#### 使用 Cookie
+
+若要為您的互動活動設定 Cookie，以便在透過代理伺服器的網路請求中使用，請確保 Cookie 的網域 (Domain) 與您 App 的完整 `{clientId}.discordsays.com` 網域相符。您還需要明確地在 Cookie 上設定 `SameSite=None; Partitioned`。`SameSite=None` 是必須的，因為瀏覽器會拒絕在 iframe 內存取更嚴格限制級別的 Cookie。`Partitioned` 則會將該 Cookie 的使用限制在僅限 Discord 的 iframe 內。
+
+請放心：由於內容安全政策 (CSP) 會限制請求僅發送到您自己 App 的代理伺服器，其他互動活動將無法使用您互動活動的 Cookie 發送請求。
+</div>
+</div>

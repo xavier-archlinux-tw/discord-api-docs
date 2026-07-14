@@ -7,40 +7,46 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/mobile" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Supported Platforms: Web, iOS, Android
 
-Enable/disable platform support in the [Activities -> Settings](https://discord.com/developers/applications/select/embedded/settings) tab of the developer portal.
+By default, your Activity will be launchable on web/desktop. To enable or disable support for Web/iOS/Android, do the following:
 
-## Mobile Safe Areas
+- Visit the [developer portal](https://discord.com/developers/applications)
+- Select your application
+- Select [Activities -> Settings](https://discord.com/developers/applications/select/embedded/settings) in the left-side of the developer portal
+- Check the appropriate checkboxes in the developer portal, and save your changes
 
-```css
-:root {
-  --sait: var(--discord-safe-area-inset-top, env(safe-area-inset-top));
-  --saib: var(--discord-safe-area-inset-bottom, env(safe-area-inset-bottom));
-  --sail: var(--discord-safe-area-inset-left, env(safe-area-inset-left));
-  --sair: var(--discord-safe-area-inset-right, env(safe-area-inset-right));
-}
-```
-
-## Mobile Thermal States
-
-Subscribe to thermal state changes:
-
-```javascript
-discordSdk.subscribe('THERMAL_STATE_UPDATE', handleThermalStateUpdate);
-```
-
-States: `NOMINAL(0)`, `FAIR(1)`, `SERIOUS(2)`, `CRITICAL(3)`</div><div>
+![supported-platforms](/images/activities/supported-platforms.png)
+</div>
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 支援的平台：Web、iOS、Android
 
-在開發者入口網站的 [Activities -> Settings](https://discord.com/developers/applications/select/embedded/settings) 分頁中啟用/停用平台支援。
+預設情況下，您的互動活動可在網頁版/電腦版上啟動。若要啟用或停用對 Web/iOS/Android 的支援，請執行以下操作：
 
-## 行動裝置安全區域 (Mobile Safe Areas)
+- 造訪 [開發者入口網站](https://discord.com/developers/applications)
+- 選擇您的應用程式
+- 選擇開發者入口網站左側的 [Activities -> Settings](https://discord.com/developers/applications/select/embedded/settings)
+- 在開發者入口網站中勾選相應的核取方塊，然後儲存您的變更
+
+![supported-platforms](/images/activities/supported-platforms.png)
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Mobile Safe Areas
+
+As an example, you can define your safe area insets as below in CSS:
 
 ```css
 :root {
@@ -51,12 +57,145 @@ States: `NOMINAL(0)`, `FAIR(1)`, `SERIOUS(2)`, `CRITICAL(3)`</div><div>
 }
 ```
 
-## 行動裝置散熱狀態 (Mobile Thermal States)
+This prefers the `--discord-safe-area-inset-*` variable and will fallback to the env values for iOS + any local dev testing that is done outside of Discord.
 
-訂閱散熱狀態變更事件：
+You can then reference these values:
+
+```css
+body {
+  padding-left: var(--sail);
+  padding-right: var(--sair);
+  padding-top: var(--sait);
+  padding-bottom: var(--saib);
+}
+```
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 行動裝置安全區域 (Mobile Safe Areas)
+
+例如，您可以在 CSS 中定義如下的安全區域縮排 (safe area insets)：
+
+```css
+:root {
+  --sait: var(--discord-safe-area-inset-top, env(safe-area-inset-top));
+  --saib: var(--discord-safe-area-inset-bottom, env(safe-area-inset-bottom));
+  --sail: var(--discord-safe-area-inset-left, env(safe-area-inset-left));
+  --sair: var(--discord-safe-area-inset-right, env(safe-area-inset-right));
+}
+```
+
+這會優先使用 `--discord-safe-area-inset-*` 變數，並在 iOS 以及在 Discord 之外進行的任何本地開發測試時，降級使用 env 數值。
+
+接著您可以參考這些值：
+
+```css
+body {
+  padding-left: var(--sail);
+  padding-right: var(--sair);
+  padding-top: var(--sait);
+  padding-bottom: var(--saib);
+}
+```
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Mobile Thermal States
+
+You may need to respond to thermal state changes using recommendations from [thermal states surfaced by mobile devices](https://developer.apple.com/library/archive/documentation/Performance/Conceptual/power_efficiency_guidelines_osx/RespondToThermalStateChanges.html) to improve the user experience.
+
+Discord's Embedded App SDK provides an abstraction over [Apple's thermal state APIs](https://developer.apple.com/library/archive/documentation/Performance/Conceptual/power_efficiency_guidelines_osx/RespondToThermalStateChanges.html) and [Android's thermal state APIs](https://source.android.com/docs/core/power/thermal-mitigation#thermal-api).
+
+Here's how Discord's abstraction maps to Apple's thermal states and Android's thermal states.
 
 ```javascript
+enum ThermalState {
+  NOMINAL = 0, // maps to "nominal" on iOS and "none" on Android
+  FAIR = 1, // maps to "fair" on iOS and "light" / "moderate" on Android
+  SERIOUS = 2, // maps to "serious" on iOS and "severe" on Android
+  CRITICAL = 3, // maps to "critical" on iOS and "critical" / "emergency" / "shutdown" on Android
+}
+```
+
+The Embedded App SDK allows developers to subscribe to these thermal state changes.
+
+```javascript
+const handleThermalStateUpdate = (update: {thermal_state: number}) => {
+  switch (thermalState) {
+      case Common.ThermalStateTypeObject.NOMINAL:
+        ...
+      case Common.ThermalStateTypeObject.FAIR:
+        ...
+      case Common.ThermalStateTypeObject.SERIOUS:
+        ...
+      case Common.ThermalStateTypeObject.CRITICAL:
+        ...
+      default:
+        ...
+    }
+}
+
 discordSdk.subscribe('THERMAL_STATE_UPDATE', handleThermalStateUpdate);
 ```
 
-狀態：`NOMINAL(0)`、`FAIR(1)`、`SERIOUS(2)`、`CRITICAL(3)`</div></div>
+Discord will publish the current thermal state upon event subscription, and it will also publish any thermal state changes that happen afterward.
+
+<Info>
+On Android devices, the thermal state updates will only be available on Android 10 and higher.
+</Info>
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+## 行動裝置散熱狀態 (Mobile Thermal States)
+
+您可能需要根據 [行動裝置顯示的散熱狀態](https://developer.apple.com/library/archive/documentation/Performance/Conceptual/power_efficiency_guidelines_osx/RespondToThermalStateChanges.html) 所提供的建議，來響應散熱狀態變更，以提升使用者體驗。
+
+Discord 的嵌入式 App SDK 提供了對 [Apple 的散熱狀態 API](https://developer.apple.com/library/archive/documentation/Performance/Conceptual/power_efficiency_guidelines_osx/RespondToThermalStateChanges.html) 和 [Android 的散熱狀態 API](https://source.android.com/docs/core/power/thermal-mitigation#thermal-api) 的抽象封裝。
+
+以下是 Discord 的抽象映射到 Apple 散熱狀態和 Android 散熱狀態的方式。
+
+```javascript
+enum ThermalState {
+  NOMINAL = 0, // 對應 iOS 的 "nominal" 和 Android 的 "none"
+  FAIR = 1, // 對應 iOS 的 "fair" 和 Android 的 "light" / "moderate"
+  SERIOUS = 2, // 對應 iOS 的 "serious" 和 Android 的 "severe"
+  CRITICAL = 3, // 對應 iOS 的 "critical" 和 Android 的 "critical" / "emergency" / "shutdown"
+}
+```
+
+嵌入式 App SDK 允許開發者訂閱這些散熱狀態變更。
+
+```javascript
+const handleThermalStateUpdate = (update: {thermal_state: number}) => {
+  switch (thermalState) {
+      case Common.ThermalStateTypeObject.NOMINAL:
+        ...
+      case Common.ThermalStateTypeObject.FAIR:
+        ...
+      case Common.ThermalStateTypeObject.SERIOUS:
+        ...
+      case Common.ThermalStateTypeObject.CRITICAL:
+        ...
+      default:
+        ...
+    }
+}
+
+discordSdk.subscribe('THERMAL_STATE_UPDATE', handleThermalStateUpdate);
+```
+
+Discord 將在訂閱事件時發送目前的散熱狀態，並在之後發送任何散熱狀態的變更。
+
+<Info>
+在 Android 裝置上，散熱狀態更新僅適用於 Android 10 或更高版本。
+</Info>
+</div>
+</div>

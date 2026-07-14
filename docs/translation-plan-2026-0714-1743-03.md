@@ -12,11 +12,11 @@
 
 | 優先級 | 目錄/主題 | 用途與說明 | 建議執行決策 |
 | :--- | :--- | :--- | :--- |
-| **P0 (極高) ⭐⭐⭐⭐⭐** | `monetization/`<br>`topics/` | **用途**：Activities 營利變現（IAP/訂閱）、API 速率限制 (Rate Limits) 與 OAuth2 授權流。<br>➔ 開發活動與 API 交互的**核心硬性必備知識**。 | **高度推薦執行** |
-| **P1 (高) ⭐⭐⭐⭐** | `rich-presence/`<br>`discovery/` | **用途**：玩家個人檔案狀態即時顯示（Rich Presence）與官方目錄探索分發。<br>➔ 提升活動社交傳播力與曝光率的關鍵文件。 | **推薦執行** |
-| **P2 (中) ⭐⭐⭐** | `interactions/`<br>`platform/` | **用途**：斜線指令接收/回覆機制，以及平台通用功能通識。 | **選備執行** |
-| **P3 (低) ⭐⭐** | `resources/`<br>`gateway/`<br>`events/` | **用途**：API JSON 資料結構規格書，以及機器人專用的 WebSocket Gateway 長連線。<br>➔ 對 Activities 網頁開發來說通常只需速查英文欄位，不需深讀。 | **可不許可/跳過** |
-| **P4 (極低) ⭐** | `discord-social-sdk/` | **用途**：原生 PC 遊戲（如 Unity/Unreal 獨立執行檔）整合 Discord 社交功能。<br>➔ **與 Activities (Embedded App) 是完全不同的技術，開發活動完全用不到**。 | **不推薦執行** |
+| **P0 (極高) ⭐⭐⭐⭐⭐** | `monetization/`<br />`topics/` | **用途**：Activities 營利變現（IAP/訂閱）、API 速率限制 (Rate Limits) 與 OAuth2 授權流。<br />➔ 開發活動與 API 交互的**核心硬性必備知識**。 | **高度推薦執行** |
+| **P1 (高) ⭐⭐⭐⭐** | `rich-presence/`<br />`discovery/` | **用途**：玩家個人檔案狀態即時顯示（Rich Presence）與官方目錄探索分發。<br />➔ 提升活動社交傳播力與曝光率的關鍵文件。 | **推薦執行** |
+| **P2 (中) ⭐⭐⭐** | `interactions/`<br />`platform/` | **用途**：斜線指令接收/回覆機制，以及平台通用功能通識。 | **選備執行** |
+| **P3 (低) ⭐⭐** | `resources/`<br />`gateway/`<br />`events/` | **用途**：API JSON 資料結構規格書，以及機器人專用的 WebSocket Gateway 長連線。<br />➔ 對 Activities 網頁開發來說通常只需速查英文欄位，不需深讀。 | **可不許可/跳過** |
+| **P4 (極低) ⭐** | `discord-social-sdk/` | **用途**：原生 PC 遊戲（如 Unity/Unreal 獨立執行檔）整合 Discord 社交功能。<br />➔ **與 Activities (Embedded App) 是完全不同的技術，開發活動完全用不到**。 | **不推薦執行** |
 
 ---
 
@@ -137,4 +137,4 @@ API 參考規格書，與 WebSocket Gateway 長連線機制。
 1. **結構生成**：建立對應的 `zh-tw` 和 `bilingual` 檔案，套用高品質台灣正體中文。
 2. **語系切換整合**：在對應英文檔案中引入並配置 `<LanguageSelector current="en" path="..." />`.
 3. **Docs 導覽選單同步**：執行 `restructure_docs_json.py` 腳本，自動將新增的頁面以對應的雙語翻譯隱藏群組註冊到 `docs.json`，確保左側 Sidebar 選單正常亮起且章節名稱顯示正確。
-4. **驗證與測試**：在本地伺服器 (`http://localhost:3000`) 進行 HTTP 200 狀態測試，確認所有頁面健康運行。
+4. **驗證與測試**：在本地伺服器 (`http://localhost:3000`) 進行測試，並執行 `npx mintlify validate` 和 `npx mintlify broken-links` 進行官方嚴格的結構與死鏈校驗，確保所有頁面與連結健康運行。

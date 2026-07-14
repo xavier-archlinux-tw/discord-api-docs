@@ -1,105 +1,5 @@
 [
   {
-    "relPath": "developers/activities/building-an-activity.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "bilingual has fewer headings than en-us (20 vs 28)",
-      "bilingual has fewer code blocks than en-us (16 vs 20)",
-      "bilingual has fewer images than en-us (0 vs 9)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/development-guides/assets-and-metadata.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "bilingual has fewer headings than en-us (4 vs 9)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/development-guides/growth-and-referrals.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "zh-tw has fewer headings than en-us (8 vs 14)",
-      "zh-tw has fewer images than en-us (0 vs 1)",
-      "bilingual has fewer headings than en-us (4 vs 14)",
-      "bilingual has fewer images than en-us (0 vs 1)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/development-guides/layout.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "bilingual has fewer headings than en-us (4 vs 5)",
-      "bilingual has fewer images than en-us (0 vs 1)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/development-guides/mobile.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "bilingual has fewer images than en-us (0 vs 1)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/development-guides/multiplayer-experience.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "zh-tw has fewer headings than en-us (8 vs 13)",
-      "zh-tw has fewer code blocks than en-us (3 vs 7)",
-      "bilingual has fewer headings than en-us (6 vs 13)",
-      "bilingual has fewer code blocks than en-us (6 vs 7)",
-      "bilingual has fewer images than en-us (0 vs 2)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/development-guides/networking.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "zh-tw has fewer headings than en-us (5 vs 8)",
-      "zh-tw has fewer code blocks than en-us (1 vs 2)",
-      "zh-tw has fewer <Info> boxes than en-us (0 vs 1)",
-      "bilingual has fewer headings than en-us (4 vs 8)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/development-guides/user-actions.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "zh-tw has fewer headings than en-us (5 vs 14)",
-      "zh-tw has fewer code blocks than en-us (2 vs 5)",
-      "zh-tw has fewer images than en-us (1 vs 4)",
-      "bilingual has fewer headings than en-us (2 vs 14)",
-      "bilingual has fewer code blocks than en-us (2 vs 5)",
-      "bilingual has fewer images than en-us (0 vs 4)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/development-guides.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "bilingual has fewer headings than en-us (4 vs 10)"
-    ]
-  },
-  {
-    "relPath": "developers/activities/how-activities-work.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "zh-tw has fewer headings than en-us (4 vs 6)",
-      "bilingual has fewer headings than en-us (5 vs 6)",
-      "bilingual has fewer code blocks than en-us (0 vs 1)"
-    ]
-  },
-  {
     "relPath": "developers/bots/overview.mdx",
     "zhExists": false,
     "biExists": false,
@@ -1357,16 +1257,6 @@
     "issues": [
       "Missing zh-tw translation file",
       "Missing bilingual translation file"
-    ]
-  },
-  {
-    "relPath": "developers/tutorials/using-community-invites.mdx",
-    "zhExists": true,
-    "biExists": true,
-    "issues": [
-      "zh-tw has fewer headings than en-us (11 vs 15)",
-      "zh-tw has fewer code blocks than en-us (1.5 vs 2)",
-      "zh-tw has fewer <Info> boxes than en-us (2 vs 3)"
     ]
   }
 ]

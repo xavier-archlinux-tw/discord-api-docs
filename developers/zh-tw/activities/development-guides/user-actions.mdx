@@ -36,7 +36,7 @@ discordSdk.commands.openExternalLink({
 
 在 SDK 中提供了 `openInviteDialog` 指令。此指令可在 Discord 用戶端內開啟應用程式頻道邀請 UI，而不需要額外的 OAuth 權限範圍。
 
-此指令在私訊 (DM) 上下文中呼叫時會返回錯誤，因此僅應在伺服器語音或文字頻道中呼叫。
+此指令在私訊 (DM) 上下文中呼叫時會返回錯誤，因此僅應在伺服器語音或文字頻道中呼叫。由於在使用者權限不足時此指令也會返回錯誤，因此高度建議先使用 `getChannelPermissions`（需要 OAuth 權限範圍 `'guilds.members.read'`）進行判斷。
 
 #### 使用方式
 
@@ -57,3 +57,129 @@ try {
   console.warn(err.message);
 }
 ```
+
+#### 使用者體驗
+
+![邀請對話框 UI](/images/activities/invite-dialog.png)
+
+使用者將在 Discord App 內看到一個對話框，允許他們將邀請發送給頻道、朋友，或者複製邀請連結以進行手動分享。
+
+---
+
+## 開啟分享時刻視窗 (Open Share Moment Dialog)
+
+應用程式若要將媒體分享到頻道或私訊 (DM)，最簡單的方法是使用 `openShareMomentDialog` 指令。此指令接受一個 Discord CDN 的 `mediaUrl`（例如 `https://cdn.discordapp.com/attachments/...`），並在 Discord 用戶端上開啟一個對話框，允許使用者選擇要分享的頻道、私訊和群組私訊 (GDM)。這不需要額外的 OAuth 權限範圍，但確實需要應用程式進行身分驗證。
+
+由於 `mediaUrl` 必須是 Discord CDN 的網址，因此建議使用互動活動附件 API 端點 (`discord.com/api/applications/${applicationId}/attachment`) 來建立一個臨時的 CDN 網址。此端點接受任何權限範圍的 Bearer Token，因此可以使用已授權使用者的 Bearer Token 從應用程式用戶端進行呼叫。該端點會傳回一個序列化的附件物件，其中包含 `url` 屬性，接著應將其作為 `mediaUrl` 傳遞給 Discord SDK 指令。
+
+#### 使用方式
+
+```javascript
+import {discordSdk} from './wherever-you-initialize-your-sdk';
+import {accessToken} from './wherever-you-store-your-access-token';
+
+// 某個圖像的網址
+const imageURL = 'https://i.imgur.com/vaSWuKr.gif';
+
+// 獲取圖像資料
+const response = await fetch(imageURL);
+const blob = await response.blob();
+const mimeType = blob.type;
+
+// 將圖像資料轉為 Buffer
+const buf = await blob.arrayBuffer();
+
+// 將圖像轉為 File 物件
+const imageFile = new File([buf], 'example.gif', {type: mimeType});
+
+const body = new FormData();
+body.append('file', imageFile);
+
+const attachmentResponse = await fetch(`${env.discordAPI}/applications/${env.applicationId}/attachment`, {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+  body,
+});
+const attachmentJson = await attachmentResponse.json();
+
+// mediaUrl 是一個臨時的 Discord CDN 網址
+const mediaUrl = attachmentJson.attachment.url;
+
+// 在 Discord 用戶端中開啟對話框
+await discordSdk.commands.openShareMomentDialog({mediaUrl});
+```
+
+#### 使用者體驗
+
+![分享對話框範例](/images/activities/share-moment-dialog-example.png)
+
+---
+
+## 設定進入點指令 (Setting Up an Entry Point Command)
+
+使用者需要透過 [進入點指令 (Entry Point command)](/developers/zh-tw/interactions/application-commands#entry-point-commands) 才能從 Discord 的 [應用程式啟動器選單 (App Launcher menu)](https://support.discord.com/hc/articles/21334461140375-Using-Apps-on-Discord#h_01HRQSA6C8TRHS722P1H3HW1TV) 中啟動您的互動活動。
+
+當您在 [應用程式設定](http://discord.com/developers/applications) 中啟用互動活動時，系統會自動為您的 App 建立一個 [預設進入點指令](/developers/zh-tw/interactions/application-commands#default-entry-point-command)。預設進入點指令會使用 `DISCORD_LAUNCH_ACTIVITY`（`2`）[處理常式類型 (handler type)](/developers/zh-tw/interactions/application-commands#application-command-object-entry-point-command-handler-types)，這代表 Discord 會自動為使用者啟動您的互動活動，並在該活動啟動的頻道中傳送一條後續追蹤訊息。
+
+如果您想自行處理訊息傳送，可以將處理常式更新為 `APP_HANDLER`（`1`）。有關進入點指令處理常式的詳細細節，請參閱 [進入點指令說明文件](/developers/zh-tw/interactions/application-commands#entry-point-handlers)。
+
+#### 自訂預設進入點指令
+
+進入點指令可以像其他 [指令 (Commands)](/developers/zh-tw/interactions/application-commands) 一樣進行自訂。由於進入點指令只能是 [全域 (Global)](/developers/zh-tw/interactions/application-commands#making-a-global-command) 的，因此您需要使用全域指令的 HTTP 端點：
+- **編輯現有進入點指令的名稱或詳細資訊**：使用 [編輯全域應用程式指令](/developers/zh-tw/interactions/application-commands#edit-global-application-command) 端點。如果您不知道您 App 進入點指令的 ID，請使用 [獲取全域應用程式指令](/developers/zh-tw/interactions/application-commands#get-global-application-commands) 端點來獲取它。
+- **將另一個（無選項的）指令設為您的進入點指令**：將其 [指令類型 `type`](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-types) 更新為 `PRIMARY_ENTRY_POINT`（類型 `4`）。您的 App 只能有一個進入點指令，因此如果您的 App 已經擁有一個，您必須先將其 [刪除](/developers/zh-tw/interactions/application-commands#delete-global-application-command) 或 [更新](/developers/zh-tw/interactions/application-commands#edit-global-application-command) 其 [指令類型 `type`](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-types)。
+
+#### 建立進入點指令
+
+若要建立新的進入點指令，您可以呼叫 [建立全域應用程式指令](/developers/zh-tw/interactions/application-commands#create-global-application-command) 端點，並將 [指令類型 `type`](/developers/zh-tw/interactions/application-commands#application-command-object-application-command-types) 設定為 `PRIMARY_ENTRY_POINT`（類型 `4`）。
+
+您的指令 Payload 大致如下所示：
+
+```json
+{
+  "name": "launch",
+  "description": "啟動 Realms of Wumpus 互動活動",
+  // PRIMARY_ENTRY_POINT 的類型值為 4
+  "type": 4,
+  // DISCORD_LAUNCH_ACTIVITY 的處理常式值為 2
+  "handler": 2,
+  // integration_types 與 contexts 定義了您的指令可以在哪裡使用（見下方說明）
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2]
+}
+```
+
+除了 `type` 和 `handler` 值之外，指令 Payload 還包含了 `integration_types` 和 `contexts`，讓您設定在何時何地可以使用您的指令：
+- `integration_types` 定義了您的指令可在哪些 [安裝上下文 (installation contexts)](/developers/zh-tw/resources/application#installation-context) 中使用（伺服器安裝、使用者安裝，或兩者皆是）。如果您在建立指令時未設定 `integration_types`，它將預設為您 App [目前支援的安裝上下文](/developers/zh-tw/resources/application#setting-supported-installation-contexts)。
+- `contexts` 定義了指令可在 Discord 的哪些 [互動上下文 (interaction contexts)](/developers/zh-tw/interactions/receiving-and-responding#interaction-object-interaction-context-types) 中執行（伺服器內、與您 App 的私訊中，以及/或者與其他使用者的私訊和群組私訊中）。
+
+有關這兩個欄位的詳細資訊，請參閱 [指令上下文 (command contexts)](/developers/zh-tw/interactions/application-commands#contexts) 說明文件。
+
+---
+
+## 鼓勵啟用硬體加速 (Encourage Hardware Acceleration)
+
+運算密集型的互動活動可能需要鼓勵使用者啟用硬體加速功能以獲得更好的體驗。當應用程式呼叫 `encourageHardwareAcceleration` 指令時，系統將會回傳該設定目前狀態的布林值，並在適當時提示使用者開啟該設定。
+
+如果使用者的硬體加速功能已停用，他們將會在 Discord App 內看到一個提示視窗，鼓勵他們變更該設定。點擊 **「不要再顯示此訊息」** 後，使用者將不會在此裝置上的 _任何應用程式_ 中再次看到此提示。
+
+#### 最佳做法
+
+變更硬體加速設定會導致 Discord 用戶端關閉並重新啟動，因此最佳實踐是儘快呼叫此指令，以免使用者在重新啟動前已經開始體驗應用程式。理想情況下，這應該在 `await discordSdk.ready()` 之後立即執行。
+
+#### 使用方式
+
+```javascript
+import {DiscordSDK} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+const {enabled} = await discordSdk.commands.encourageHardwareAcceleration();
+console.log(`硬體加速目前為 ${enabled === true ? '已啟用' : '已停用'}`);
+```
+
+#### 使用者體驗
+
+![鼓勵硬體加速提示框](/images/activities/encourage-hardware-acceleration-modal.png)
+

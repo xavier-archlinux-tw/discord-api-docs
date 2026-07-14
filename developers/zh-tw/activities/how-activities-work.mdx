@@ -14,8 +14,22 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 ## 啟動互動活動
 
 在您的應用程式 [互動活動設定](https://discord.com/developers/applications/select/embedded/settings) 中啟用互動活動之後，您的 App 可以透過以下兩種方式啟動互動活動：
-1. 当使用者在應用程式啟動器 (App Launcher) 中呼叫您 App 的進入點指令 (Entry Point Command) 時。
+1. 當使用者在應用程式啟動器 (App Launcher) 中呼叫您 App 的進入點指令 (Entry Point Command) 時。
 2. 透過回傳類型為 `LAUNCH_ACTIVITY` (類型為 `12`) 的互動回應。
+
+下方的章節將針對這兩種方式提供更詳細的說明。
+
+### 進入點指令 (Entry Point Command)
+
+互動活動主要是當使用者在應用程式啟動器 (App Launcher) 中呼叫您 App 的 [進入點指令 (Entry Point Command)](/developers/zh-tw/interactions/application-commands#entry-point-commands) 時開啟。
+
+當您為 App 啟用互動活動時，系統會自動為您建立一個名為「Launch」的 [預設進入點指令](/developers/zh-tw/interactions/application-commands#default-entry-point-command)。預設情況下，當使用者執行您的進入點指令時，Discord 會自動處理並開啟您的互動活動。
+
+如需了解更多關於設定進入點指令的資訊，請參閱 [開發指南](/developers/zh-tw/activities/development-guides/user-actions#setting-up-an-entry-point-command)。
+
+### 互動回應 (Interaction Response)
+
+互動活動也可以在回應 [指令 (Command)](/developers/zh-tw/interactions/overview#commands)、[訊息元件 (Message Component)](/developers/zh-tw/interactions/overview#message-components) 與 [互動視窗提交 (Modal Submission)](/developers/zh-tw/interactions/overview#modals) 等互動時啟動。若要開啟互動活動，請在 [回應互動](/developers/zh-tw/interactions/receiving-and-responding#responding-to-an-interaction) 時，將回呼類型設定為 `LAUNCH_ACTIVITY`（類型 `12`）。
 
 ---
 

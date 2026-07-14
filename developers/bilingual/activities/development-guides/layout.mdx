@@ -7,58 +7,180 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/layout" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Application Orientation
 
-Lock states: `UNLOCKED`, `PORTRAIT`, `LANDSCAPE`
+#### Locking Application Orientation
+
+This SDK provides APIs for locking the application to specific orientations. The possible lock states are `UNLOCKED`, `PORTRAIT`, and `LANDSCAPE`. `lock_state` is the default lock state, and it affects the app orientation when the application is focused. `picture_in_picture_lock_state` determines the PIP aspect ratio, and `grid_lock_state` determines the grid tile aspect ratio for the application. When `picture_in_picture_lock_state` is not set, the application PIP falls back to `lock_state` to determine the aspect ratio. When `grid_lock_state` is not set, the application grid tile falls back to `picture_in_picture_lock_state` to determine its aspect ratio, and if `picture_in_picture_lock_state`is not set, it uses `lock_state`.
+
+Calling `setOrientationLockState` with an `undefined` or omitted value for `picture_in_picture_lock_state` or `grid_lock_state` will not change the corresponding lock states for the application. Calling `setOrientationLockState` with a null value for `picture_in_picture_lock_state` or `grid_lock_state` will clear the application's corresponding lock states such that those layout modes will use the fallback lock states.
 
 ```javascript
+import {DiscordSDK, Common} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+
+// Set a default lock state
+discordSdk.commands.setOrientationLockState({lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE});
+
+// or set both a default lock state and a picture-in-picture lock state
 discordSdk.commands.setOrientationLockState({
-  lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+  lock_state: Common.OrientationLockStateTypeObject.PORTRAIT,
   picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
   grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
 });
 ```
-
-Subscribe to orientation updates:
-
-```javascript
-discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
-```
-
-## Application Layout Mode
-
-Three modes: focused, picture-in-picture (PIP), grid. Use `subscribeToLayoutModeUpdatesCompat` for backward compatibility.
-
-```javascript
-discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate);
-```</div><div>
+</div>
+<div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 應用程式方向鎖定 (Application Orientation)
 
-鎖定狀態：`UNLOCKED`（不鎖定）、`PORTRAIT`（直向）、`LANDSCAPE`（橫向）
+#### 鎖定應用程式方向
+
+此 SDK 提供了用於將應用程式鎖定到特定方向的 API。可用的鎖定狀態為 `UNLOCKED`（解除鎖定）、`PORTRAIT`（直向）與 `LANDSCAPE`（橫向）。`lock_state` 是預設的鎖定狀態，它會影響應用程式在聚焦時的畫面方向。`picture_in_picture_lock_state` 決定了子母畫面 (PIP) 的寬高比，而 `grid_lock_state` 則決定了應用程式格狀拼貼的寬高比。未設定 `picture_in_picture_lock_state` 時，應用程式子母畫面會降級使用 `lock_state` 來決定寬高比。未設定 `grid_lock_state` 時，應用程式格狀拼貼會降級使用 `picture_in_picture_lock_state` 來決定其寬高比，而若 `picture_in_picture_lock_state` 也未設定，則會使用 `lock_state`。
+
+呼叫 `setOrientationLockState` 時，如果 `picture_in_picture_lock_state` 或 `grid_lock_state` 傳入 `undefined` 或被省略，將不會變更應用程式相應的鎖定狀態。如果將 `picture_in_picture_lock_state` 或 `grid_lock_state` 設為 null 呼叫 `setOrientationLockState`，則會清除應用程式相應的鎖定狀態，使得這些版面配置模式使用降級的備用鎖定狀態。
 
 ```javascript
+import {DiscordSDK, Common} from '@discord/embedded-app-sdk';
+const discordSdk = new DiscordSDK(clientId);
+await discordSdk.ready();
+
+// 設定預設鎖定狀態
+discordSdk.commands.setOrientationLockState({lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE});
+
+// 或者同時設定預設鎖定狀態和子母畫面鎖定狀態
 discordSdk.commands.setOrientationLockState({
-  lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
+  lock_state: Common.OrientationLockStateTypeObject.PORTRAIT,
   picture_in_picture_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
   grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
 });
 ```
+</div>
+</div>
 
-訂閱方向更新：
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+#### Configuring Default Orientation Lock State Through the Developer Portal
+
+It's also possible to configure an application with a default orientation lock state via the Developer Portal. Using this method, the Discord app will apply the orientation lock when launching the application before the SDK has been initialized. This can create a smoother application launch flow where the application starts in the correct orientation rather than switching to the correct orientation after some delay after the application requests an orientation lock via the SDK. The Developer Portal supports setting a different default orientation lock states for phones versus tablets.
+
+![default-orientation-lock-state](/images/activities/default_orientation_lock_state.png)
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+#### 透過開發者入口網站設定預設方向鎖定狀態
+
+也可以在開發者入口網站中，為應用程式設定預設的方向鎖定狀態。使用此方法，Discord App 在啟動應用程式時（SDK 初始化之前）就會套用方向鎖定。這可以創造更流暢的應用程式啟動流程，使應用程式一開始就以正確的方向啟動，而不是在應用程式透過 SDK 請求方向鎖定之後，經過些許延遲才切換至正確方向。開發者入口網站支援為手機和平板電腦設定不同的預設方向鎖定狀態。
+
+![default-orientation-lock-state](/images/activities/default_orientation_lock_state.png)
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+#### Subscribing to Screen Orientation Updates
+
+To listen to the screen orientation (which is sometimes different from the physical device orientation), subscribe to the `ORIENTATION_UPDATE` event. Discord will publish the current orientation upon event subscription, and it'll also publish any orientation changes that happen afterward.
 
 ```javascript
+const handleOrientationUpdate = (update: {screen_orientation: number}) => {
+  switch (update.screen_orientation) {
+      case Common.OrientationTypeObject.PORTRAIT:
+        ...
+      case Common.OrientationTypeObject.LANDSCAPE:
+        ...
+      default:
+        ...
+    }
+}
+
 discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
 ```
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+#### 訂閱螢幕方向更新
+
+若要接聽螢幕方向（有時與實體裝置方向不同），請訂閱 `ORIENTATION_UPDATE` 事件。Discord 將在訂閱事件時發送目前的螢幕方向，並在之後發送任何方向的變更。
+
+```javascript
+const handleOrientationUpdate = (update: {screen_orientation: number}) => {
+  switch (update.screen_orientation) {
+      case Common.OrientationTypeObject.PORTRAIT:
+        ...
+      case Common.OrientationTypeObject.LANDSCAPE:
+        ...
+      default:
+        ...
+    }
+}
+
+discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
+```
+</div>
+</div>
+
+---
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+## Application Layout Mode
+
+There are three layout modes that an application can be in: focused, picture-in-picture (PIP), or grid mode. Activities can subscribe to the layout mode to determine when to optionally change their layouts to optimize for each layout mode. Old Discord clients only support the `ACTIVITY_PIP_MODE_UPDATE` event, while new Discord clients support both `ACTIVITY_PIP_MODE_UPDATE` and `ACTIVITY_LAYOUT_MODE_UPDATE`. Use `subscribeToLayoutModeUpdatesCompat` and `unsubscribeFromLayoutModeUpdatesCompat` to subscribe to both events with backward compatibility for old Discord clients that only support `ACTIVITY_PIP_MODE_UPDATE`. Here's an example using React:
+
+```javascript
+export default function LayoutMode() {
+  const handleLayoutModeUpdate = React.useCallback((update: {layout_mode: number}) => {
+       ...
+  }, []);
+
+  React.useEffect(() => {
+    discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+    return () => {
+      discordSdk.unsubscribeFromLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+    };
+  }, [handleLayoutModeUpdate]);
+}
+```
+</div>
+<div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 應用程式版面模式 (Application Layout Mode)
 
-三種模式：聚焦 (focused)、子母畫面 (PIP)、格狀 (grid)。使用 `subscribeToLayoutModeUpdatesCompat` 以向後相容的方式訂閱。
+應用程式可以處於三種版面模式之一：聚焦 (focused)、子母畫面 (PIP) 或格狀拼貼 (grid) 模式。互動活動可以訂閱版面模式更新，以決定何時選擇性地變更其版面配置，從而針對每種版面模式進行最佳化。舊版的 Discord 用戶端僅支援 `ACTIVITY_PIP_MODE_UPDATE` 事件，而新版的 Discord 用戶端則同時支援 `ACTIVITY_PIP_MODE_UPDATE` 與 `ACTIVITY_LAYOUT_MODE_UPDATE`。請使用 `subscribeToLayoutModeUpdatesCompat` 和 `unsubscribeFromLayoutModeUpdatesCompat` 來訂閱這兩個事件，這可以向後相容於僅支援 `ACTIVITY_PIP_MODE_UPDATE` 的舊版 Discord 用戶端。以下是使用 React 的範例：
 
 ```javascript
-discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate);
-```</div></div>
+export default function LayoutMode() {
+  const handleLayoutModeUpdate = React.useCallback((update: {layout_mode: number}) => {
+       ...
+  }, []);
+
+  React.useEffect(() => {
+    discordSdk.subscribeToLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+    return () => {
+      discordSdk.unsubscribeFromLayoutModeUpdatesCompat(handleLayoutModeUpdate);
+    };
+  }, [handleLayoutModeUpdate]);
+}
+```
+</div>
+</div>
