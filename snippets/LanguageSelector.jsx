@@ -1,19 +1,37 @@
 export const LanguageSelector = ({ current, path }) => {
-  // 清理與轉換路由路徑，確保基本英文路由正確
-  let baseRoute = path || '';
-  baseRoute = baseRoute
+  // SSR 階段與預設回退使用傳入的 path
+  let ssrBaseRoute = path || '';
+  ssrBaseRoute = ssrBaseRoute
     .replace('/developers/zh-tw/', '/developers/en-us/')
     .replace('/developers/bilingual/', '/developers/en-us/');
     
-  if (baseRoute && !baseRoute.startsWith('/')) {
-    baseRoute = '/' + baseRoute;
+  if (ssrBaseRoute && !ssrBaseRoute.startsWith('/')) {
+    ssrBaseRoute = '/' + ssrBaseRoute;
   }
 
-  const enRoute = baseRoute;
-  const zhRoute = baseRoute.replace('/developers/en-us/', '/developers/zh-tw/');
-  const biRoute = baseRoute.replace('/developers/en-us/', '/developers/bilingual/');
+  const ssrEnRoute = ssrBaseRoute;
 
   React.useEffect(() => {
+    // 用戶端動態偵測真實 pathname，修復多重引入、Snippet/Wrapper 所致的 404 問題
+    let currentPath = window.location.pathname || ssrEnRoute || '';
+    currentPath = currentPath.replace(/\/$/, '');
+    
+    let baseRoute = currentPath;
+    if (baseRoute.includes('/developers/zh-tw/')) {
+      baseRoute = baseRoute.replace('/developers/zh-tw/', '/developers/en-us/');
+    } else if (baseRoute.includes('/developers/bilingual/')) {
+      baseRoute = baseRoute.replace('/developers/bilingual/', '/developers/en-us/');
+    } else if (!baseRoute.startsWith('/developers/en-us/') && baseRoute.includes('/developers/')) {
+      baseRoute = baseRoute.replace(/\/developers\/[a-zA-Z0-9_-]+\//, '/developers/en-us/');
+    }
+
+    if (baseRoute && !baseRoute.startsWith('/')) {
+      baseRoute = '/' + baseRoute;
+    }
+
+    const enRoute = baseRoute;
+    const zhRoute = baseRoute.replace('/developers/en-us/', '/developers/zh-tw/');
+    const biRoute = baseRoute.replace('/developers/en-us/', '/developers/bilingual/');
     // 輔助函式：優先使用 Next.js 原生的 SPA 路由推送，避免整頁重新整理與觸發 On-demand 編譯
     const navigateSPA = (href) => {
       if (window.next && window.next.router) {
@@ -348,7 +366,7 @@ export const LanguageSelector = ({ current, path }) => {
         link.removeEventListener('click', handler, true);
       });
     };
-  }, [current, enRoute]);
+  }, [current, path]);
 
   return null;
 };

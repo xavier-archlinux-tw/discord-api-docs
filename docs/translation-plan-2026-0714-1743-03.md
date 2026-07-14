@@ -138,3 +138,18 @@ API 參考規格書，與 WebSocket Gateway 長連線機制。
 2. **語系切換整合**：在對應英文檔案中引入並配置 `<LanguageSelector current="en" path="..." />`.
 3. **Docs 導覽選單同步**：執行 `restructure_docs_json.py` 腳本，自動將新增的頁面以對應的雙語翻譯隱藏群組註冊到 `docs.json`，確保左側 Sidebar 選單正常亮起且章節名稱顯示正確。
 4. **驗證與測試**：在本地伺服器 (`http://localhost:3000`) 進行測試，並執行 `npx mintlify validate` 和 `npx mintlify broken-links` 進行官方嚴格的結構與死鏈校驗，確保所有頁面與連結健康運行。
+
+---
+
+## 🚨 重要注意事項：多重路徑包裝頁面與 404 問題防範
+
+### 1. 問題成因與風險
+專案中部分說明文件採用了 **多重路徑包裝（Wrapper/Snippet）結構**，即同一份文件內容，透過一個僅包含 `import Content from '...'` 的 Wrapper 檔案，同時出現在不同的導覽路徑下（例如：`/activities/rich-presence/...` 與 `/rich-presence/...`；以及 `/activities/monetization/...` 與 `/monetization/...`）。
+
+如果在此類被引入的 Snippet/Content 檔案內，將 `<LanguageSelector>` 的 `path` 屬性硬編碼為單一路徑，會導致：
+- 當使用者從另一個 Wrapper 路徑（如 `/activities/...`）瀏覽該頁面並切換語系時，語言列會將使用者帶往**未在導航中註冊的非活動路徑**，從而觸發 **404 Page Not Found** 錯誤，並導致側邊欄狀態高亮失效。
+
+### 2. 修復與預防原則（防範指引）
+- **動態路徑偵測機制**：已在 `snippets/LanguageSelector.jsx` 內整合用戶端 `window.location.pathname` 動態偵測。語言切換列將自動偵測使用者當前在瀏覽器中開啟的真實 URL，自動變更語系字串，而不再只依賴硬編碼的 `path` 參數。這可確保包裝（Wrapper）頁面在切換語系時始終保持在同一個 Sidebar 導航樹與 URL 結構下，徹底解決 404 與高亮遺失問題。
+- **後續維護要求**：往後在其他頁面中引入 `<LanguageSelector>` 時，若發現多重路徑引用，應優先依賴動態偵測。同時，必須確保所有 Wrapper 文件在 `zh-tw` 和 `bilingual` 中的對應位置皆已複製並正確指向對應的翻譯後 Snippet，以保持多語系路由的完整對稱。
+
