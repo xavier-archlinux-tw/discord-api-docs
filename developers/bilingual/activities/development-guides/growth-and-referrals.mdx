@@ -7,8 +7,7 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/growth-and-referrals" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Prompting Users to Share Incentivized Links
@@ -32,10 +31,7 @@ const linkIdResponse = await fetch(`${env.discordAPI}/applications/${env.applica
 });
 const {link_id} = await linkIdResponse.json();
 await discordSdk.commands.shareLink({ message: 'Check out my high score!', link_id });
-```
-
-  </div>
-  <div>
+```</div><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 引導使用者分享獎勵連結 (Prompting Users to Share Incentivized Links)
@@ -59,7 +55,4 @@ const linkIdResponse = await fetch(`${env.discordAPI}/applications/${env.applica
 });
 const {link_id} = await linkIdResponse.json();
 await discordSdk.commands.shareLink({ message: '來看我的最高分！', link_id });
-```
-
-  </div>
-</div>
+```</div></div>

@@ -1,5 +1,5 @@
 # Exclude directories
-resources/
+/resources/
 tools/
 
 # Exclude specific files

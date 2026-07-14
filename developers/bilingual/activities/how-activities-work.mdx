@@ -7,54 +7,39 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/how-activities-work" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 Activities are web applications that run in an iframe within Discord on desktop, mobile and web. In order to achieve this, we use the [`postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) protocol to enable secure communication between your application and Discord.
 
-The [Embedded App SDK](https://github.com/discord/embedded-app-sdk) simplifies this process by managing the `postMessage` protocol on your behalf. For details on available commands and their usage, consult the [SDK Reference](/developers/en-us/developer-tools/embedded-app-sdk).
-
-  </div>
-  <div>
+The [Embedded App SDK](https://github.com/discord/embedded-app-sdk) simplifies this process by managing the `postMessage` protocol on your behalf. For details on available commands and their usage, consult the [SDK Reference](/developers/en-us/developer-tools/embedded-app-sdk).</div><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 互動活動 (Activities) 是託管在 iframe 中，並在電腦版、行動版與網頁版 Discord 中執行的網頁應用程式。為實現此目的，我們使用 [postMessage](https://developer.mozilla.org/zh-TW/docs/Web/API/Window/postMessage) 協定在您的應用程式與 Discord 之間進行安全通訊。
 
-[嵌入式 App SDK](https://github.com/discord/embedded-app-sdk) 藉由代您管理 `postMessage` 協定來簡化此流程。有關可用指令及其用法的詳細資訊，請參閱 [SDK 參考](/developers/zh-tw/developer-tools/embedded-app-sdk)。
-
-  </div>
-</div>
+[嵌入式 App SDK](https://github.com/discord/embedded-app-sdk) 藉由代您管理 `postMessage` 協定來簡化此流程。有關可用指令及其用法的詳細資訊，請參閱 [SDK 參考](/developers/zh-tw/developer-tools/embedded-app-sdk)。</div></div>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Launching Activities
 
 After you have Activities enabled in your Application's [Activity's settings](https://discord.com/developers/applications/select/embedded/settings), your app can launch Activities in two ways:
 1. When a user invokes your app's Entry Point command in the App Launcher
-2. By responding to an interaction with the `LAUNCH_ACTIVITY` callback type
-
-  </div>
-  <div>
+2. By responding to an interaction with the `LAUNCH_ACTIVITY` callback type</div><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 啟動互動活動
 
 在您的應用程式 [互動活動設定](https://discord.com/developers/applications/select/embedded/settings) 中啟用互動活動之後，您的 App 可以透過以下兩種方式啟動互動活動：
 1. 當使用者在應用程式啟動器 (App Launcher) 中呼叫您 App 的進入點指令 (Entry Point Command) 時。
-2. 透過回傳類型為 `LAUNCH_ACTIVITY` (類型為 `12`) 的互動回應。
-
-  </div>
-</div>
+2. 透過回傳類型為 `LAUNCH_ACTIVITY` (類型為 `12`) 的互動回應。</div></div>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Activity Lifecycle
@@ -63,10 +48,7 @@ After you have Activities enabled in your Application's [Activity's settings](ht
 2. **Handshake Process:** Constructing the SDK instance begins a handshake process. The `ready()` method resolves once a connection is established.
 3. **Authorization and Authentication:** Acquire necessary permissions (scopes).
 4. **Interacting with Discord Client:** Subscribe to events and send commands.
-5. **Disconnection and Errors:** Close payload signals connection termination.
-
-  </div>
-  <div>
+5. **Disconnection and Errors:** Close payload signals connection termination.</div><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 互動活動生命週期
@@ -75,10 +57,7 @@ After you have Activities enabled in your Application's [Activity's settings](ht
 2. **握手流程：** 建立 SDK 執行個體會開始與 Discord 用戶端的握手流程。`ready()` 方法在成功建立連線後即會 resolve。
 3. **授權與身分驗證：** 身分驗證以獲取必要的權限 (Scopes)。
 4. **與 Discord 用戶端互動：** 驗證完成後，訂閱事件並發送指令。
-5. **中斷連線與錯誤：** 接收或發送 CLOSE 負載代表發生錯誤或需要結束連線。
-
-  </div>
-</div>
+5. **中斷連線與錯誤：** 接收或發送 CLOSE 負載代表發生錯誤或需要結束連線。</div></div>
 
 ---
 

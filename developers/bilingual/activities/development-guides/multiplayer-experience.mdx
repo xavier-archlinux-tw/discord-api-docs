@@ -7,8 +7,7 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/multiplayer-experience" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Activity Instance Management
@@ -21,10 +20,7 @@ const discordSdk = new DiscordSDK(clientId);
 const instanceId = discordSdk.instanceId; // available immediately
 ```
 
-**Instance ID Semantics:** Generated when a user launches an application. All joining users receive the same `instanceId`. Ends when all users leave.
-
-  </div>
-  <div>
+**Instance ID Semantics:** Generated when a user launches an application. All joining users receive the same `instanceId`. Ends when all users leave.</div><div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 活動實例管理 (Activity Instance Management)
@@ -37,15 +33,11 @@ const discordSdk = new DiscordSDK(clientId);
 const instanceId = discordSdk.instanceId; // 立即可用
 ```
 
-**instanceId 的語義**：在使用者啟動應用程式時生成。所有加入的使用者收到相同的 `instanceId`。所有使用者離開後，該實例即結束。
-
-  </div>
-</div>
+**instanceId 的語義**：在使用者啟動應用程式時生成。所有加入的使用者收到相同的 `instanceId`。所有使用者離開後，該實例即結束。</div></div>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
 
 ## Instance Participants
 
@@ -67,10 +59,7 @@ let avatarSrc = user.avatar
   : `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`;
 
 const username = user.global_name ?? `${user.username}#${user.discriminator}`;
-```
-
-  </div>
-  <div>
+```</div><div>
 
 ## 實例參與者 (Instance Participants)
 
@@ -92,7 +81,4 @@ let avatarSrc = user.avatar
   : `https://cdn.discordapp.com/embed/avatars/${(BigInt(user.id) >> 22n) % 6n}.png`;
 
 const username = user.global_name ?? `${user.username}#${user.discriminator}`;
-```
-
-  </div>
-</div>
+```</div></div>
