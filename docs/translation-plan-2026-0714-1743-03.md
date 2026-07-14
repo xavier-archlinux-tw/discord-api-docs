@@ -51,16 +51,30 @@
 
 ## 📅 翻譯批次與詳細排程
 
-### [Batch 4] 營利機制與豐富狀態 (優先級：P0 ~ P1 🎯)
+### [Batch 4] 營利機制與豐富狀態 (優先級：P0 ~ P1 🎯) ➔ [✅ 已完成 / COMPLETED]
 主要實作 Activities 的收費金流、訂閱、內購與玩家個人檔案狀態同步。
-- `[NEW]` [zh-tw/bilingual] `monetization/overview.mdx`
-- `[NEW]` [zh-tw/bilingual] `monetization/enabling-monetization.mdx`
-- `[NEW]` [zh-tw/bilingual] `monetization/managing-skus.mdx`
-- `[NEW]` [zh-tw/bilingual] `monetization/implementing-app-subscriptions.mdx`
-- `[NEW]` [zh-tw/bilingual] `monetization/implementing-one-time-purchases.mdx`
-- `[NEW]` [zh-tw/bilingual] `monetization/implementing-iap-for-activities.mdx`
-- `[NEW]` [zh-tw/bilingual] `rich-presence/using-with-the-embedded-app-sdk.mdx`
-- `[MODIFY]` [en-us] 對應的 7 個英文檔案（引入 `LanguageSelector`）
+- `[COMPLETED]` [zh-tw/bilingual] `monetization/overview.mdx` (已封裝於 snippets 中導入)
+- `[COMPLETED]` [zh-tw/bilingual] `monetization/enabling-monetization.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `monetization/managing-skus.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `monetization/implementing-app-subscriptions.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `monetization/implementing-one-time-purchases.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `monetization/implementing-iap-for-activities.mdx`
+- `[COMPLETED]` [zh-tw/bilingual] `rich-presence/using-with-the-embedded-app-sdk.mdx`
+- `[COMPLETED]` [en-us] 對應的 7 個英文檔案（已成功引入 `LanguageSelector`）
+
+### [Batch 4.5] 歷史頁面結構補全與語法修復 (修復與銜接階段 🛠️)
+修正並補齊 Batch 1-3 完成頁面中因 Token 限制截斷或模板簡化產生的內容落差，特別是補齊 `using-community-invites.mdx` 截斷所致的語法錯誤與 10 個 Activities Guides 的中英雙欄平行對稱。
+- `[MODIFY]` [zh-tw/bilingual] `activities/building-an-activity.mdx`
+- `[MODIFY]` [bilingual] `activities/development-guides/assets-and-metadata.mdx`
+- `[MODIFY]` [zh-tw/bilingual] `activities/development-guides/growth-and-referrals.mdx`
+- `[MODIFY]` [bilingual] `activities/development-guides/layout.mdx`
+- `[MODIFY]` [bilingual] `activities/development-guides/mobile.mdx`
+- `[MODIFY]` [zh-tw/bilingual] `activities/development-guides/multiplayer-experience.mdx`
+- `[MODIFY]` [zh-tw/bilingual] `activities/development-guides/networking.mdx`
+- `[MODIFY]` [zh-tw/bilingual] `activities/development-guides/user-actions.mdx`
+- `[MODIFY]` [bilingual] `activities/development-guides.mdx`
+- `[MODIFY]` [zh-tw/bilingual] `activities/how-activities-work.mdx`
+- `[MODIFY]` [zh-tw] `tutorials/using-community-invites.mdx`
 
 ### [Batch 5] 核心開發通識與基礎 (優先級：P0 ~ P2 💡)
 API 速率限制限制、OAuth2 授權流與互動回覆指令。
@@ -99,6 +113,20 @@ API 參考規格書，與 WebSocket Gateway 長連線機制。
 ### [Batch 9] Discord 社交 SDK (優先級：P4 ❌)
 原生遊戲（如 Unity/Unreal 獨立客戶端）專用的 C++/C# 社交 SDK。
 - `[NEW]` [zh-tw/bilingual] `discord-social-sdk/` 目錄下的所有檔案 (共約 40 個)
+- `[MODIFY]` [en-us] 對應的所有英文檔案（引入 `LanguageSelector`）
+
+### [Batch 10] 其他平台與政策遺漏文件 (優先級：P2 ~ P3 ⚠️)
+補齊先前計畫書中未列入的其餘平台機制、快速入門、新手教學與開發政策說明文件。
+- `[NEW]` [zh-tw/bilingual] `quick-start/getting-started.mdx`
+- `[NEW]` [zh-tw/bilingual] `tutorials/configuring-app-metadata-for-linked-roles.mdx`
+- `[NEW]` [zh-tw/bilingual] `tutorials/developing-a-user-installable-app.mdx`
+- `[NEW]` [zh-tw/bilingual] `tutorials/hosting-on-cloudflare-workers.mdx`
+- `[NEW]` [zh-tw/bilingual] `bots/overview.mdx`
+- `[NEW]` [zh-tw/bilingual] `communities/guides/community-invites.mdx`
+- `[NEW]` [zh-tw/bilingual] `policies/developer-policy.mdx`
+- `[NEW]` [zh-tw/bilingual] `policies/developer-terms-of-service.mdx`
+- `[NEW]` [zh-tw/bilingual] `game-development/` 目錄下所有導覽文件 (約 5 個)
+- `[NEW]` [zh-tw/bilingual] `social-commerce/overview.mdx`
 - `[MODIFY]` [en-us] 對應的所有英文檔案（引入 `LanguageSelector`）
 
 ---

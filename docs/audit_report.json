@@ -1,0 +1,1372 @@
+[
+  {
+    "relPath": "developers/activities/building-an-activity.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "bilingual has fewer headings than en-us (20 vs 28)",
+      "bilingual has fewer code blocks than en-us (16 vs 20)",
+      "bilingual has fewer images than en-us (0 vs 9)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/development-guides/assets-and-metadata.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "bilingual has fewer headings than en-us (4 vs 9)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/development-guides/growth-and-referrals.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "zh-tw has fewer headings than en-us (8 vs 14)",
+      "zh-tw has fewer images than en-us (0 vs 1)",
+      "bilingual has fewer headings than en-us (4 vs 14)",
+      "bilingual has fewer images than en-us (0 vs 1)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/development-guides/layout.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "bilingual has fewer headings than en-us (4 vs 5)",
+      "bilingual has fewer images than en-us (0 vs 1)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/development-guides/mobile.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "bilingual has fewer images than en-us (0 vs 1)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/development-guides/multiplayer-experience.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "zh-tw has fewer headings than en-us (8 vs 13)",
+      "zh-tw has fewer code blocks than en-us (3 vs 7)",
+      "bilingual has fewer headings than en-us (6 vs 13)",
+      "bilingual has fewer code blocks than en-us (6 vs 7)",
+      "bilingual has fewer images than en-us (0 vs 2)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/development-guides/networking.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "zh-tw has fewer headings than en-us (5 vs 8)",
+      "zh-tw has fewer code blocks than en-us (1 vs 2)",
+      "zh-tw has fewer <Info> boxes than en-us (0 vs 1)",
+      "bilingual has fewer headings than en-us (4 vs 8)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/development-guides/user-actions.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "zh-tw has fewer headings than en-us (5 vs 14)",
+      "zh-tw has fewer code blocks than en-us (2 vs 5)",
+      "zh-tw has fewer images than en-us (1 vs 4)",
+      "bilingual has fewer headings than en-us (2 vs 14)",
+      "bilingual has fewer code blocks than en-us (2 vs 5)",
+      "bilingual has fewer images than en-us (0 vs 4)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/development-guides.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "bilingual has fewer headings than en-us (4 vs 10)"
+    ]
+  },
+  {
+    "relPath": "developers/activities/how-activities-work.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "zh-tw has fewer headings than en-us (4 vs 6)",
+      "bilingual has fewer headings than en-us (5 vs 6)",
+      "bilingual has fewer code blocks than en-us (0 vs 1)"
+    ]
+  },
+  {
+    "relPath": "developers/bots/overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/change-log.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/communities/guides/community-invites.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/components/overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/components/reference.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/components/using-modal-components.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/developer-tools/community-resources.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/developer-tools/embedded-app-sdk.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/developer-tools/game-sdk.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/core-concepts/communication-features.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/core-concepts/core-features.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/core-concepts/integration-overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/core-concepts/mobile.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/core-concepts/oauth2-scopes.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/core-concepts/platform-compatibility.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/core-concepts/release-cadence-and-support.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/core-concepts.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/branding-guidelines.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/chat-history.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/connection-points.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/consoles.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/direct-messages.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/game-friends.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/linked-channels.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/provisional-accounts.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/signing-in.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/social-settings.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/status-rich-presence.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines/unified-friends-list.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/design-guidelines.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/account-linking-from-discord.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/account-linking-on-consoles.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/account-linking-on-mobile.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/account-linking-with-discord.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/creating-a-unified-friends-list.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/linked-channels.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/managing-game-invites.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/managing-lobbies.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/managing-relationships.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/managing-voice-chat.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/publisher-level-account-linking.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/sending-direct-messages.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/setting-rich-presence.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides/using-provisional-accounts.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/development-guides.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/getting-started/partials/dylib-mac-error.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/getting-started/partials/getting-started.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/getting-started/using-c++.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/getting-started/using-unity.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/getting-started/using-unreal-engine.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/how-to/debug-log.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/how-to/handle-rate-limits.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/how-to/handle-special-characters-display-names.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/how-to/integrate-moderation.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/how-to/market-your-integration.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/how-to/use-with-discord-apis.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/how-to/voice-muting-for-blocked-players.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/how-to.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/partials/callouts/console-access.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/partials/callouts/oauth-comms-scopes.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/partials/callouts/public-client.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/partials/callouts/rate-limit.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/partials/callouts/sony.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/partials/callouts/support.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discord-social-sdk/social-sdk-reference.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discovery/best-practices.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discovery/enabling-discovery.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/discovery/overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/events/gateway-events.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/events/gateway.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/events/overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/events/webhook-events.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/game-development/how-to-add-proximity-voice-chat-to-your-game.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/game-development/how-to-create-a-community-for-your-game.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/game-development/how-to-get-your-game-seen.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/game-development/how-to-grow-your-game.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/game-development/how-to-keep-your-players-engaged.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/gateway/getting-started-with-privileged-intent-review.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/gateway/you-might-not-need-a-privileged-intent.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/guides.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/interactions/application-commands.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/interactions/overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/interactions/receiving-and-responding.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/account-linking.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/activities.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/app-monetization.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/bots.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/claim-your-game.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/community-servers.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/components.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/discovery.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/game-profiles.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/interactions.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/oauth2-and-permissions.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/rich-presence.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/server-and-channel-management.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/social-layer.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/platform/webhooks.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/policies/developer-policy.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/policies/developer-terms-of-service.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/quick-start/getting-started.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/reference.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/application-role-connection-metadata.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/application.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/audit-log.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/auto-moderation.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/channel.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/emoji.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/entitlement.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/guild-scheduled-event.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/guild-template.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/guild.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/invite.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/lobby.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/message.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/poll.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/sku.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/soundboard.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/stage-instance.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/sticker.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/subscription.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/user.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/voice.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/resources/webhook.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/rich-presence/best-practices.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/rich-presence/overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/social-commerce/overview.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/certified-devices.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/oauth2.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/opcodes-and-status-codes.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/permissions.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/rate-limits.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/rpc.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/teams.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/threads.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/topics/voice-connections.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/tutorials/configuring-app-metadata-for-linked-roles.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/tutorials/developing-a-user-installable-app.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/tutorials/hosting-on-cloudflare-workers.mdx",
+    "zhExists": false,
+    "biExists": false,
+    "issues": [
+      "Missing zh-tw translation file",
+      "Missing bilingual translation file"
+    ]
+  },
+  {
+    "relPath": "developers/tutorials/using-community-invites.mdx",
+    "zhExists": true,
+    "biExists": true,
+    "issues": [
+      "zh-tw has fewer headings than en-us (11 vs 15)",
+      "zh-tw has fewer code blocks than en-us (1.5 vs 2)",
+      "zh-tw has fewer <Info> boxes than en-us (2 vs 3)"
+    ]
+  }
+]

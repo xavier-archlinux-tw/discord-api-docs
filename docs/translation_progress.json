@@ -1,0 +1,157 @@
+{
+  "completed_pages": {
+    "developers/en-us/activities/rich-presence/using-with-the-embedded-app-sdk": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/user-actions": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/networking": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/tutorials/using-community-invites": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/guides/communities": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/monetization/implementing-app-subscriptions": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/discord-social-sdk/getting-started": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/local-development": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/monetization/managing-skus": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/building-an-activity": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/mobile": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/monetization/enabling-monetization": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/multiplayer-experience": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/guides/social-sdk": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/monetization/overview": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/guides/game-development": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/guides/activities": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/monetization/implementing-iap-for-activities": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/overview": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/monetization/managing-skus": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/guides/bots": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/assets-and-metadata": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/monetization/implementing-app-subscriptions": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/design-patterns": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/how-activities-work": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/monetization/enabling-monetization": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/components/using-message-components": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/monetization/implementing-one-time-purchases": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/monetization/implementing-one-time-purchases": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/layout": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/guides/platform": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/monetization/overview": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/intro": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/quick-start/overview-of-apps": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/growth-and-referrals": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/discord-social-sdk/design-guidelines/principles": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/development-guides/production-readiness": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    }
+  },
+  "failed_pages": {}
+}
