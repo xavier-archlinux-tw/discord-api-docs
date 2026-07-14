@@ -1,0 +1,191 @@
+---
+title: "Enabling Monetization (雙語/Bilingual)"
+description: Step-by-step guide to meet eligibility requirements and enable monetization.
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
+
+<LanguageSelector current="bilingual" path="/developers/bilingual/monetization/enabling-monetization" />
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
+
+Before you can add monetization to your app, you must ensure that your app and team meet the eligibility criteria. 
+
+## Steps to Enable Monetization
+
+1. Set up your developer team and app to be eligible for monetization
+2. Complete the eligibility criteria for monetization
+3. Set up developer team payouts to get paid
+4. Create your premium offering
+5. Implement monetization in your app
+6. Start offering your premium features
+
+Once these are complete, you can [create SKUs](/developers/monetization/managing-skus#creating-a-sku) to represent your premium offerings and [add support for your premium offering](/developers/monetization/enabling-monetization#step-5-implement-monetization-in-your-app) in your app.
+
+## Step 1. Set Up Your Developer Team and App
+
+Before monetization can be enabled, you will need:
+
+- A [team](/developers/topics/teams) in the developer portal. If you don't have one, you can [create one on the Teams page](https://discord.com/developers/teams)
+- A [verified app](https://support-dev.discord.com/hc/en-us/articles/23926564536471-How-Do-I-Get-My-App-Verified) that is _owned by that team_
+- Your app and team must be eligible for monetization. See the Eligibility Checklist below for details.
+
+## Step 2. Complete the Eligibility Checklist
+
+Before you can start creating SKUs and offering payments in your app, your app and team must be eligible for monetization. When a team owner enables monetization, they'll be taken through a series of steps and checks to ensure the following criteria are met:
+
+<Accordion title="Eligibility Checklist" icon="list" defaultOpen>
+- App must be verified
+- App belongs to a developer team
+- Team owner must be at least 18 years old
+- Team must have verified emails and 2FA set up
+- App uses slash commands, or has been approved for the privileged `Message Content` intent
+- App has a link to your Terms of Service
+  - This document is an agreement between you and users governing the use of your app.
+- App has a link to your Privacy Policy
+  - This document should clearly and accurately describe to users of your app the user data you collect and how you use and share such data with us and third parties, consistent with our Developer Terms of Service and Developer Policy.
+- App must not contain any harmful or bad language in the name, description, commands, or role connection metadata.
+- Payouts must be set up with a valid payment method
+- Agreement to the [Monetization Terms](https://support.discord.com/hc/articles/5330075836311) and [Discord Developer Policy](https://support-dev.discord.com/hc/en-us/articles/8563934450327-Discord-Developer-Policy).
+</Accordion>
+
+## Step 3. Set Up Team Payouts
+
+Let's set up Team Payouts so you can get paid! Discord processes all payouts through Stripe, so part of setting up payouts will go through Stripe's onboarding flow.
+
+- Only the owner of the team can enable payout settings for the team.
+- Once your app has made its first $100 it will become eligible for payout.
+- A review will be conducted and if everything looks good, your team will begin to receive payouts.
+
+#### If You are Based in the United States, European Union, or United Kingdom
+
+- Click on [your team](https://discord.com/developers/teams) on the Teams page.
+- Select **Payout Settings**.
+  - If you do not see **Payout Settings**, you are not the owner of the team. Only the owner of the team can enable payout settings for the team.
+- Complete the onboarding flow through Stripe.
+
+#### If You are Based Outside of the United States, European Union, or United Kingdom
+
+<Info>
+Premium Apps is not currently available outside of these regions. These features will be made available to more regions soon.
+</Info>
+
+For more information, read the [Premium Apps Payouts](https://support-dev.discord.com/hc/articles/17299902720919) Help Center article.
+
+## Step 4: Create Your Premium Offering
+
+You are now ready to start setting up your SKUs and offering premium features in your app. Check out our guide on [Managing your Premium Offerings](/developers/monetization/managing-skus#creating-a-sku) to create one-time purchases and subscriptions for your app.
+
+## Step 5: Implement Monetization in your App
+
+Now that you've set up your app for monetization, you can start adding code to support your premium features. We have guides for the following monetization strategies:
+
+<CardGroup cols={2}>
+  <Card title="Implementing App Subscriptions" href="/developers/monetization/implementing-app-subscriptions" icon={<ShopIcon />}>
+    Learn how to start and manage recurring subscriptions within your app.
+  </Card>
+  <Card title="Implementing One-Time Purchases" href="/developers/monetization/implementing-one-time-purchases" icon={<ShopIcon />}>
+    Learn how to implement one-time purchases in your app.
+  </Card>
+</CardGroup>
+
+## Step 6: Start Offering Your Premium Features
+Congratulations! You've successfully set up your app for monetization. Now you can start earning money from your app and providing premium features to your users.
+
+You can now [link to your Store](/developers/monetization/managing-skus#linking-to-your-store) page, [link to a specific SKU](/developers/monetization/managing-skus#linking-to-a-specific-sku), or [include a premium styled button in Message Components](/developers/monetization/managing-skus#responding-with-a-premium-button) to allow your users to make purchases.
+
+  </div>
+  <div>
+    <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
+
+在您為應用程式新增營利功能之前，必須確保您的應用程式和開發團隊符合資格標準。
+
+## 啟用營利功能的步驟 (Steps to Enable Monetization)
+
+1. 設定您的開發團隊與應用程式以符合營利資格
+2. 完成營利功能的資格審查清單
+3. 設定開發團隊的款項支付以獲得收益
+4. 建立您的付費進階商品
+5. 在您的應用程式中實作營利功能
+6. 開始提供您的付費功能
+
+完成這些步驟後，您便可以 [建立 SKU](/developers/zh-tw/monetization/managing-skus#creating-a-sku) 來代表您的付費商品，並在應用程式中 [新增對付費商品的支援](/developers/zh-tw/monetization/enabling-monetization#step-5-implement-monetization-in-your-app)。
+
+## 步驟 1. 設定您的開發團隊與應用程式 (Step 1. Set Up Your Developer Team and App)
+
+在啟用營利功能之前，您需要：
+
+- 在開發者入口網站中擁有一個 [團隊](/developers/zh-tw/topics/teams)。如果您還沒有團隊，可以 [在團隊頁面上建立一個](https://discord.com/developers/teams)。
+- 一個由**該團隊所擁有**且 [已驗證的應用程式 (verified app)](https://support-dev.discord.com/hc/en-us/articles/23926564536471-How-Do-I-Get-My-App-Verified)。
+- 您的應用程式與團隊必須符合營利資格。詳情請參閱下方的資格審查清單。
+
+## 步驟 2. 完成資格審查清單 (Step 2. Complete the Eligibility Checklist)
+
+在您開始建立 SKU 並在應用程式中提供付費服務之前，您的應用程式和團隊必須符合營利資格。當團隊擁有者啟用營利功能時，他們將被引導完成一系列步驟和檢查，以確保符合以下標準：
+
+<Accordion title="資格審查清單 (Eligibility Checklist)" icon="list" defaultOpen>
+- 應用程式必須已驗證。
+- 應用程式隸屬於某個開發團隊。
+- 團隊擁有者必須年滿 18 歲。
+- 團隊成員必須已驗證電子郵件並設定雙重驗證 (2FA)。
+- 應用程式使用斜線指令，或已獲准使用特權 `Message Content` 意圖。
+- 應用程式包含服務條款 (Terms of Service) 的連結：
+  - 此文件是您與使用者之間關於使用您應用程式的協議。
+- 應用程式包含隱私權政策 (Privacy Policy) 的連結：
+  - 此文件應清楚且準確地向您的應用程式使用者說明您所收集的使用者資料，以及您如何使用並與我們及第三方共享這些資料，且必須符合我們的《開發者服務條款》和《開發者政策》。
+- 應用程式的名稱、說明、指令或角色連接中繼資料中，不得包含任何有害或不良的字詞。
+- 必須設定有效的款項支付方式。
+- 同意 [營利條款](https://support.discord.com/hc/articles/5330075836311) 與 [Discord 開發者政策 (Discord Developer Policy)](https://support-dev.discord.com/hc/en-us/articles/8563934450327-Discord-Developer-Policy)。
+</Accordion>
+
+## 步驟 3. 設定團隊收款帳戶 (Step 3. Set Up Team Payouts)
+
+讓我們設定團隊收款帳戶，以便您能獲得收益！Discord 透過 Stripe 處理所有款項支付，因此設定收款的部分流程將會引導至 Stripe 的註冊流程 (onboarding flow)。
+
+- Only the owner of the team can enable payout settings for the team.
+- Once your app has made its first $100 it will become eligible for payout.
+- A review will be conducted and if everything looks good, your team will begin to receive payouts.
+
+#### 如果您的團隊基於美國、歐盟或英國 (If You are Based in the United States, European Union, or United Kingdom)
+
+- 在團隊頁面上點擊 [您的團隊](https://discord.com/developers/teams)。
+- 選擇 **款項支付設定 (Payout Settings)**。
+  - 如果您沒有看到 **款項支付設定 (Payout Settings)**，代表您不是該團隊的擁有者。只有團隊擁有者才能為團隊進行款項支付設定。
+- 透過 Stripe 完成註冊流程。
+
+#### 如果您的團隊基於美國、歐盟或英國以外的地區 (If You are Based Outside of the United States, European Union, or United Kingdom)
+
+<Info>
+付費版應用程式 (Premium Apps) 目前在這些地區以外暫不提供。這些功能將會在近期開放給更多地區。
+</Info>
+
+如需更多資訊，請參閱說明中心的 [付費版應用程式款項支付 (Premium Apps Payouts)](https://support-dev.discord.com/hc/articles/17299902720919) 說明文章。
+
+## 步驟 4: 建立您的付費進階商品 (Step 4: Create Your Premium Offering)
+
+您現在可以開始在應用程式中設定 SKU 並提供付費功能。請參閱我們的 [管理您的付費商品 (Managing your Premium Offerings)](/developers/zh-tw/monetization/managing-skus#creating-a-sku) 指南，為您的應用程式建立單次性購買與訂閱項目。
+
+## 步驟 5: 在您的應用程式中實作營利功能 (Step 5: Implement Monetization in your App)
+
+設定好應用程式的營利功能後，您可以開始編寫程式碼以支援您的付費功能。我們針對以下營利策略提供了專門的指南：
+
+<CardGroup cols={2}>
+  <Card title="實作應用程式訂閱" href="/developers/zh-tw/monetization/implementing-app-subscriptions" icon={<ShopIcon />}>
+    了解如何在您的應用程式中啟動並管理定期循環的訂閱。
+  </Card>
+  <Card title="實作單次性購買" href="/developers/zh-tw/monetization/implementing-one-time-purchases" icon={<ShopIcon />}>
+    了解如何在您的應用程式中實作單次性購買功能。
+  </Card>
+</CardGroup>
+
+## 步驟 6: 開始提供您的付費功能 (Step 6: Start Offering Your Premium Features)
+
+恭喜您！您已成功設定了應用程式的營利功能。現在您可以開始從應用程式中賺取收益，並為使用者提供付費進階功能。
+
+您現在可以 [連結到您的商店](/developers/zh-tw/monetization/managing-skus#linking-to-your-store) 頁面、 [連結到特定的 SKU](/developers/zh-tw/monetization/managing-skus#linking-to-a-specific-sku)，或者 [在訊息元件中加入付費風格的按鈕](/developers/zh-tw/monetization/managing-skus#responding-with-a-premium-button) 來讓您的使用者進行購買。
+
+  </div>
+</div>

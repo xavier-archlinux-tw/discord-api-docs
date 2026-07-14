@@ -1,0 +1,185 @@
+---
+title: 設定使用者的豐富狀態 (Rich Presence)
+sidebarTitle: 設定豐富狀態
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/rich-presence/using-with-the-embedded-app-sdk" />
+
+開發 [互動活動 (Activity)](/developers/zh-tw/activities/overview) 時，[嵌入式 App SDK (Embedded App SDK)](/developers/zh-tw/developer-tools/embedded-app-sdk) 可讓您輕鬆整合豐富狀態 (Rich Presence)，以展示使用者在您遊戲或社交體驗中的最新動態。
+
+豐富狀態資料可被視為您互動活動的延伸——只需為其提升「一點點」的細節，就能讓正在遊玩您活動的使用者（以及可能想要加入同樂的朋友）感受到更有趣、更切身的遊戲體驗。本指南為您概述了將豐富狀態與您現有互動活動整合所需的平台知識與技術知識。
+
+<Info>
+不確定是否應使用嵌入式 App SDK 進行開發？請閱讀 [選擇 SDK](/developers/zh-tw/rich-presence/overview#choosing-an-sdk) 以了解將豐富狀態與應用程式整合時的各項選擇。
+</Info>
+
+本指南的後續部分均假設您已經開發了一個可以啟動互動活動的 [應用程式](/developers/zh-tw/quick-start/overview-of-apps)。如果您尚未進行到此步驟，您應該在繼續之前，遵循 [建置您的第一個互動活動](/developers/zh-tw/activities/building-an-activity) 指南進行。
+
+---
+
+## 理解豐富狀態資料 (Understanding Rich Presence Data)
+
+### 預設豐富狀態資料 (Default Rich Presence Data)
+
+預設情況下，當使用者連線到您的互動活動時，應用程式的圖示將會顯示在他們的個人檔案上。如果檢視該個人檔案的使用者擁有加入該活動的權限，頁面上也會顯示「要求加入 (Ask to Join)」按鈕。
+
+![互動活動的預設豐富狀態資料範例](/images/rich-presence/default-activities.png)
+
+雖然這已經可以使用，但它的功能相當受限，無法提供使用者在活動中實際在「做些什麼」的背景資訊。在接下來的章節中，我們將會探討更豐富、更具互動性的狀態呈現方式。
+
+### 自訂豐富狀態資料 (Custom Rich Presence Data)
+
+現在，讓我們來看看當使用者加入您的互動活動時，自訂狀態資料的呈現外觀。這些欄位的 [屬性類型](/developers/zh-tw/rich-presence/using-with-the-embedded-app-sdk#setactivity-fields) 與 [設定範例](/developers/zh-tw/rich-presence/using-with-the-embedded-app-sdk#setactivity-example) 將在下方章節中介紹，目前讓我們先大致了解其組成要素：
+
+![豐富狀態資料在 Discord 互動活動個人檔案中顯示的位置](/images/rich-presence/annotated-data-activities.png)
+
+關於上圖，有幾點需要注意：
+1. `large_image` 和 `small_image` 都位於 `assets` 物件中，您可以在下方的 [表格](/developers/zh-tw/rich-presence/using-with-the-embedded-app-sdk#activity-partial-object) 中檢視。這些項目以物件的 key 來標示，以便更清楚說明它們在 Discord 個人檔案中的顯示方式。
+2. 設定狀態時，您無法設定「應用程式名稱 (App Name)」——它一律顯示您在 [應用程式設定](https://discord.com/developers/applications) 中所設定的名稱。
+3. `(1 of max_party)` 狀態勳章只會在提供了 party (隊伍) 欄位時渲染。否則，該狀態將會以一行文字的形式顯示在詳細資訊下方。
+
+---
+
+## 更新狀態 (Updating Presence)
+
+使用嵌入式 App SDK 更新豐富狀態資料時，您唯一需要使用的指令是 **[`setActivity()`](/developers/zh-tw/developer-tools/embedded-app-sdk#setactivity)**。在底層，`setActivity()` 會呼叫 RPC 中的 [`SET_ACTIVITY` 指令](/developers/zh-tw/topics/rpc#setactivity)，並帶入您在建置活動時可用的功能與欄位。
+
+<Accordion title="為什麼我到處都看到「活動 (activity)」這個字？" description="關於這些不同活動究竟是什麼的簡短平台歷史課">
+當您開始探索豐富狀態文件時，您會非常頻繁地看到「activity」這個詞。文件中所提到的「activities」（例如 [RPC 文件](/developers/zh-tw/topics/rpc#setactivity)）與您使用嵌入式 App SDK 建置的「互動活動 (Activities)」是沒有關係的。
+
+當豐富狀態最初推出時，包含狀態資料的底層物件就被稱為「activity」（遠在嵌入式 App SDK 問世之前），這也是 RPC 中的 [`SET_ACTIVITY` 指令](/developers/zh-tw/topics/rpc#setactivity) 所指的對象。這也就是為什麼嵌入式 App SDK 包裝 RPC 指令的方法被命名為 `setActivity()`，但實際上卻與設定您正在建置的「互動活動 (Activity)」狀態並無關聯。
+
+我們知道這很令人困惑 ¯\\\_(⊙︿⊙)\_/¯ — 這個命名在當時是合乎邏輯的，因為它確實是指使用者在第三方遊戲或服務中的動態，但現在感覺有點像「全面啟動 (activity-ception)」。理解這裡的細微差異並非極度重要，這也是為什麼我們編寫了這篇指南。但正如人們所說……知道得愈多（至少大致上知道）愈好。
+</Accordion>
+
+### rpc.activities.write 授權範圍
+
+若要為使用者顯示自訂的豐富狀態資料，您的應用程式需要獲得該使用者對 [`rpc.activities.write` 授權範圍](/developers/zh-tw/topics/oauth2#shared-resources-oauth2-scopes) 的授權。
+
+若要請求此範圍，您的 [`authorize()`](/developers/zh-tw/developer-tools/embedded-app-sdk#authorize) 呼叫大概會像這樣：
+
+<Accordion title="使用 authorize() 請求 rpc.activities.write 的範例" icon="code">
+
+<Info>
+以下範例僅著重於呼叫 `authorize()`。請遵循 [建置互動活動指南](/developers/zh-tw/activities/building-an-activity) 以了解更多關於安裝與實例化嵌入式 App SDK 等詳細資訊。
+</Info>
+
+```js
+// 向 Discord 用戶端進行授權
+const { code } = await discordSdk.commands.authorize({
+  client_id: import.meta.env.VITE_DISCORD_CLIENT_ID,
+  response_type: "code",
+  state: "",
+  prompt: "none",
+  scope: [
+    "identify",
+    "rpc.activities.write"
+  ],
+});
+```
+</Accordion>
+
+### setActivity 欄位 (setActivity Fields)
+
+呼叫 [`setActivity()`](/developers/zh-tw/developer-tools/embedded-app-sdk#setactivity) 時，您需要傳入一個部分 [activity 物件 (activity object)](/developers/zh-tw/events/gateway-events#activity-object-activity-structure)。
+
+下表列出了 activity 部分物件中許多可用的欄位。有些沒有在互動活動中產生效果的欄位則予以省略。
+
+#### Activity 部分物件 (Activity partial object)
+
+<Info>
+部分物件上的所有欄位均為選填且可為 null。
+</Info>
+
+| 欄位 | 類型 | 說明 |
+| :--- | :--- | :--- |
+| type | integer | [Activity 類型](/developers/zh-tw/events/gateway-events#activity-object-activity-types)，用以決定豐富狀態資料的標頭文字 |
+| state | string | 使用者目前的隊伍狀態 (Party status) |
+| details | string | 玩家目前在您的互動活動中在做些什麼 |
+| timestamps | [timestamps](/developers/zh-tw/events/gateway-events#activity-object-activity-timestamps) 物件 | Unix 時間戳記，用以顯示開始和/或結束時間 |
+| assets | [assets](/developers/zh-tw/events/gateway-events#activity-object-activity-assets) 物件 | 豐富狀態資料所使用的圖片（及其懸停提示文字） |
+| party | [party](/developers/zh-tw/events/gateway-events#activity-object-activity-party) 物件 | 玩家當前隊伍的相關資訊 |
+
+### setActivity 範例 (setActivity Example)
+
+現在，讓我們來看一個更真實的例子。請檢視下方互動活動的豐富狀態資料：
+
+![虛構遊戲的豐富狀態資料範例](/images/rich-presence/activities-example.png)
+
+要建立這種類型的豐富狀態，呼叫 `setActivity()` 的程式碼會像這樣：
+
+<Accordion title="呼叫 setActivity() 指令的範例" icon="code" defaultOpen>
+
+<Info>
+以下範例僅著重於使用 `setActivity()`。請遵循 [建置互動活動指南](/developers/zh-tw/activities/building-an-activity) 以了解更多關於實例化嵌入式 App SDK 與驗證使用者身分等詳細資訊。
+</Info>
+```js
+await discordSdk.commands.setActivity({
+  activity: {
+    type: 0,
+    details: '與隊伍一起旅行中',
+    state: '在主機房',
+    assets: {
+      large_image: 'main-game-image',
+      large_text: '團隊中',
+      small_image: 'map-mainframe',
+      small_text: '在主機房'
+    },
+    timestamps: {
+      start: 1723137832
+    },
+    party: {
+      size: [2, 4]
+    }
+  }
+});
+```
+</Accordion>
+
+---
+
+## 上傳自訂美術資源 (Uploading Custom Assets)
+
+要為豐富狀態上傳自訂美術資源，請前往您的 [應用程式設定](https://discord.com/developers/applications) 並點選左側側邊欄的 **Rich Presence**。在 [**Art Assets** 頁面](https://discord.com/developers/applications/select/rich-presence/assets)中，您最多可以為應用程式上傳 300 個自訂資源。建議將所有豐富狀態資源設定為 **1024 x 1024**。
+
+上傳資源時，資源的 key 會自動轉換為小寫。呼叫 [`setActivity()`](/developers/zh-tw/developer-tools/embedded-app-sdk#setactivity) 時，請在 `assets` 物件中參考這些小寫的資源 key——例如，上傳為 `Main-Game-Image` 的資源在程式碼中應以 `main-game-image` 參考。
+
+<Info>
+關於選擇資源的技巧，請參閱 [豐富狀態最佳實踐指南](/developers/zh-tw/rich-presence/best-practices#have-interesting-expressive-art)。
+</Info>
+
+---
+
+## 使用外部自訂美術資源 (Using External Custom Assets)
+
+通常在建置互動活動時，您需要注意代理伺服器以及 [如何使用外部資源](/developers/zh-tw/activities/development-guides/networking#using-external-resources)。然而，幸運的是，在豐富狀態這類功能的欄位中填入的圖片 URL，並不需要進行任何額外的設定。
+
+如果您有超過 300 個自訂美術資源，或者想要使用儲存在其他地方的圖片，您可以在 `assets` 物件中的 `large_image` 或 `small_image` 指定外部的 URL。
+
+<Accordion title="使用外部資源設定豐富狀態的範例" icon="code" defaultOpen>
+
+<Info>
+以下範例僅著重於使用 `setActivity()`。請遵循 [建置互動活動指南](/developers/zh-tw/activities/building-an-activity) 以了解更多關於實例化嵌入式 App SDK 與驗證使用者身分等詳細資訊。
+</Info>
+```js
+await discordSdk.commands.setActivity({
+  activity: {
+    type: 2,
+    state: 'Broken Hearts and Code (club edit)',
+    details: 'DJ Wump',
+    assets: {
+      large_image: 'https://example.com/album-covers/dj-wump/broken-code-and-hearts-club-edit.jpg',
+      large_text: '正在聆聽曲目',
+    }
+  }
+});
+```
+</Accordion>
+
+<Note>
+上傳的資源（透過開發者入口網站新增）僅支援 PNG、JPEG 與 WebP——上傳的資源不支援動態圖片。
+
+與上傳的資源不同，外部 URL 還支援 GIF、動態 WebP 與 AVIF。詳情請參閱 [Activity Asset Image](/developers/zh-tw/events/gateway-events#activity-object-activity-asset-image)。
+</Note>

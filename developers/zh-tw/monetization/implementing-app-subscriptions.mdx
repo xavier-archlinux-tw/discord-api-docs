@@ -1,0 +1,227 @@
+---
+title: 實作應用程式訂閱
+description: 了解如何實作重複扣款的使用者訂閱與伺服器訂閱，以提供付費進階功能。
+---
+
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/monetization/implementing-app-subscriptions" />
+
+透過循環扣款的使用者訂閱或伺服器訂閱，為您的進階應用程式功能向使用者收費。
+
+- 在您為應用程式新增訂閱之前，必須先為應用程式 [啟用營利功能 (Enable Monetization)](/developers/zh-tw/monetization/enabling-monetization)。
+- 確定您的應用程式和團隊符合資格後，您將可以設定一個 [SKU (品項)](/developers/zh-tw/resources/sku) 來代表您的訂閱。
+
+---
+
+## 訂閱類型 (Types of Subscriptions)
+
+建立訂閱時，您需要選擇使用者訂閱或伺服器訂閱：
+
+- **使用者訂閱 (User Subscriptions)**：在安裝了您應用程式的任何伺服器中，為單個使用者提供付費進階功能。
+- **伺服器訂閱 (Guild Subscriptions)**：為特定伺服器內的所有成員提供付費進階福利。
+
+---
+
+## 應用程式訂閱如何運作 (How App Subscriptions Work)
+
+- 當使用者購買您的訂閱 SKU 時，Discord 會為該使用者（或伺服器）與該特定訂閱 [SKU](/developers/zh-tw/resources/sku) 建立一筆 [權利 (Entitlement)](/developers/zh-tw/resources/entitlement)。
+- 您將透過網關 (Gateway) 接收到 `ENTITLEMENT_CREATE` 事件。
+- 此權利可透過 `LIST Entitlements` API 端點取得。
+- 此權利會包含在由該被授權使用者（或伺服器成員，如果是伺服器訂閱）發起的 `Interaction Payloads (互動載荷)` 中。
+- 此訂閱可透過 `LIST Subscriptions` API 端點取得。
+- 此權利會無限期授予，直到使用者決定取消其訂閱。`ends_at` 將會為 null。
+- 當使用者取消其訂閱時，您的應用程式不會收到任何權利事件。
+- 當訂閱期結束時，該訂閱權利即宣告終止。開發者將會收到一個帶有 `ends_at` 時間戳記的 `ENTITLEMENT_UPDATE` 事件，指明訂閱終止的時間。
+
+### 使用訂閱事件追蹤生命週期 (Using Subscription Events for the Subscription Lifecycle)
+
+由於權利是無限期授予的，且在續訂或取消時不會更新，因此您可以使用訂閱事件來追蹤訂閱的生命週期。
+
+<Info>
+這不是事件發生的完整清單。您應該使用權利的存在與否來判斷使用者是否擁有存取付費功能的權限。Subscription API 和相關事件旨在用於報告和生命週期管理，**不應作為判斷使用者是否擁有存取權限的唯一依據 (source of truth)**。
+</Info>
+
+| 事件名稱 | 訂閱行為 | 更新的欄位 |
+| :--- | :--- | :--- |
+| `SUBSCRIPTION_CREATE` | 訂閱已建立 | 如果權利已授予，`status` 為 `0 (active)`；如果尚未授予權利，`status` 為 `1 (inactive)`。 |
+| `SUBSCRIPTION_UPDATE` | 訂閱被授予權利 | `status` 為 `0 (active)`。 |
+| `SUBSCRIPTION_UPDATE` | 訂閱已續訂 | `current_period_start`、`current_period_end` 時間戳記更新。 |
+| `SUBSCRIPTION_UPDATE` | 訂閱已升級或降級 | `sku_ids`、`entitlement_ids`、`renewal_sku_ids` 可能會更新。 |
+| `SUBSCRIPTION_UPDATE` | 訂閱已取消 | `canceled_at` 時間戳記更新，`status` 為 `2 (ending)`。 |
+| `SUBSCRIPTION_UPDATE` | 訂閱已結束 | `status` 為 `1 (inactive)`，此事件是非同步處理的，不會立刻發生。 |
+| `SUBSCRIPTION_UPDATE` | 使用者恢復/取消已取消的訂閱 | `status` 為 `0 (active)`。 |
+
+---
+
+## 處理權利 (Working with Entitlements)
+
+當使用者購買訂閱時，系統會建立一筆權利。[權利 (Entitlements)](/developers/zh-tw/resources/entitlement) 代表使用者存取您應用程式付費功能的權限。
+
+根據您應用程式的功能，您可以結合使用 [網關事件 (Gateway events)](/developers/zh-tw/events/gateway-events#entitlements)、[權利 HTTP API](/developers/zh-tw/resources/entitlement) 和 [互動載荷 (interaction payloads)](/developers/zh-tw/interactions/receiving-and-responding)，來追蹤使用者與伺服器的權利，並向訂閱應用程式的使用者授予對應的功能。
+
+### 透過網關事件存取權利 (Accessing Entitlements with Gateway Events)
+
+當使用者在您的應用程式中進行購買時，Discord 會發送 [權利網關事件 (Entitlement Gateway events)](/developers/zh-tw/events/gateway-events#entitlements)。
+
+對於訂閱 SKU，您會收到以下權利事件：
+
+| 事件 | 說明 |
+| :--- | :--- |
+| `ENTITLEMENT_CREATE` | 當使用者被授予您應用程式訂閱 SKU 的權利時。 |
+| `ENTITLEMENT_UPDATE` | 當某個訂閱 SKU 的權利結束時。 |
+| `ENTITLEMENT_DELETE` | 當 Discord 退款該訂閱、移除權利，或者開發者 [刪除測試權利](/developers/zh-tw/resources/entitlement#delete-test-entitlement) 時。 |
+
+### 透過 HTTP API 存取權利 (Accessing Entitlements with the HTTP API)
+
+對於需要背景處理或不完全依賴互動的應用程式，追蹤權利至關重要。您可以利用 [列出權利 (List Entitlements)](/developers/zh-tw/resources/entitlement#list-entitlements) 端點來列出有效和已過期的權利。您的應用程式可以使用 `?user_id=XYZ` 或 `?guild_id=XYZ` 查詢參數來篩選特定使用者或伺服器的權利。
+
+例如，您可以在資料庫中追蹤權利，並在執行排程工作 (cron job) 或其他任務之前，檢查使用者是否仍具有存取特定 SKU 的權限。
+
+### 在互動載荷上存取權利 (Accessing Entitlements on Interaction Payloads)
+
+當使用者與您的應用程式互動時，在 `Interaction Payload (互動載荷)` 中也可以取得權利。您可以在 [接收與回應互動](/developers/zh-tw/interactions/receiving-and-responding) 時，在 `Interaction Payload` 的 `entitlements` 欄位中找到該權利。您可以使用此欄位來判斷該使用者或伺服器是否已訂閱您的應用程式。
+
+### 透過嵌入式 App SDK 存取權利 (Accessing Entitlements with the Embedded App SDK)
+
+使用 [嵌入式 App SDK (Embedded App SDK)](/developers/zh-tw/developer-tools/embedded-app-sdk) 建置 [互動活動 (Activity)](/developers/zh-tw/activities/overview) 時，您也可以 [存取使用者的權利](/developers/zh-tw/developer-tools/embedded-app-sdk#getentitlements)。請參閱 [為互動活動實作應用程式內購買 (Implementing In-App Purchases for Activities)](/developers/zh-tw/monetization/implementing-iap-for-activities) 指南以了解更多資訊。
+
+---
+
+## 提示使用者進行訂閱 (Prompting Users to Subscribe)
+
+### 使用付費按鈕進行回覆 (Responding with a Premium Button)
+
+當使用者嘗試在沒有訂閱的情況下使用付費功能時，[使用付費按鈕進行回覆](/developers/zh-tw/monetization/managing-skus#responding-with-a-premium-button) 可讓您提示使用者訂閱您的應用程式。
+
+您可以藉由發送一條訊息來實現此功能，該訊息包含一個帶有 [付費風格 (premium style)](/developers/zh-tw/components/reference#button-button-styles) 的 [按鈕](/developers/zh-tw/components/reference#button) 和一個 `sku_id`，允許使用者升級到您的付費商品。
+
+### 從互動活動中啟動購買流程 (Starting a Purchase from an Activity)
+
+如果您使用 [嵌入式 App SDK](/developers/zh-tw/developer-tools/embedded-app-sdk) 來建置 [互動活動 (Activity)](/developers/zh-tw/activities/overview)，您也可以使用該 SDK 來為特定的 SKU 啟動購買流程。請參閱 [為互動活動實作應用程式內購買 (Implementing In-App Purchases for Activities)](/developers/zh-tw/monetization/implementing-iap-for-activities) 指南以了解更多資訊。
+
+### 從商店頁面購買 (Purchasing from the Store Page)
+
+使用者可以從您應用程式的 [商店 (Store)](/developers/zh-tw/monetization/managing-skus#viewing-your-store-page) 頁面啟動、升級或降級他們的訂閱。您可以使用我們的 [應用程式目錄商店 URL 格式](/developers/zh-tw/monetization/managing-skus#linking-to-your-store) 直接連結至您的商店頁面。
+
+---
+
+## 支援訂閱 (Supporting Subscriptions)
+
+若要在您的應用程式中支援訂閱，您需要 [建立一個訂閱 SKU](/developers/zh-tw/monetization/managing-skus#creating-a-sku) 並處理以下情境：
+
+### 啟動新訂閱 (Starting a new subscription)
+
+當使用者訂閱新的訂閱服務時，您將會收到以下事件：
+
+| 事件 | 事件觸發條件 |
+| :--- | :--- |
+| `SUBSCRIPTION_CREATE` | 當訂閱初始建立時。如果權利已授予，`status` 為 `0 (active)`；如果尚未授予，`status` 為 `1 (inactive)`。 |
+| `ENTITLEMENT_CREATE` | 當使用者被授予新訂閱的權利時。 |
+| `SUBSCRIPTION_UPDATE` | 當訂閱以 `entitlement_ids`、`renewal_sku_ids` 和 `status` (`0 (active)`) 進行更新時。 |
+
+### 取消現有訂閱 (Cancelling an existing subscription)
+
+使用者可以隨時從他們的訂閱設定中取消訂閱。
+
+當使用者取消訂閱時，您將會收到以下事件：
+
+| 事件 | 事件觸發條件 |
+| :--- | :--- |
+| `SUBSCRIPTION_UPDATE` | 當訂閱更新為即將結束且 `status` 為 `2 (ending)`，且 `canceled_at` 設定為使用者取消訂閱時的時間戳記。 |
+
+使用者的訂閱與權利在達到訂閱的 `current_period_end` 之前依然有效。
+
+如果訂閱在 `current_period_end` 之前沒有恢復，它將會結束，您將會收到以下事件：
+
+| 事件 | 事件觸發條件 |
+| :--- | :--- |
+| `ENTITLEMENT_UPDATE` | 當當前權利結束時。`ends_at` 將會更新為時間戳記。 |
+| `SUBSCRIPTION_UPDATE` | 當訂閱更新且 `status` 為 `1 (inactive)` 時。 |
+
+### 恢復已取消的訂閱 (Resuming a cancelled subscription)
+
+使用者可以在達到 `current_period_end` 之前的任何時間，於其訂閱設定中恢復訂閱。
+
+當使用者恢復訂閱時，您將會收到以下事件：
+
+| 事件 | 事件觸發條件 |
+| :--- | :--- |
+| `SUBSCRIPTION_UPDATE` | 當訂閱設定為繼續且 `status` 為 `0 (active)`，且 `canceled_at` 設定為 null 時。 |
+
+---
+
+## 支援升級與降級 (Supporting Upgrades and Downgrades)
+
+如果您在應用程式中提供多個訂閱分級，使用者可以隨時從您的 [商店頁面](/developers/zh-tw/monetization/managing-skus#viewing-your-store-page) 或其應用程式訂閱設定中升級或降級他們的訂閱。
+
+若要建立多個訂閱分級，您需要 [建立多個訂閱 SKU](/developers/zh-tw/monetization/managing-skus#creating-a-sku)，並在您的應用程式中支援以下情境：
+
+### 升級現有訂閱 (Upgrading an existing subscription)
+
+如果使用者處於較低分級的訂閱，並升級到價格相同或更高的訂閱分級，系統會向使用者收取這兩種訂閱之間的差價，且訂閱週期會在升級時重置。
+
+當訂閱升級時，較低分級的當前權利將立即結束，您將會收到以下事件：
+
+| 事件 | 事件觸發條件 |
+| :--- | :--- |
+| `ENTITLEMENT_UPDATE` | 當當前權利結束時。`ends_at` 將會更新為時間戳記。 |
+| `ENTITLEMENT_CREATE` | 當為升級的訂閱 SKU 建立新的權利時。 |
+| `SUBSCRIPTION_UPDATE` | 當訂閱以新的 `entitlement_ids`、`sku_ids`、`current_period_start`、`current_period_end` 進行更新時。 |
+
+### 降級現有訂閱 (Downgrading an existing subscription)
+
+如果使用者處於較高分級的訂閱，並降級到較低分級的訂閱，由於價格低於已付費的金額，因此使用者不會立即被收費。
+
+使用者已經支付了他們目前的方案直到 `subscription.current_period_end` 為止，因此其目前的方案在此之前依然有效，您將會收到以下事件：
+
+| 事件 | 事件觸發條件 |
+| :--- | :--- |
+| `SUBSCRIPTION_UPDATE` | 當訂閱更新以在 `subscription.renewal_sku_ids` 中反映續訂的 SKU ID 時。 |
+
+一旦使用者的當前訂閱在 `subscription.current_period_end` 到期，您將會收到以下事件：
+
+| 事件 | 事件觸發條件 |
+| :--- | :--- |
+| `ENTITLEMENT_UPDATE` | 當當前權利結束時。`ends_at` 將會更新為時間戳記。 |
+| `ENTITLEMENT_CREATE` | 當為降級的訂閱 SKU 建立新的權利時。 |
+| `SUBSCRIPTION_UPDATE` | 當訂閱以新的 `entitlement_ids`、`sku_ids`、`current_period_start`、`current_period_end` 進行更新時。 |
+
+---
+
+## 使用 Subscription API (Using the Subscription API)
+
+<Info>
+實作營利功能時，[權利 (Entitlements)](/developers/zh-tw/resources/entitlement) 應被視為使用者存取特定 SKU 的**唯一真實依據 (source of truth)**。Subscription API 旨在用於在使用者與您的應用程式互動流程之外發生的報告與生命週期管理。
+</Info>
+
+您可以使用 [Subscription API](/developers/zh-tw/resources/subscription) 來檢查您的應用程式訂閱狀態。此 API 允許您按使用者列出訂閱以用於報告目的，並在不直接存取權利的情況下檢查訂閱的狀態。
+
+- [列出 SKU 訂閱 (List SKU Subscriptions)](/developers/zh-tw/resources/subscription#list-sku-subscriptions)：列出您應用程式中特定 SKU 的所有訂閱。
+- [取得 SKU 訂閱 (Get SKU Subscription)](/developers/zh-tw/resources/subscription#get-sku-subscription)：取得您應用程式中的特定訂閱。
+- [訂閱網關事件 (Subscription Gateway events)](/developers/zh-tw/events/gateway-events#subscriptions)：當訂閱建立、更新以及極少數被刪除時，Discord 會發送網關事件。
+
+---
+
+## 測試您的應用程式訂閱實作 (Testing Your App Subscription Implementation)
+
+### 使用測試權利 (Using Test Entitlements)
+
+您可以藉由 [建立](/developers/zh-tw/resources/entitlement#create-test-entitlement) 和 [刪除](/developers/zh-tw/resources/entitlement#delete-test-entitlement) 測試權利來測試您的實作。這些權利將允許您以使用者或伺服器的身份，在已訂閱與未訂閱的狀態下測試您的付費商品。
+
+此方法不會讓您測試 Discord 中的完整付款流程，但能讓您測試當使用者訂閱或未訂閱時應用程式的行為。如果您想要檢視完整的付款流程，請參閱 [使用實體權利 (Using Live Entitlements)](/developers/zh-tw/monetization/implementing-app-subscriptions#using-live-entitlements)。
+
+<Info>
+測試權利沒有 `starts_at` 或 `ends_at` 欄位，因為它們在被刪除之前一直有效。
+</Info>
+
+### 使用實體權利 (Using Live Entitlements)
+
+如果您想要測試應用程式的完整付款流程，您可以藉由與您的商店頁面或 [付費風格按鈕](/developers/zh-tw/monetization/implementing-app-subscriptions#prompting-users-to-subscribe) 進行互動來測試。與您應用程式關聯的任何團隊成員都會自動看到訂閱價格的 100% 折扣，從而允許您在不使用真實付款方式的情況下進行購買。
+
+結帳後，您將會擁有一筆實體訂閱。此訂閱將會自動續訂直到取消為止，並可用於測試應用程式中的訂閱續訂。如果您取消此訂閱，在訂閱計費週期結束前它仍將是一個有效的權利，由 [訂閱 (Subscription)](/developers/zh-tw/resources/subscription#subscription-object) 對象上的 `current_period_end` 欄位代表。
+
+<Info>
+您只能刪除使用 [建立權利 (create entitlement)](/developers/zh-tw/resources/entitlement#create-test-entitlement) 端點建立的權利。如果您需要在開發過程中切換對付費功能的存取權限，最好使用測試權利。
+</Info>
