@@ -123,16 +123,13 @@ export const LanguageSelector = ({ current, path }) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    // 如果當前是英文版，不執行後續的連結改寫與 Pagination 插入邏輯
-    if (current === 'en') {
-      return () => {
-        const el = document.getElementById('language-selector-container');
-        if (el) el.remove();
-        window.removeEventListener('scroll', handleScroll);
-      };
+    let langSegment = 'en-us';
+    if (current === 'zh-tw') {
+      langSegment = 'zh-tw';
+    } else if (current === 'bilingual') {
+      langSegment = 'bilingual';
     }
 
-    const langSegment = current === 'zh-tw' ? 'zh-tw' : 'bilingual';
     const activeColor = '#5865f2';
 
     // 全域 Capture 階段點擊攔截，完美防禦 React/Next.js VDOM 重新渲染覆蓋連結事件問題
@@ -143,14 +140,30 @@ export const LanguageSelector = ({ current, path }) => {
 
       const originalHref = link.getAttribute('data-original-href');
       const currentHref = link.getAttribute('href') || '';
+      
+      const isEnRoute = currentHref.startsWith('/developers/en-us/');
+      const isTabRoute = link.classList.contains('nav-tabs-item') && currentHref.includes('/en-us/');
+      const isRelativeWithoutLocale = currentHref.startsWith('/developers/') && 
+                                      !currentHref.startsWith('/developers/en-us/') && 
+                                      !currentHref.startsWith('/developers/zh-tw/') && 
+                                      !currentHref.startsWith('/developers/bilingual/');
 
-      if (originalHref || currentHref.startsWith('/developers/en-us/') || (link.classList.contains('nav-tabs-item') && currentHref.includes('/en-us/'))) {
+      if (originalHref || isEnRoute || isTabRoute || isRelativeWithoutLocale) {
         const baseHref = originalHref || currentHref;
         let targetHref = baseHref;
-        if (baseHref.startsWith('/developers/en-us/')) {
-          targetHref = baseHref.replace('/developers/en-us/', `/developers/${langSegment}/`);
-        } else if (baseHref.includes('/en-us/')) {
-          targetHref = baseHref.replace('/en-us/', `/${langSegment}/`);
+        
+        const baseHasLocale = baseHref.startsWith('/developers/en-us/') || 
+                              baseHref.startsWith('/developers/zh-tw/') || 
+                              baseHref.startsWith('/developers/bilingual/');
+
+        if (!baseHasLocale && baseHref.startsWith('/developers/')) {
+          targetHref = baseHref.replace('/developers/', `/developers/${langSegment}/`);
+        } else {
+          if (baseHref.startsWith('/developers/en-us/')) {
+            targetHref = baseHref.replace('/developers/en-us/', `/developers/${langSegment}/`);
+          } else if (baseHref.includes('/en-us/')) {
+            targetHref = baseHref.replace('/en-us/', `/${langSegment}/`);
+          }
         }
 
         // 額外處理 activities 路徑傳遞：
@@ -205,7 +218,7 @@ export const LanguageSelector = ({ current, path }) => {
           }
         });
 
-        // 2. 處理左側導覽列 (Sidebar) 與頁面內所有的 en-us 連結 (排除語言選單本身)
+        // 2. 處理左側導覽列 (Sidebar) 與頁面內所有的連結 (排除語言選單本身)
         const allLinks = document.querySelectorAll('a');
         allLinks.forEach(link => {
           if (link.closest('#language-selector-container')) {
@@ -216,7 +229,7 @@ export const LanguageSelector = ({ current, path }) => {
           if (href.startsWith('/developers/')) {
             // 如果當前在 activities 分區，且目標是 discovery 或 monetization 但無 activities，將其重寫
             if (enRoute.includes('/activities/')) {
-              const discoveryPattern = /^\/developers\/(en-us|zh-tw|bilingual)\/discovery(\/.*)?$/;
+              const discoveryPattern = /^\/developers\/(en-us|zh-tw|bilingual)?\/?discovery(\/.*)?$/;
               if (discoveryPattern.test(href) && !href.includes('/activities/')) {
                 const updated = href.replace('/discovery', '/activities/discovery');
                 link.setAttribute('data-original-href', href);
@@ -224,7 +237,7 @@ export const LanguageSelector = ({ current, path }) => {
                 href = updated;
               }
               
-              const monetizationPattern = /^\/developers\/(en-us|zh-tw|bilingual)\/monetization(\/.*)?$/;
+              const monetizationPattern = /^\/developers\/(en-us|zh-tw|bilingual)?\/?monetization(\/.*)?$/;
               if (monetizationPattern.test(href) && !href.includes('/activities/')) {
                 const updated = href.replace('/monetization', '/activities/monetization');
                 link.setAttribute('data-original-href', href);
@@ -233,7 +246,18 @@ export const LanguageSelector = ({ current, path }) => {
               }
             }
 
-            // 原本的語系改寫
+            // 1. 如果是無前綴的相對連結，在 DOM 上將其補全為當前的語系
+            const isRelativeWithoutLocale = !href.startsWith('/developers/en-us/') && 
+                                            !href.startsWith('/developers/zh-tw/') && 
+                                            !href.startsWith('/developers/bilingual/');
+            if (isRelativeWithoutLocale) {
+              const newHref = href.replace('/developers/', `/developers/${langSegment}/`);
+              link.setAttribute('data-original-href', href);
+              link.setAttribute('href', newHref);
+              href = newHref;
+            }
+
+            // 2. 原本的語系改寫
             if (href.startsWith('/developers/en-us/') && !link.getAttribute('data-original-href')) {
               link.setAttribute('data-original-href', href);
               const newHref = href.replace('/developers/en-us/', `/developers/${langSegment}/`);
@@ -276,6 +300,7 @@ export const LanguageSelector = ({ current, path }) => {
     };
 
     const injectPagination = () => {
+      if (current === 'en') return;
       try {
         const prose = document.querySelector('.mdx-content');
         if (!prose) return;

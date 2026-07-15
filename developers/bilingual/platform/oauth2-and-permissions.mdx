@@ -9,22 +9,31 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 <LanguageSelector current="bilingual" path="/developers/bilingual/platform/oauth2-and-permissions" />
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 Discord uses [OAuth2](/developers/en-us/topics/oauth2) as the standard authorization framework for granting apps access to users and servers. Understanding OAuth2 and the permissions model is essential for any Discord app.
+
 </div>
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 Discord 使用 [OAuth2](/developers/bilingual/topics/oauth2) 作為標準授權框架，以授予應用程式存取使用者與伺服器的權限。了解 OAuth2 與權限模型對於任何 Discord 應用程式都至關重要。
+
 </div>
+
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Two Ways to Authenticate
@@ -48,8 +57,11 @@ When you need to act on behalf of a user, you use OAuth2 to get a user access to
 - Are scoped, so you only get access to what the user grants
 - Are short-lived and must be refreshed
 - Should be treated like passwords and never exposed publicly
+
 </div>
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 兩種驗證方式 (Two Ways to Authenticate)
@@ -73,13 +85,17 @@ When you need to act on behalf of a user, you use OAuth2 to get a user access to
 - 具有範圍限制，因此您只能存取使用者所授予的內容
 - 屬於短期有效，必須定期重新整理 (Refresh)
 - 應視為密碼保護，且絕不能公開透露
+
 </div>
+
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Scopes
@@ -99,8 +115,11 @@ Common scopes include:
 | `applications.commands` | Register slash commands in a guild                         |
 
 For a complete list, see the [OAuth2 scopes reference](/developers/en-us/topics/oauth2#shared-resources).
+
 </div>
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 權限範圍 (Scopes)
@@ -120,13 +139,17 @@ For a complete list, see the [OAuth2 scopes reference](/developers/en-us/topics/
 | `applications.commands` | 在伺服器中註冊斜線指令                            |
 
 如需完整清單，請參閱 [OAuth2 權限範圍參考 (OAuth2 Scopes Reference)](/developers/bilingual/topics/oauth2#shared-resources)。
+
 </div>
+
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Permissions
@@ -138,8 +161,11 @@ Permissions are stored as a bitfield. They can be:
 - **Channel-level:** Overrides that apply to specific channels
 
 Your app should request only the permissions it needs. Requesting excessive permissions reduces trust with users. Your app should request only the permissions it needs as described in our [Developer Policy](https://support-dev.discord.com/hc/en-us/articles/8563934450327-Discord-Developer-Policy).
+
 </div>
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 權限 (Permissions)
@@ -151,13 +177,17 @@ Your app should request only the permissions it needs. Requesting excessive perm
 - **頻道級別 (Channel-level)**：套用到特定頻道的覆寫設定 (Overrides)
 
 您的應用程式應該只請求它所需的權限。請求過多權限會降低使用者的信任度。您的應用程式應該只請求它所需的權限，如我們的 [開發者政策 (Developer Policy)](https://support-dev.discord.com/hc/en-us/articles/8563934450327-Discord-Developer-Policy) 中所述。
+
 </div>
+
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Further Reading
@@ -170,8 +200,11 @@ Your app should request only the permissions it needs. Requesting excessive perm
     Complete permissions bitfield reference and how overrides work.
   </Card>
 </CardGroup>
+
 </div>
+
 <div>
+
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 進階閱讀 (Further Reading)
@@ -184,5 +217,7 @@ Your app should request only the permissions it needs. Requesting excessive perm
     完整的權限位元欄位參考以及覆寫機制的工作方式。
   </Card>
 </CardGroup>
+
 </div>
+
 </div>
