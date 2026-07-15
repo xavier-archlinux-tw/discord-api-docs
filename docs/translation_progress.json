@@ -151,6 +151,74 @@
     "developers/en-us/activities/development-guides/production-readiness": {
       "status": "completed",
       "translated_at": "auto_detected"
+    },
+    "developers/en-us/discovery/overview": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/interactions/receiving-and-responding": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/topics/rate-limits": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/platform/activities": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/discovery/enabling-discovery": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/discovery/overview": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/discovery/best-practices": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/platform/rich-presence": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/interactions/overview": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/platform/oauth2-and-permissions": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/platform/discovery": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/discovery/enabling-discovery": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/activities/discovery/best-practices": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/topics/oauth2": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/interactions/application-commands": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/topics/permissions": {
+      "status": "completed",
+      "translated_at": "auto_detected"
+    },
+    "developers/en-us/platform/app-monetization": {
+      "status": "completed",
+      "translated_at": "auto_detected"
     }
   },
   "failed_pages": {}
