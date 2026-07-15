@@ -134,7 +134,41 @@ export const LanguageSelector = ({ current, path }) => {
 
     const langSegment = current === 'zh-tw' ? 'zh-tw' : 'bilingual';
     const activeColor = '#5865f2';
-    const registeredHandlers = new Map();
+
+    // 全域 Capture 階段點擊攔截，完美防禦 React/Next.js VDOM 重新渲染覆蓋連結事件問題
+    const handleGlobalClick = (e) => {
+      const link = e.target.closest('a');
+      if (!link) return;
+      if (link.closest('#language-selector-container')) return;
+
+      const originalHref = link.getAttribute('data-original-href');
+      const currentHref = link.getAttribute('href') || '';
+
+      if (originalHref || currentHref.startsWith('/developers/en-us/') || (link.classList.contains('nav-tabs-item') && currentHref.includes('/en-us/'))) {
+        const baseHref = originalHref || currentHref;
+        let targetHref = baseHref;
+        if (baseHref.startsWith('/developers/en-us/')) {
+          targetHref = baseHref.replace('/developers/en-us/', `/developers/${langSegment}/`);
+        } else if (baseHref.includes('/en-us/')) {
+          targetHref = baseHref.replace('/en-us/', `/${langSegment}/`);
+        }
+
+        // 額外處理 activities 路徑傳遞：
+        // 如果當前頁面包含 activities，且目標 href 不包含 activities
+        if (enRoute.includes('/activities/') && !targetHref.includes('/activities/')) {
+          if (targetHref.includes('/discovery/')) {
+            targetHref = targetHref.replace('/discovery/', '/activities/discovery/');
+          } else if (targetHref.includes('/monetization/')) {
+            targetHref = targetHref.replace('/monetization/', '/activities/monetization/');
+          }
+        }
+
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        navigateSPA(targetHref);
+      }
+    };
+    document.addEventListener('click', handleGlobalClick, true);
 
     const rewriteAndHighlight = () => {
       try {
@@ -142,19 +176,10 @@ export const LanguageSelector = ({ current, path }) => {
         const tabLinks = document.querySelectorAll('a.nav-tabs-item');
         tabLinks.forEach(link => {
           const origHref = link.getAttribute('href') || '';
-          if (origHref.includes('/en-us/')) {
+          if (origHref.includes('/en-us/') && !link.getAttribute('data-original-href')) {
+            link.setAttribute('data-original-href', origHref);
             const newHref = origHref.replace('/en-us/', `/${langSegment}/`);
             link.setAttribute('href', newHref);
-            
-            if (!registeredHandlers.has(link)) {
-              const handler = (e) => {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                navigateSPA(newHref);
-              };
-              link.addEventListener('click', handler, true);
-              registeredHandlers.set(link, handler);
-            }
           }
 
           // 判斷是否為 Active tab
@@ -187,19 +212,33 @@ export const LanguageSelector = ({ current, path }) => {
             return;
           }
 
-          const href = link.getAttribute('href') || '';
-          if (href.startsWith('/developers/en-us/')) {
-            const newHref = href.replace('/developers/en-us/', `/developers/${langSegment}/`);
-            link.setAttribute('href', newHref);
+          let href = link.getAttribute('href') || '';
+          if (href.startsWith('/developers/')) {
+            // 如果當前在 activities 分區，且目標是 discovery 或 monetization 但無 activities，將其重寫
+            if (enRoute.includes('/activities/')) {
+              const discoveryPattern = /^\/developers\/(en-us|zh-tw|bilingual)\/discovery(\/.*)?$/;
+              if (discoveryPattern.test(href) && !href.includes('/activities/')) {
+                const updated = href.replace('/discovery', '/activities/discovery');
+                link.setAttribute('data-original-href', href);
+                link.setAttribute('href', updated);
+                href = updated;
+              }
+              
+              const monetizationPattern = /^\/developers\/(en-us|zh-tw|bilingual)\/monetization(\/.*)?$/;
+              if (monetizationPattern.test(href) && !href.includes('/activities/')) {
+                const updated = href.replace('/monetization', '/activities/monetization');
+                link.setAttribute('data-original-href', href);
+                link.setAttribute('href', updated);
+                href = updated;
+              }
+            }
 
-            if (!registeredHandlers.has(link)) {
-              const handler = (e) => {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                navigateSPA(newHref);
-              };
-              link.addEventListener('click', handler, true);
-              registeredHandlers.set(link, handler);
+            // 原本的語系改寫
+            if (href.startsWith('/developers/en-us/') && !link.getAttribute('data-original-href')) {
+              link.setAttribute('data-original-href', href);
+              const newHref = href.replace('/developers/en-us/', `/developers/${langSegment}/`);
+              link.setAttribute('href', newHref);
+              href = newHref;
             }
           }
 
@@ -362,9 +401,7 @@ export const LanguageSelector = ({ current, path }) => {
       observer.disconnect();
       clearInterval(interval);
       window.removeEventListener('scroll', handleScroll);
-      registeredHandlers.forEach((handler, link) => {
-        link.removeEventListener('click', handler, true);
-      });
+      document.removeEventListener('click', handleGlobalClick, true);
     };
   }, [current, path]);
 

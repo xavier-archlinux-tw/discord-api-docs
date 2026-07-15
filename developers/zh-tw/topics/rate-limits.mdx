@@ -54,11 +54,11 @@ X-RateLimit-Bucket: abcd1234
 <ManualAnchor id="exceeding-a-rate-limit-rate-limit-response-structure" />
 ###### 速率限制回應結構 (Rate Limit Response Structure)
 
-| 欄位 | 類型 | 說明 |
-|-------------|---------|-----------------------------------------------------------------------------------|
-| message     | string  | 表示您正受到速率限制的訊息。 |
-| retry_after | float   | 在提交另一個請求之前需要等待的秒數。 |
-| global      | boolean | 指明您是否正受到全域速率限制的值。 |
+| 欄位        | 類型    | 說明                                                                                             |
+|-------------|---------|------------------------------------------------------------------------------------------------|
+| message     | string  | 表示您正受到速率限制的訊息。                                                                      |
+| retry_after | float   | 在提交另一個請求之前需要等待的秒數。                                                              |
+| global      | boolean | 指明您是否正受到全域速率限制的值。                                                                |
 | code?       | integer | 適用於某些限制的 [錯誤代碼 (error code)](/developers/zh-tw/topics/opcodes-and-status-codes#json) |
 
 請注意，一般的路由速率限制標頭也將在此回應中一併發送。速率限制回應將如下所示：

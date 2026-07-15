@@ -18,7 +18,6 @@ Permissions are a way to limit and grant certain abilities to users in Discord. 
 <Info>
 [Application command permissions](/developers/en-us/interactions/application-commands#permissions) allow you to enable or disable specific commands for entire channels in addition to individual roles or users.
 </Info>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -28,9 +27,7 @@ Permissions are a way to limit and grant certain abilities to users in Discord. 
 <Info>
 [應用程式指令權限 (Application command permissions)](/developers/bilingual/interactions/application-commands#permissions) 允許您除了設定特定身分組或使用者之外，還能為整個頻道阻擋或允許特定指令。
 </Info>
-
 </div>
-
 </div>
 
 ---
@@ -60,7 +57,6 @@ permissions = 0x40 | 0x800 # 2112
 ```
 
 Additional logic is required when permission overwrites are involved; this is further explained below. For more information about bitwise operations and flags, see [this page](https://en.wikipedia.org/wiki/Bit_field).
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -86,9 +82,7 @@ permissions = 0x40 | 0x800 # 2112
 ```
 
 當涉及頻道覆寫權限時，需要額外的邏輯；這將在下文進一步解釋。有關位元運算和標記的更多資訊，請參閱[此頁面](https://en.wikipedia.org/wiki/Bit_field)。
-
 </div>
-
 </div>
 
 ---
@@ -167,7 +161,6 @@ Below is a table of all current permissions, their integer values in hexadecimal
 **\*\* See [Permissions for Timed Out Members](/developers/en-us/topics/permissions#permissions-for-timed-out-members) to understand how permissions are temporarily modified for timed out users.**
 
 Note that permission names may be referred to differently in the Discord client. For example, "Manage Permissions" refers to MANAGE_ROLES, "Use Voice Activity" refers to USE_VAD, and "Timeout Members" refers to MODERATE_MEMBERS.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -177,74 +170,72 @@ Note that permission names may be referred to differently in the Discord client.
 <ManualAnchor id="permissions-bitwise-permission-flags" />
 ###### 位元權限旗標 (Bitwise Permission Flags)
 
-| 權限 | 數值 | 說明 | 頻道類型 (縮寫) |
-|----------------------------------------|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|
-| CREATE_INSTANT_INVITE                  | `0x0000000000000001` `(1 << 0)`  | 允許建立即時邀請 | T, V, S                    |
-| KICK_MEMBERS \*                        | `0x0000000000000002` `(1 << 1)`  | 允許剔除成員 |                            |
-| BAN_MEMBERS \*                         | `0x0000000000000004` `(1 << 2)`  | 允許封鎖成員 |                            |
-| ADMINISTRATOR \*                       | `0x0000000000000008` `(1 << 3)`  | 允許所有權限，並繞過頻道覆寫權限 |                            |
-| MANAGE_CHANNELS \*                     | `0x0000000000000010` `(1 << 4)`  | 允許管理與編輯頻道 | T, V, S                    |
-| MANAGE_GUILD \*                        | `0x0000000000000020` `(1 << 5)`  | 允許管理與編輯伺服器 |                            |
-| ADD_REACTIONS                          | `0x0000000000000040` `(1 << 6)`  | 允許在訊息中新增反應。此權限不適用於使用訊息上已存在的反應進行回應。 | T, V, S                    |
-| VIEW_AUDIT_LOG                         | `0x0000000000000080` `(1 << 7)`  | 允許檢視審計日誌 |                            |
-| PRIORITY_SPEAKER                       | `0x0000000000000100` `(1 << 8)`  | 允許在語音頻道中使用優先發言者 | V                          |
-| STREAM                                 | `0x0000000000000200` `(1 << 9)`  | 允許使用者進行視訊直播 (Go Live) | V, S                       |
-| VIEW_CHANNEL                           | `0x0000000000000400` `(1 << 10)` | 允許伺服器成員檢視頻道，包括讀取文字頻道的訊息與加入語音頻道 | T, V, S                    |
-| SEND_MESSAGES                          | `0x0000000000000800` `(1 << 11)` | 允許在頻道中傳送訊息與在討論區中建立貼文（但不允許在貼文中傳送訊息） | T, V, S                    |
-| SEND_TTS_MESSAGES                      | `0x0000000000001000` `(1 << 12)` | 允許傳送 `/tts` 訊息 | T, V, S                    |
-| MANAGE_MESSAGES \*                     | `0x0000000000002000` `(1 << 13)` | 允許刪除其他使用者的訊息 | T, V, S                    |
-| EMBED_LINKS                            | `0x0000000000004000` `(1 << 14)` | 使用者傳送的連結將被自動嵌入卡片中 | T, V, S                    |
-| ATTACH_FILES                           | `0x0000000000008000` `(1 << 15)` | 允許上傳圖片和檔案 | T, V, S                    |
-| READ_MESSAGE_HISTORY                   | `0x0000000000010000` `(1 << 16)` | 允許讀取訊息歷史紀錄 | T, V, S                    |
-| MENTION_EVERYONE                       | `0x0000000000020000` `(1 << 17)` | 允許使用 `@everyone` 標記通知頻道中的所有使用者，以及使用 `@here` 標記通知頻道中所有在線的使用者 | T, V, S                    |
-| VIEW_GUILD_INSIGHTS                    | `0x0000000000080000` `(1 << 19)` | 允許檢視伺服器成效分析 |                            |
-| CONNECT                                | `0x0000000000100000` `(1 << 20)` | 允許加入語音頻道 | V, S                       |
-| SPEAK                                  | `0x0000000000200000` `(1 << 21)` | 允許在語音頻道中發言 | V                          |
-| MUTE_MEMBERS                           | `0x0000000000400000` `(1 << 22)` | 允許在語音頻道中靜音成員 | V, S                       |
-| DEAFEN_MEMBERS                         | `0x0000000000800000` `(1 << 23)` | 允許在語音頻道中拒聽成員 | V                          |
-| MOVE_MEMBERS                           | `0x0000000001000000` `(1 << 24)` | 允許在語音頻道之間移動成員 | V, S                       |
-| USE_VAD                                | `0x0000000002000000` `(1 << 25)` | 允許在語音頻道中使用語音感應偵測 (VAD) | V                          |
-| CHANGE_NICKNAME                        | `0x0000000004000000` `(1 << 26)` | 允許修改自己的暱稱 |                            |
-| MANAGE_NICKNAMES                       | `0x0000000008000000` `(1 << 27)` | 允許修改其他使用者的暱稱 |                            |
-| MANAGE_ROLES \*                        | `0x0000000010000000` `(1 << 28)` | 允許管理與編輯身分組 | T, V, S                    |
-| MANAGE_WEBHOOKS \*                     | `0x0000000020000000` `(1 << 29)` | 允許管理與編輯 Webhooks | T, V, S                    |
-| MANAGE_GUILD_EXPRESSIONS \*            | `0x0000000040000000` `(1 << 30)` | 允許編輯和刪除由所有使用者建立的表情符號、貼圖和音效板聲音 |                            |
-| USE_APPLICATION_COMMANDS               | `0x0000000080000000` `(1 << 31)` | 允許成員使用應用程式指令，包括斜線指令與快顯功能表指令 | T, V, S                    |
-| REQUEST_TO_SPEAK                       | `0x0000000100000000` `(1 << 32)` | 允許在講台頻道中請求發言 | S                          |
-| MANAGE_EVENTS                          | `0x0000000200000000` `(1 << 33)` | 允許編輯和刪除由所有使用者建立的已排程活動 | V, S                       |
-| MANAGE_THREADS \*                      | `0x0000000400000000` `(1 << 34)` | 允許刪除和封存貼文/執行緒，以及檢視所有私密貼文/執行緒 | T                          |
-| CREATE_PUBLIC_THREADS                  | `0x0000000800000000` `(1 << 35)` | 允許建立公開和公告貼文/執行緒 | T                          |
-| CREATE_PRIVATE_THREADS                 | `0x0000001000000000` `(1 << 36)` | 允許建立私密貼文/執行緒 | T                          |
-| USE_EXTERNAL_STICKERS                  | `0x0000002000000000` `(1 << 37)` | 允許使用來自其他伺服器的自訂貼圖 | T, V, S                    |
-| SEND_MESSAGES_IN_THREADS               | `0x0000004000000000` `(1 << 38)` | 允許在貼文/執行緒中傳送訊息 | T                          |
-| USE_EMBEDDED_ACTIVITIES                | `0x0000008000000000` `(1 << 39)` | 允許使用互動活動（帶有 `EMBEDDED` 標記的應用程式） | T, V                       |
-| MODERATE_MEMBERS \*\*                  | `0x0000010000000000` `(1 << 40)` | 允許將使用者停權 (Timeout)，以防止他們在聊天室和貼文中傳送訊息或做出反應，以及在語音和講台頻道中發言 |                            |
-| VIEW_CREATOR_MONETIZATION_ANALYTICS \* | `0x0000020000000000` `(1 << 41)` | 允許檢視身分組訂閱成效分析 |                            |
-| USE_SOUNDBOARD                         | `0x0000040000000000` `(1 << 42)` | 允許在語音頻道中使用音效板 | V                          |
-| CREATE_GUILD_EXPRESSIONS               | `0x0000080000000000` `(1 << 43)` | 允許建立表情符號、貼圖和音效板聲音，並編輯和刪除由目前使用者建立的表情與聲音。 |                            |
-| CREATE_EVENTS                          | `0x0000100000000000` `(1 << 44)` | 允許建立已排程活動，並編輯和刪除由目前使用者建立的活動。 | V, S                       |
-| USE_EXTERNAL_SOUNDS                    | `0x0000200000000000` `(1 << 45)` | 允許使用來自其他伺服器的自訂音效板聲音 | V                          |
-| SEND_VOICE_MESSAGES                    | `0x0000400000000000` `(1 << 46)` | 允許傳送語音訊息 | T, V, S                    |
-| SET_VOICE_CHANNEL_STATUS               | `0x0001000000000000` `(1 << 48)` | 允許設定語音頻道狀態 | V                          |
-| SEND_POLLS                             | `0x0002000000000000` `(1 << 49)` | 允許傳送投票 | T, V, S                    |
-| USE_EXTERNAL_APPS                      | `0x0004000000000000` `(1 << 50)` | 允許使用者安裝型 App 傳送公開回應。停用時，使用者仍可使用 App，但回應將為僅限您可見的臨時訊息。此規則僅適用於未安裝在伺服器中的 App。 | T, V, S                    |
-| PIN_MESSAGES                           | `0x0008000000000000` `(1 << 51)` | 允許釘選與取消釘選訊息 | T                          |
-| BYPASS_SLOWMODE                        | `0x0010000000000000` `(1 << 52)` | 允許繞過慢速限制 | T, V, S                    |
+| 權限                                   | 數值                             | 說明                                                                                                                             | 頻道類型 (縮寫) |
+|----------------------------------------|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| CREATE_INSTANT_INVITE                  | `0x0000000000000001` `(1 << 0)`  | 允許建立即時邀請                                                                                                                 | T, V, S         |
+| KICK_MEMBERS \*                        | `0x0000000000000002` `(1 << 1)`  | 允許剔除成員                                                                                                                     |                 |
+| BAN_MEMBERS \*                         | `0x0000000000000004` `(1 << 2)`  | 允許封鎖成員                                                                                                                     |                 |
+| ADMINISTRATOR \*                       | `0x0000000000000008` `(1 << 3)`  | 允許所有權限，並繞過頻道覆寫權限                                                                                                  |                 |
+| MANAGE_CHANNELS \*                     | `0x0000000000000010` `(1 << 4)`  | 允許管理與編輯頻道                                                                                                               | T, V, S         |
+| MANAGE_GUILD \*                        | `0x0000000000000020` `(1 << 5)`  | 允許管理與編輯伺服器                                                                                                             |                 |
+| ADD_REACTIONS                          | `0x0000000000000040` `(1 << 6)`  | 允許在訊息中新增反應。此權限不適用於使用訊息上已存在的反應進行回應。                                                               | T, V, S         |
+| VIEW_AUDIT_LOG                         | `0x0000000000000080` `(1 << 7)`  | 允許檢視審計日誌                                                                                                                 |                 |
+| PRIORITY_SPEAKER                       | `0x0000000000000100` `(1 << 8)`  | 允許在語音頻道中使用優先發言者                                                                                                   | V               |
+| STREAM                                 | `0x0000000000000200` `(1 << 9)`  | 允許使用者進行視訊直播 (Go Live)                                                                                                 | V, S            |
+| VIEW_CHANNEL                           | `0x0000000000000400` `(1 << 10)` | 允許伺服器成員檢視頻道，包括讀取文字頻道的訊息與加入語音頻道                                                                      | T, V, S         |
+| SEND_MESSAGES                          | `0x0000000000000800` `(1 << 11)` | 允許在頻道中傳送訊息與在討論區中建立貼文（但不允許在貼文中傳送訊息）                                                               | T, V, S         |
+| SEND_TTS_MESSAGES                      | `0x0000000000001000` `(1 << 12)` | 允許傳送 `/tts` 訊息                                                                                                             | T, V, S         |
+| MANAGE_MESSAGES \*                     | `0x0000000000002000` `(1 << 13)` | 允許刪除其他使用者的訊息                                                                                                         | T, V, S         |
+| EMBED_LINKS                            | `0x0000000000004000` `(1 << 14)` | 使用者傳送的連結將被自動嵌入卡片中                                                                                               | T, V, S         |
+| ATTACH_FILES                           | `0x0000000000008000` `(1 << 15)` | 允許上傳圖片和檔案                                                                                                               | T, V, S         |
+| READ_MESSAGE_HISTORY                   | `0x0000000000010000` `(1 << 16)` | 允許讀取訊息歷史紀錄                                                                                                             | T, V, S         |
+| MENTION_EVERYONE                       | `0x0000000000020000` `(1 << 17)` | 允許使用 `@everyone` 標記通知頻道中的所有使用者，以及使用 `@here` 標記通知頻道中所有在線的使用者                                  | T, V, S         |
+| VIEW_GUILD_INSIGHTS                    | `0x0000000000080000` `(1 << 19)` | 允許檢視伺服器成效分析                                                                                                           |                 |
+| CONNECT                                | `0x0000000000100000` `(1 << 20)` | 允許加入語音頻道                                                                                                                 | V, S            |
+| SPEAK                                  | `0x0000000000200000` `(1 << 21)` | 允許在語音頻道中發言                                                                                                             | V               |
+| MUTE_MEMBERS                           | `0x0000000000400000` `(1 << 22)` | 允許在語音頻道中靜音成員                                                                                                         | V, S            |
+| DEAFEN_MEMBERS                         | `0x0000000000800000` `(1 << 23)` | 允許在語音頻道中拒聽成員                                                                                                         | V               |
+| MOVE_MEMBERS                           | `0x0000000001000000` `(1 << 24)` | 允許在語音頻道之間移動成員                                                                                                       | V, S            |
+| USE_VAD                                | `0x0000000002000000` `(1 << 25)` | 允許在語音頻道中使用語音感應偵測 (VAD)                                                                                           | V               |
+| CHANGE_NICKNAME                        | `0x0000000004000000` `(1 << 26)` | 允許修改自己的暱稱                                                                                                               |                 |
+| MANAGE_NICKNAMES                       | `0x0000000008000000` `(1 << 27)` | 允許修改其他使用者的暱稱                                                                                                         |                 |
+| MANAGE_ROLES \*                        | `0x0000000010000000` `(1 << 28)` | 允許管理與編輯身分組                                                                                                             | T, V, S         |
+| MANAGE_WEBHOOKS \*                     | `0x0000000020000000` `(1 << 29)` | 允許管理與編輯 Webhooks                                                                                                          | T, V, S         |
+| MANAGE_GUILD_EXPRESSIONS \*            | `0x0000000040000000` `(1 << 30)` | 允許編輯和刪除由所有使用者建立的表情符號、貼圖和音效板聲音                                                                        |                 |
+| USE_APPLICATION_COMMANDS               | `0x0000000080000000` `(1 << 31)` | 允許成員使用應用程式指令，包括斜線指令與快顯功能表指令                                                                            | T, V, S         |
+| REQUEST_TO_SPEAK                       | `0x0000000100000000` `(1 << 32)` | 允許在講台頻道中請求發言                                                                                                         | S               |
+| MANAGE_EVENTS                          | `0x0000000200000000` `(1 << 33)` | 允許編輯和刪除由所有使用者建立的已排程活動                                                                                       | V, S            |
+| MANAGE_THREADS \*                      | `0x0000000400000000` `(1 << 34)` | 允許刪除和封存貼文/執行緒，以及檢視所有私密貼文/執行緒                                                                            | T               |
+| CREATE_PUBLIC_THREADS                  | `0x0000000800000000` `(1 << 35)` | 允許建立公開和公告貼文/執行緒                                                                                                    | T               |
+| CREATE_PRIVATE_THREADS                 | `0x0000001000000000` `(1 << 36)` | 允許建立私密貼文/執行緒                                                                                                          | T               |
+| USE_EXTERNAL_STICKERS                  | `0x0000002000000000` `(1 << 37)` | 允許使用來自其他伺服器的自訂貼圖                                                                                                 | T, V, S         |
+| SEND_MESSAGES_IN_THREADS               | `0x0000004000000000` `(1 << 38)` | 允許在貼文/執行緒中傳送訊息                                                                                                      | T               |
+| USE_EMBEDDED_ACTIVITIES                | `0x0000008000000000` `(1 << 39)` | 允許使用互動活動（帶有 `EMBEDDED` 標記的應用程式）                                                                                 | T, V            |
+| MODERATE_MEMBERS \*\*                  | `0x0000010000000000` `(1 << 40)` | 允許將使用者停權 (Timeout)，以防止他們在聊天室和貼文中傳送訊息或做出反應，以及在語音和講台頻道中發言                               |                 |
+| VIEW_CREATOR_MONETIZATION_ANALYTICS \* | `0x0000020000000000` `(1 << 41)` | 允許檢視身分組訂閱成效分析                                                                                                       |                 |
+| USE_SOUNDBOARD                         | `0x0000040000000000` `(1 << 42)` | 允許在語音頻道中使用音效板                                                                                                       | V               |
+| CREATE_GUILD_EXPRESSIONS               | `0x0000080000000000` `(1 << 43)` | 允許建立表情符號、貼圖和音效板聲音，並編輯和刪除由目前使用者建立的表情與聲音。                                                      |                 |
+| CREATE_EVENTS                          | `0x0000100000000000` `(1 << 44)` | 允許建立已排程活動，並編輯和刪除由目前使用者建立的活動。                                                                           | V, S            |
+| USE_EXTERNAL_SOUNDS                    | `0x0000200000000000` `(1 << 45)` | 允許使用來自其他伺服器的自訂音效板聲音                                                                                           | V               |
+| SEND_VOICE_MESSAGES                    | `0x0000400000000000` `(1 << 46)` | 允許傳送語音訊息                                                                                                                 | T, V, S         |
+| SET_VOICE_CHANNEL_STATUS               | `0x0001000000000000` `(1 << 48)` | 允許設定語音頻道狀態                                                                                                             | V               |
+| SEND_POLLS                             | `0x0002000000000000` `(1 << 49)` | 允許傳送投票                                                                                                                     | T, V, S         |
+| USE_EXTERNAL_APPS                      | `0x0004000000000000` `(1 << 50)` | 允許使用者安裝型 App 傳送公開回應。停用時，使用者仍可使用 App，但回應將為僅限您可見的臨時訊息。此規則僅適用於未安裝在伺服器中的 App。 | T, V, S         |
+| PIN_MESSAGES                           | `0x0008000000000000` `(1 << 51)` | 允許釘選與取消釘選訊息                                                                                                           | T               |
+| BYPASS_SLOWMODE                        | `0x0010000000000000` `(1 << 52)` | 允許繞過慢速限制                                                                                                                 | T, V, S         |
 
-| 頻道類型 (縮寫) | 說明 | 頻道類型 |
-|----------------------------|-------------|----------------------------------------------------------|
-| T                          | 文字 (Text) | GUILD_TEXT, GUILD_ANNOUNCEMENT, GUILD_FORUM, GUILD_MEDIA |
-| V                          | 語音 (Voice)| GUILD_VOICE                                              |
-| S                          | 講台 (Stage)| GUILD_STAGE_VOICE                                        |
+| 頻道類型 (縮寫) | 說明         | 頻道類型                                                 |
+|-----------------|------------|----------------------------------------------------------|
+| T               | 文字 (Text)  | GUILD_TEXT, GUILD_ANNOUNCEMENT, GUILD_FORUM, GUILD_MEDIA |
+| V               | 語音 (Voice) | GUILD_VOICE                                              |
+| S               | 講台 (Stage) | GUILD_STAGE_VOICE                                        |
 
 **\* 當在啟用了全伺服器 2FA 的伺服器上使用時，這些權限要求擁有者帳戶啟用 [雙重身分驗證 (2FA)](/developers/bilingual/topics/oauth2#twofactor-authentication-requirement)。**
 
 **\*\* 請參閱 [被停權成員的權限](/developers/bilingual/topics/permissions#permissions-for-timed-out-members) 以了解如何暫時修改被停權使用者的權限。**
 
 請注意，權限名稱在 Discord 用戶端中可能會以不同的方式顯示。例如，「管理權限」是指 MANAGE_ROLES，「使用語音活動」是指 USE_VAD，而「將成員停權」是指 MODERATE_MEMBERS。
-
 </div>
-
 </div>
 
 ---
@@ -263,7 +254,6 @@ How permissions apply may at first seem intuitive, but there are some hidden res
 - A bot can only kick, ban, and edit nicknames for users whose highest role is lower than the bot's highest role.
 
 Otherwise, permissions do not obey the role hierarchy. For example, a user has two roles: A and B. A denies the `VIEW_CHANNEL` permission on a #coolstuff channel. B allows the `VIEW_CHANNEL` permission on the same #coolstuff channel. The user would ultimately be able to view the #coolstuff channel, regardless of the role positions.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -278,9 +268,7 @@ Otherwise, permissions do not obey the role hierarchy. For example, a user has t
 - Bot 只能對其最高身分組低於 Bot 最高身分組的使用者執行剔除、封鎖以及編輯暱稱的操作。
 
 除此之外，權限並不服從身分組階層。例如，使用者擁有兩個身分組：A 和 B。A 在 #coolstuff 頻道上拒絕了 `VIEW_CHANNEL` 權限。B 在同一個 #coolstuff 頻道上允許了 `VIEW_CHANNEL` 權限。不論身分組位置如何，使用者最終都能檢視 #coolstuff 頻道。
-
 </div>
-
 </div>
 
 ---
@@ -358,7 +346,6 @@ def compute_permissions(member, channel):
     base_permissions = compute_base_permissions(member, channel.guild)
     return compute_overwrites(base_permissions, member, channel)
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -432,9 +419,7 @@ def compute_permissions(member, channel):
     base_permissions = compute_base_permissions(member, channel.guild)
     return compute_overwrites(base_permissions, member, channel)
 ```
-
 </div>
-
 </div>
 
 ---
@@ -452,7 +437,6 @@ Denying `SEND_MESSAGES` implicitly denies `MENTION_EVERYONE`, `SEND_TTS_MESSAGES
 For voice and stage channels, denying the `CONNECT` permission also implicitly denies other permissions such as `MANAGE_CHANNEL`.
 
 There may be other cases in which certain permissions implicitly deny or allow other permissions. In all cases, it is based on logical conclusions about how a user with certain permissions should or should not interact with Discord.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -466,9 +450,7 @@ There may be other cases in which certain permissions implicitly deny or allow o
 對於語音和講台頻道，拒絕 `CONNECT` 權限也會隱含地拒絕其他權限，例如 `MANAGE_CHANNEL`。
 
 在其他情況下，某些權限也可能會隱含地拒絕或允許其他權限。在所有情況下，這都是基於對擁有特定權限的使用者應如何或不應如何與 Discord 互動的邏輯推論。
-
 </div>
-
 </div>
 
 ---
@@ -486,7 +468,6 @@ Users must have the `VIEW_CHANNEL` permission to view _any_ threads in the chann
 ## Permission Syncing
 
 Permissions with regards to categories and channels within categories are a bit tricky. Rather than inheritance, permissions are calculated by means of what we call Permission Syncing. If a child channel has the same permissions and overwrites (or lack thereof) as its parent category, the channel is considered "synced" to the category. Any further changes to a **parent category** will be reflected in its synced child channels. Any further changes to a **child channel** will cause it to become de-synced from its parent category, and its permissions will no longer change with changes to its parent category.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -500,9 +481,7 @@ Permissions with regards to categories and channels within categories are a bit 
 ## 權限同步 (Permission Syncing)
 
 關於類別 (categories) 以及類別中頻道的權限運作會有些微妙。這並非單純的繼承，而是透過我們稱為「權限同步 (Permission Syncing)」的方式計算。如果子頻道具有與其父類別相同的權限和覆寫權限（或兩者皆無），則該頻道被視為與該類別「同步」。對**父類別**進行的任何進一步變更都會反映在其已同步的子頻道中。對**子頻道**進行的任何進一步變更都會導致其與父類別「去同步 (de-synced)」，其權限將不再隨父類別的變更而變動。
-
 </div>
-
 </div>
 
 ---
@@ -518,26 +497,25 @@ Roles represent a set of permissions attached to a group of users. Roles have na
 <ManualAnchor id="role-object-role-structure" />
 ###### Role Structure
 
-| Field          | Type                                                                                | Description                                                                                                                           |
-|----------------|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| id             | snowflake                                                                           | role id                                                                                                                               |
-| name           | string                                                                              | role name                                                                                                                             |
-| color*         | integer                                                                             | **Deprecated** integer representation of hexadecimal color code                                                                       |
-| colors         | [role colors](/developers/en-us/topics/permissions#role-object-role-colors-object) object | the role's colors                                                                                                                     |
-| hoist          | boolean                                                                             | if this role is pinned in the user listing                                                                                            |
-| icon?          | ?string                                                                             | role [icon hash](/developers/en-us/reference#image-formatting)                                                                              |
-| unicode_emoji? | ?string                                                                             | role unicode emoji                                                                                                                    |
-| position       | integer                                                                             | position of this role (roles with the same position are sorted by id)                                                                 |
-| permissions    | string                                                                              | permission bit set                                                                                                                    |
-| managed        | boolean                                                                             | whether this role is managed by an integration                                                                                        |
-| mentionable    | boolean                                                                             | whether this role is mentionable                                                                                                      |
-| tags?          | [role tags](/developers/en-us/topics/permissions#role-object-role-tags-structure) object  | the tags this role has                                                                                                                |
-| flags          | integer                                                                             | [role flags](/developers/en-us/topics/permissions#role-object-role-flags) combined as a [bitfield](https://en.wikipedia.org/wiki/Bit_field) |
+| Field          | Type                                                                                      | Description                                                                                                                                 |
+|----------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| id             | snowflake                                                                                 | role id                                                                                                                                     |
+| name           | string                                                                                    | role name                                                                                                                                   |
+| color*         | integer                                                                                   | **Deprecated** integer representation of hexadecimal color code                                                                             |
+| colors         | [role colors](/developers/en-us/topics/permissions#role-object-role-colors-object) object | the role's colors                                                                                                                           |
+| hoist          | boolean                                                                                   | if this role is pinned in the user listing                                                                                                  |
+| icon?          | ?string                                                                                   | role [icon hash](/developers/en-us/reference#image-formatting)                                                                              |
+| unicode_emoji? | ?string                                                                                   | role unicode emoji                                                                                                                          |
+| position       | integer                                                                                   | position of this role (roles with the same position are sorted by id)                                                                       |
+| permissions    | string                                                                                    | permission bit set                                                                                                                          |
+| managed        | boolean                                                                                   | whether this role is managed by an integration                                                                                              |
+| mentionable    | boolean                                                                                   | whether this role is mentionable                                                                                                            |
+| tags?          | [role tags](/developers/en-us/topics/permissions#role-object-role-tags-structure) object  | the tags this role has                                                                                                                      |
+| flags          | integer                                                                                   | [role flags](/developers/en-us/topics/permissions#role-object-role-flags) combined as a [bitfield](https://en.wikipedia.org/wiki/Bit_field) |
 
 Roles without colors (`colors.primary_color == 0`) do not count towards the final computed color in the user list.
 
 \* `color` will still be returned by the API, but using the `colors` field is recommended when doing requests.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -549,28 +527,26 @@ Roles without colors (`colors.primary_color == 0`) do not count towards the fina
 <ManualAnchor id="role-object-role-structure" />
 ###### 身分組結構 (Role Structure)
 
-| 欄位 | 類型 | 說明 |
-|----------------|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| id             | snowflake                                                                           | 身分組 ID |
-| name           | string                                                                              | 身分組名稱 |
-| color*         | integer                                                                             | **已棄用** 十六進位顏色代碼的十進位整數表示 |
-| colors         | [身分組顏色](/developers/bilingual/topics/permissions#role-object-role-colors-object) 物件 | 身分組的顏色設定 |
-| hoist          | boolean                                                                             | 此身分組是否釘選在使用者列表中顯示 |
-| icon?          | ?string                                                                             | 身分組 [圖示雜湊值 (icon hash)](/developers/bilingual/reference#image-formatting) |
-| unicode_emoji? | ?string                                                                             | 身分組 Unicode 表情符號 |
-| position       | integer                                                                             | 此身分組的位置（具有相同位置的身分組按 ID 排序） |
-| permissions    | string                                                                              | 權限位元集 |
-| managed        | boolean                                                                             | 此身分組是否由整合服務所管理 |
-| mentionable    | boolean                                                                             | 此身分組是否可被提及 |
-| tags?          | [身分組標籤](/developers/bilingual/topics/permissions#role-object-role-tags-structure) 物件  | 此身分組擁有的標籤 |
-| flags          | integer                                                                             | 身分組 [旗標](/developers/bilingual/topics/permissions#role-object-role-flags)，組合成 [位元欄位](https://en.wikipedia.org/wiki/Bit_field) |
+| 欄位           | 類型                                                                                        | 說明                                                                                                                                      |
+|----------------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| id             | snowflake                                                                                   | 身分組 ID                                                                                                                                 |
+| name           | string                                                                                      | 身分組名稱                                                                                                                                |
+| color*         | integer                                                                                     | **已棄用** 十六進位顏色代碼的十進位整數表示                                                                                               |
+| colors         | [身分組顏色](/developers/bilingual/topics/permissions#role-object-role-colors-object) 物件  | 身分組的顏色設定                                                                                                                          |
+| hoist          | boolean                                                                                     | 此身分組是否釘選在使用者列表中顯示                                                                                                        |
+| icon?          | ?string                                                                                     | 身分組 [圖示雜湊值 (icon hash)](/developers/bilingual/reference#image-formatting)                                                         |
+| unicode_emoji? | ?string                                                                                     | 身分組 Unicode 表情符號                                                                                                                   |
+| position       | integer                                                                                     | 此身分組的位置（具有相同位置的身分組按 ID 排序）                                                                                            |
+| permissions    | string                                                                                      | 權限位元集                                                                                                                                |
+| managed        | boolean                                                                                     | 此身分組是否由整合服務所管理                                                                                                              |
+| mentionable    | boolean                                                                                     | 此身分組是否可被提及                                                                                                                      |
+| tags?          | [身分組標籤](/developers/bilingual/topics/permissions#role-object-role-tags-structure) 物件 | 此身分組擁有的標籤                                                                                                                        |
+| flags          | integer                                                                                     | 身分組 [旗標](/developers/bilingual/topics/permissions#role-object-role-flags)，組合成 [位元欄位](https://en.wikipedia.org/wiki/Bit_field) |
 
 沒有顏色的身分組 (`colors.primary_color == 0`) 不會計入使用者列表中最終計算出的顏色。
 
 \* `color` 仍會被 API 傳回，但建議在發送請求時使用 `colors` 欄位。
-
 </div>
-
 </div>
 
 ---
@@ -608,7 +584,6 @@ This object will always be filled with `primary_color` being the role's `color`.
 When sending `tertiary_color` the API enforces the role color to be a holographic style with values of:
 `primary_color = 11127295`, `secondary_color = 16759788`, and `tertiary_color = 16761760`.
 </Info>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -618,33 +593,31 @@ When sending `tertiary_color` the API enforces the role color to be a holographi
 
 類型為 `null` 的標籤代表布林值。如果為「真 (true)」，則它們將存在並設定為 `null`，如果為「假 (false)」，則它們不會存在。
 
-| 欄位 | 類型 | 說明 |
-|--------------------------|-----------|----------------------------------------------------|
-| bot_id?                  | snowflake | 此身分組所屬的 Bot ID |
-| integration_id?          | snowflake | 此身分組所屬的整合服務 ID |
+| 欄位                     | 類型      | 說明                                          |
+|--------------------------|-----------|---------------------------------------------|
+| bot_id?                  | snowflake | 此身分組所屬的 Bot ID                         |
+| integration_id?          | snowflake | 此身分組所屬的整合服務 ID                     |
 | premium_subscriber?      | null      | 此身分組是否為伺服器的加成者 (Booster) 身分組 |
-| subscription_listing_id? | snowflake | 此身分組訂閱 SKU 和品項的 ID |
-| available_for_purchase?  | null      | 此身分組是否可供購買 |
-| guild_connections?       | null      | 此身分組是否為伺服器的連結身分組 |
+| subscription_listing_id? | snowflake | 此身分組訂閱 SKU 和品項的 ID                  |
+| available_for_purchase?  | null      | 此身分組是否可供購買                          |
+| guild_connections?       | null      | 此身分組是否為伺服器的連結身分組              |
 
 <ManualAnchor id="role-object-role-colors-object" />
 ###### 身分組顏色物件 (Role Colors Object)
 
 此物件一律會填入身分組的 `color` 作為 `primary_color`。只有在伺服器具有 `ENHANCED_ROLE_COLORS` [伺服器特徵 (guild feature)](/developers/bilingual/resources/guild#guild-object-guild-features) 時，其他欄位才能設定為非 null 值。
 
-| 欄位 | 類型 | 說明 |
-|-----------------|----------|--------------------------------------------------------------------------------------------------------|
-| primary_color   | integer  | 身分組的主要顏色 |
-| secondary_color | ?integer | 身分組的次要顏色，這將使身分組呈現所提供顏色之間的漸層色 |
+| 欄位            | 類型     | 說明                                                            |
+|-----------------|----------|---------------------------------------------------------------|
+| primary_color   | integer  | 身分組的主要顏色                                                |
+| secondary_color | ?integer | 身分組的次要顏色，這將使身分組呈現所提供顏色之間的漸層色         |
 | tertiary_color  | ?integer | 身分組的第三顏色，這將使漸層呈現全像投影風格 (holographic style) |
 
 <Info>
 發送 `tertiary_color` 時，API 會強制身分組顏色為特定全像風格數值：
 `primary_color = 11127295`、`secondary_color = 16759788`、且 `tertiary_color = 16761760`。
 </Info>
-
 </div>
-
 </div>
 
 ---
@@ -691,14 +664,13 @@ When sending `tertiary_color` the API enforces the role color to be a holographi
 <ManualAnchor id="role-object-role-flags" />
 ###### Role Flags
 
-| Flag      | Value    | Description                                                                                                    |
-|-----------|----------|----------------------------------------------------------------------------------------------------------------|
+| Flag      | Value    | Description                                                                                                          |
+|-----------|----------|----------------------------------------------------------------------------------------------------------------------|
 | IN_PROMPT | `1 << 0` | role can be selected by members in an [onboarding](/developers/en-us/resources/guild#guild-onboarding-object) prompt |
 
 ## Permissions For Timed Out Members
 
 Timed out members will temporarily lose all permissions except `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY`. Owners and admin users with `ADMINISTRATOR` permissions are exempt.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -741,14 +713,12 @@ Timed out members will temporarily lose all permissions except `VIEW_CHANNEL` an
 <ManualAnchor id="role-object-role-flags" />
 ###### 身分組旗標 (Role Flags)
 
-| 旗標 | 數值 | 說明 |
+| 旗標      | 數值     | 說明                                                                                                             |
 |-----------|----------|----------------------------------------------------------------------------------------------------------------|
 | IN_PROMPT | `1 << 0` | 身分組可在[新手引導過程 (onboarding)](/developers/bilingual/resources/guild#guild-onboarding-object)中供成員選擇 |
 
 ## 被停權成員的權限 (Permissions For Timed Out Members)
 
 被停權成員（禁言成員）將暫時失去除了 `VIEW_CHANNEL` 和 `READ_MESSAGE_HISTORY` 之外的所有權限。擁有 `ADMINISTRATOR` 權限的伺服器擁有者與管理員除外。
-
 </div>
-
 </div>

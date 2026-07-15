@@ -93,14 +93,14 @@ const { code } = await discordSdk.commands.authorize({
 部分物件上的所有欄位均為選填且可為 null。
 </Info>
 
-| 欄位 | 類型 | 說明 |
-| :--- | :--- | :--- |
-| type | integer | [Activity 類型](/developers/zh-tw/events/gateway-events#activity-object-activity-types)，用以決定豐富狀態資料的標頭文字 |
-| state | string | 使用者目前的隊伍狀態 (Party status) |
-| details | string | 玩家目前在您的互動活動中在做些什麼 |
-| timestamps | [timestamps](/developers/zh-tw/events/gateway-events#activity-object-activity-timestamps) 物件 | Unix 時間戳記，用以顯示開始和/或結束時間 |
-| assets | [assets](/developers/zh-tw/events/gateway-events#activity-object-activity-assets) 物件 | 豐富狀態資料所使用的圖片（及其懸停提示文字） |
-| party | [party](/developers/zh-tw/events/gateway-events#activity-object-activity-party) 物件 | 玩家當前隊伍的相關資訊 |
+| 欄位       | 類型                                                                                           | 說明                                                                                                                   |
+|:-----------|:-----------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------|
+| type       | integer                                                                                        | [Activity 類型](/developers/zh-tw/events/gateway-events#activity-object-activity-types)，用以決定豐富狀態資料的標頭文字 |
+| state      | string                                                                                         | 使用者目前的隊伍狀態 (Party status)                                                                                    |
+| details    | string                                                                                         | 玩家目前在您的互動活動中在做些什麼                                                                                     |
+| timestamps | [timestamps](/developers/zh-tw/events/gateway-events#activity-object-activity-timestamps) 物件 | Unix 時間戳記，用以顯示開始和/或結束時間                                                                                |
+| assets     | [assets](/developers/zh-tw/events/gateway-events#activity-object-activity-assets) 物件         | 豐富狀態資料所使用的圖片（及其懸停提示文字）                                                                             |
+| party      | [party](/developers/zh-tw/events/gateway-events#activity-object-activity-party) 物件           | 玩家當前隊伍的相關資訊                                                                                                 |
 
 ### setActivity 範例 (setActivity Example)
 

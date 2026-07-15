@@ -38,15 +38,15 @@ import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
 這不是事件發生的完整清單。您應該使用權利的存在與否來判斷使用者是否擁有存取付費功能的權限。Subscription API 和相關事件旨在用於報告和生命週期管理，**不應作為判斷使用者是否擁有存取權限的唯一依據 (source of truth)**。
 </Info>
 
-| 事件名稱 | 訂閱行為 | 更新的欄位 |
-| :--- | :--- | :--- |
-| `SUBSCRIPTION_CREATE` | 訂閱已建立 | 如果權利已授予，`status` 為 `0 (active)`；如果尚未授予權利，`status` 為 `1 (inactive)`。 |
-| `SUBSCRIPTION_UPDATE` | 訂閱被授予權利 | `status` 為 `0 (active)`。 |
-| `SUBSCRIPTION_UPDATE` | 訂閱已續訂 | `current_period_start`、`current_period_end` 時間戳記更新。 |
-| `SUBSCRIPTION_UPDATE` | 訂閱已升級或降級 | `sku_ids`、`entitlement_ids`、`renewal_sku_ids` 可能會更新。 |
-| `SUBSCRIPTION_UPDATE` | 訂閱已取消 | `canceled_at` 時間戳記更新，`status` 為 `2 (ending)`。 |
-| `SUBSCRIPTION_UPDATE` | 訂閱已結束 | `status` 為 `1 (inactive)`，此事件是非同步處理的，不會立刻發生。 |
-| `SUBSCRIPTION_UPDATE` | 使用者恢復/取消已取消的訂閱 | `status` 為 `0 (active)`。 |
+| 事件名稱              | 訂閱行為                    | 更新的欄位                                                                           |
+|:----------------------|:------------------------|:------------------------------------------------------------------------------------|
+| `SUBSCRIPTION_CREATE` | 訂閱已建立                  | 如果權利已授予，`status` 為 `0 (active)`；如果尚未授予權利，`status` 為 `1 (inactive)`。 |
+| `SUBSCRIPTION_UPDATE` | 訂閱被授予權利              | `status` 為 `0 (active)`。                                                            |
+| `SUBSCRIPTION_UPDATE` | 訂閱已續訂                  | `current_period_start`、`current_period_end` 時間戳記更新。                            |
+| `SUBSCRIPTION_UPDATE` | 訂閱已升級或降級            | `sku_ids`、`entitlement_ids`、`renewal_sku_ids` 可能會更新。                            |
+| `SUBSCRIPTION_UPDATE` | 訂閱已取消                  | `canceled_at` 時間戳記更新，`status` 為 `2 (ending)`。                                 |
+| `SUBSCRIPTION_UPDATE` | 訂閱已結束                  | `status` 為 `1 (inactive)`，此事件是非同步處理的，不會立刻發生。                        |
+| `SUBSCRIPTION_UPDATE` | 使用者恢復/取消已取消的訂閱 | `status` 為 `0 (active)`。                                                            |
 
 ---
 
@@ -62,10 +62,10 @@ import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
 
 對於訂閱 SKU，您會收到以下權利事件：
 
-| 事件 | 說明 |
-| :--- | :--- |
-| `ENTITLEMENT_CREATE` | 當使用者被授予您應用程式訂閱 SKU 的權利時。 |
-| `ENTITLEMENT_UPDATE` | 當某個訂閱 SKU 的權利結束時。 |
+| 事件                 | 說明                                                                                                                          |
+|:---------------------|:----------------------------------------------------------------------------------------------------------------------------|
+| `ENTITLEMENT_CREATE` | 當使用者被授予您應用程式訂閱 SKU 的權利時。                                                                                    |
+| `ENTITLEMENT_UPDATE` | 當某個訂閱 SKU 的權利結束時。                                                                                                  |
 | `ENTITLEMENT_DELETE` | 當 Discord 退款該訂閱、移除權利，或者開發者 [刪除測試權利](/developers/zh-tw/resources/entitlement#delete-test-entitlement) 時。 |
 
 ### 透過 HTTP API 存取權利 (Accessing Entitlements with the HTTP API)
@@ -110,11 +110,11 @@ import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
 
 當使用者訂閱新的訂閱服務時，您將會收到以下事件：
 
-| 事件 | 事件觸發條件 |
-| :--- | :--- |
+| 事件                  | 事件觸發條件                                                                                      |
+|:----------------------|:--------------------------------------------------------------------------------------------|
 | `SUBSCRIPTION_CREATE` | 當訂閱初始建立時。如果權利已授予，`status` 為 `0 (active)`；如果尚未授予，`status` 為 `1 (inactive)`。 |
-| `ENTITLEMENT_CREATE` | 當使用者被授予新訂閱的權利時。 |
-| `SUBSCRIPTION_UPDATE` | 當訂閱以 `entitlement_ids`、`renewal_sku_ids` 和 `status` (`0 (active)`) 進行更新時。 |
+| `ENTITLEMENT_CREATE`  | 當使用者被授予新訂閱的權利時。                                                                     |
+| `SUBSCRIPTION_UPDATE` | 當訂閱以 `entitlement_ids`、`renewal_sku_ids` 和 `status` (`0 (active)`) 進行更新時。               |
 
 ### 取消現有訂閱 (Cancelling an existing subscription)
 
@@ -122,18 +122,18 @@ import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
 
 當使用者取消訂閱時，您將會收到以下事件：
 
-| 事件 | 事件觸發條件 |
-| :--- | :--- |
+| 事件                  | 事件觸發條件                                                                                       |
+|:----------------------|:---------------------------------------------------------------------------------------------|
 | `SUBSCRIPTION_UPDATE` | 當訂閱更新為即將結束且 `status` 為 `2 (ending)`，且 `canceled_at` 設定為使用者取消訂閱時的時間戳記。 |
 
 使用者的訂閱與權利在達到訂閱的 `current_period_end` 之前依然有效。
 
 如果訂閱在 `current_period_end` 之前沒有恢復，它將會結束，您將會收到以下事件：
 
-| 事件 | 事件觸發條件 |
-| :--- | :--- |
-| `ENTITLEMENT_UPDATE` | 當當前權利結束時。`ends_at` 將會更新為時間戳記。 |
-| `SUBSCRIPTION_UPDATE` | 當訂閱更新且 `status` 為 `1 (inactive)` 時。 |
+| 事件                  | 事件觸發條件                                   |
+|:----------------------|:-----------------------------------------|
+| `ENTITLEMENT_UPDATE`  | 當當前權利結束時。`ends_at` 將會更新為時間戳記。 |
+| `SUBSCRIPTION_UPDATE` | 當訂閱更新且 `status` 為 `1 (inactive)` 時。    |
 
 ### 恢復已取消的訂閱 (Resuming a cancelled subscription)
 
@@ -141,8 +141,8 @@ import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
 
 當使用者恢復訂閱時，您將會收到以下事件：
 
-| 事件 | 事件觸發條件 |
-| :--- | :--- |
+| 事件                  | 事件觸發條件                                                                 |
+|:----------------------|:-----------------------------------------------------------------------|
 | `SUBSCRIPTION_UPDATE` | 當訂閱設定為繼續且 `status` 為 `0 (active)`，且 `canceled_at` 設定為 null 時。 |
 
 ---
@@ -159,10 +159,10 @@ import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
 
 當訂閱升級時，較低分級的當前權利將立即結束，您將會收到以下事件：
 
-| 事件 | 事件觸發條件 |
-| :--- | :--- |
-| `ENTITLEMENT_UPDATE` | 當當前權利結束時。`ends_at` 將會更新為時間戳記。 |
-| `ENTITLEMENT_CREATE` | 當為升級的訂閱 SKU 建立新的權利時。 |
+| 事件                  | 事件觸發條件                                                                                     |
+|:----------------------|:-------------------------------------------------------------------------------------------|
+| `ENTITLEMENT_UPDATE`  | 當當前權利結束時。`ends_at` 將會更新為時間戳記。                                                   |
+| `ENTITLEMENT_CREATE`  | 當為升級的訂閱 SKU 建立新的權利時。                                                               |
 | `SUBSCRIPTION_UPDATE` | 當訂閱以新的 `entitlement_ids`、`sku_ids`、`current_period_start`、`current_period_end` 進行更新時。 |
 
 ### 降級現有訂閱 (Downgrading an existing subscription)
@@ -171,16 +171,16 @@ import { ShopIcon } from '/snippets/icons/ShopIcon.jsx'
 
 使用者已經支付了他們目前的方案直到 `subscription.current_period_end` 為止，因此其目前的方案在此之前依然有效，您將會收到以下事件：
 
-| 事件 | 事件觸發條件 |
-| :--- | :--- |
+| 事件                  | 事件觸發條件                                                          |
+|:----------------------|:----------------------------------------------------------------|
 | `SUBSCRIPTION_UPDATE` | 當訂閱更新以在 `subscription.renewal_sku_ids` 中反映續訂的 SKU ID 時。 |
 
 一旦使用者的當前訂閱在 `subscription.current_period_end` 到期，您將會收到以下事件：
 
-| 事件 | 事件觸發條件 |
-| :--- | :--- |
-| `ENTITLEMENT_UPDATE` | 當當前權利結束時。`ends_at` 將會更新為時間戳記。 |
-| `ENTITLEMENT_CREATE` | 當為降級的訂閱 SKU 建立新的權利時。 |
+| 事件                  | 事件觸發條件                                                                                     |
+|:----------------------|:-------------------------------------------------------------------------------------------|
+| `ENTITLEMENT_UPDATE`  | 當當前權利結束時。`ends_at` 將會更新為時間戳記。                                                   |
+| `ENTITLEMENT_CREATE`  | 當為降級的訂閱 SKU 建立新的權利時。                                                               |
 | `SUBSCRIPTION_UPDATE` | 當訂閱以新的 `entitlement_ids`、`sku_ids`、`current_period_start`、`current_period_end` 進行更新時。 |
 
 ---

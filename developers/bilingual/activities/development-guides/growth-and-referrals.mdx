@@ -28,7 +28,6 @@ This guide covers implementing a referral link which will feature a reward syste
 
 1. Create and track an incentivized link for a promotional campaign, then prompt users to share the link
 2. Handle incoming referrals and grant valid rewards
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -50,9 +49,7 @@ This guide covers implementing a referral link which will feature a reward syste
 
 1. 建立並追蹤推廣活動的獎勵連結，然後引導使用者分享該連結。
 2. 處理傳入的推薦並授予有效的獎勵。
-
 </div>
-
 </div>
 
 ---
@@ -88,7 +85,6 @@ try {
     console.error('Failed to share link:', error);
 }
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -120,9 +116,7 @@ try {
     console.error('分享連結失敗：', error);
 }
 ```
-
 </div>
-
 </div>
 
 ---
@@ -168,7 +162,6 @@ async function handleReferral() {
     }
 }
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -210,9 +203,7 @@ async function handleReferral() {
     }
 }
 ```
-
 </div>
-
 </div>
 
 ---
@@ -228,7 +219,6 @@ async function handleReferral() {
 - Handle edge cases like expired promotions gracefully
 - Consider implementing cool-down periods between shares
 - Do not override the `referrer_id` query parameter directly. When present, `referrer_id` is expected to be a Discord snowflake-type user ID, otherwise it will be set to the message's author id.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -240,9 +230,7 @@ async function handleReferral() {
 - 優雅地處理已過期促銷活動等邊緣情況。
 - 考慮在分享之間實施冷卻時間。
 - 請勿直接覆寫 `referrer_id` 查詢參數。當存在時，`referrer_id` 預期會是 Discord 的 Snowflake 類型使用者 ID，否則它將被設定為訊息的作者 ID。
-
 </div>
-
 </div>
 
 ---
@@ -282,7 +270,6 @@ Once you're satisfied with your changes you can click on the copy icon on the ro
 <Warning>
 Deleting is irreversible and immediate. Ensure that your link isn't in active use before deleting and/or that your activity gracefully handles any click-throughs from the link.
 </Warning>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -318,9 +305,7 @@ Deleting is irreversible and immediate. Ensure that your link isn't in active us
 <Warning>
 刪除操作不可逆且立即生效。請確保連結未在活躍使用中再進行刪除，並確保您的互動活動能優雅地處理已刪除連結的點擊流量。
 </Warning>
-
 </div>
-
 </div>
 
 ---
@@ -340,7 +325,6 @@ Deleting is irreversible and immediate. Ensure that your link isn't in active us
 ![custom-link-embed](/images/activities/custom-link-embed.png)
 
 Users will see an embed with your information displayed. Clicking "Play" opens the activity and passes through the `custom_id` you've set. A `referrer_id` will be present for links shared on Discord.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -356,9 +340,7 @@ Users will see an embed with your information displayed. Clicking "Play" opens t
 ![自訂連結嵌入卡片](/images/activities/custom-link-embed.png)
 
 使用者將會看到顯示您資訊的嵌入式卡片。點擊「Play」將開啟互動活動並傳遞您所設定的 `custom_id`。對於在 Discord 上分享的連結，將會帶有 `referrer_id`。
-
 </div>
-
 </div>
 
 ---
@@ -405,7 +387,6 @@ const {success} = await discordSdk.commands.shareLink({
 });
 success ? console.log('User shared link!') : console.log('User did not share link!');
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -448,7 +429,5 @@ const {success} = await discordSdk.commands.shareLink({
 });
 success ? console.log('使用者已分享連結！') : console.log('使用者未分享連結！');
 ```
-
 </div>
-
 </div>

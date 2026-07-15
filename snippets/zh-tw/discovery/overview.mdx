@@ -1,0 +1,73 @@
+import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
+
+<LanguageSelector current="zh-tw" path="/developers/zh-tw/discovery/overview" />
+
+本頁面涵蓋了您應用程式可用的探索入口，以及它們具體運作方式的詳細資訊。如需了解 Discord 上應用程式探索功能的簡介，請參閱 [應用程式探索 (App Discovery)](/developers/zh-tw/platform/discovery) 平台頁面。
+
+<Info>
+應用程式探索功能適用於 [Bot (機器人)](/developers/zh-tw/bots/overview) 以及 [互動活動 (Activities)](/developers/zh-tw/activities/overview)。
+</Info>
+
+## 應用程式目錄 (App Directory)
+
+一旦您為您的應用程式 [啟用了探索功能](/developers/zh-tw/discovery/enabling-discovery)，使用者就可以在「應用程式目錄」中找到它 —— 這是一個可搜尋的樞紐，使用者可以透過名稱、類別或精選特輯進行瀏覽。
+
+- **搜尋 (Search)**：使用者可以透過名稱搜尋您的應用程式並安裝它。
+- **應用程式目錄產品頁面 (App Directory Product Page)**：分享有關您應用程式的資訊，包括說明、圖片、影片與連結。
+
+![您的 Discord 應用程式檔案頁面](/images/discovery/directory-product-page.png)
+
+## 應用程式啟動器 (App Launcher)
+
+應用程式啟動器可讓使用者透過 Discord 各處的應用程式形狀圖示 <Icon icon="AppsIcon" /> 來搜尋與瀏覽應用程式特輯。
+
+![Discord 中的應用程式啟動器](/images/discovery/app-launcher.png)
+
+### 應用程式啟動器特輯 (App Launcher Collections)
+
+- **最近使用的 App (Recent Apps)**：您最近使用或安裝的應用程式將會顯示在應用程式啟動器的最上方
+- **已安裝的 App (Installed Apps)**：已加入到您帳戶或伺服器的應用程式（如適用）
+- **精選特輯 (Curated Collections)**：使用者最愛、官方推薦和精選推薦應用程式的組合
+- **合作夥伴 App (Partner Apps)**：某些與 Discord 合作開發的應用程式，標有「Partner (合作夥伴)」標籤
+- **推廣 App (Promoted Apps)**：在應用程式啟動器或應用程式目錄中獲得更高曝光率的應用程式，標有「Promoted (推廣)」標籤
+
+搜尋結果是根據與查詢的關聯性，以及基於使用量的受歡迎程度進行排名的。使用廣告或提供應用程式內購買的應用程式，將在其詳細資訊頁面上標記為「Ad-supported (包含廣告)」和「In-App Purchases (程式內購買)」。
+
+### 編輯推薦 (Editorial Recommendations)
+
+應用程式可以作為精選特輯或推廣的一部分，在應用程式目錄或應用程式啟動器中被推薦。如果我們對推薦您的應用程式感興趣，Discord 的編輯團隊將會主動與您聯絡。
+
+---
+
+## 社群探索 (Social Discovery)
+
+一旦您的應用程式可被探索，使用者就可以透過 Discord 中的社群互動找到它。當您的應用程式在伺服器中使用時，它可能對其他使用者可見，從而讓他們了解更多資訊並從您的應用程式設定檔中自行安裝。
+
+### 分享連結 (Sharing Links)
+
+建立指向您應用程式個人資料頁面、商店頁面或特定項目的可分享連結。在 Discord、電子郵件或您的網站上分享這些連結。
+
+![Discord 中 Sandscape 應用程式的可分享嵌入連結](/images/discovery/sharing-links.png)
+
+### 豐富狀態 (Rich Presence)
+使用 [豐富狀態 (Rich Presence)](/developers/zh-tw/rich-presence/overview) 顯示使用者在您的應用程式中正在做什麼，進而吸引更多使用者去探索它。
+
+![Discord 使用者個人資料中豐富狀態資料的範例](/images/rich-presence/examples.png)
+
+---
+
+## 後續步驟 (Next Steps)
+
+準備好為您的應用程式啟用探索功能了嗎？
+
+import {GlobeEarthIcon} from '/snippets/icons/GlobeEarthIcon.jsx'
+import {BookCheckIcon} from '/snippets/icons/BookCheckIcon.jsx'
+
+<CardGroup cols={2}>
+  <Card title="啟用探索功能" href="/developers/zh-tw/discovery/enabling-discovery" icon={<GlobeEarthIcon />}>
+    為您的應用程式啟用探索功能，使其在應用程式目錄與應用程式啟動器中可用。
+  </Card>
+  <Card title="探索最佳實踐" href="/developers/zh-tw/discovery/best-practices" icon={<BookCheckIcon />}>
+    了解如何讓您的應用程式脫穎而出，並吸引更多使用者去探索它。
+  </Card>
+</CardGroup>

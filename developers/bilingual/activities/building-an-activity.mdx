@@ -19,7 +19,6 @@ import { GlobeEarthIcon } from '/snippets/icons/GlobeEarthIcon.jsx'
 [Activities](/developers/en-us/activities/overview) are web-based games and apps that can be run within Discord. Activities are embedded in iframes within the Discord client, and can be launched from the App Launcher or when responding to interactions.
 
 If this is your first time learning about Activities, check out the [Activities Overview](/developers/en-us/activities/overview) for more information and a collection of more advanced [sample projects](/developers/en-us/activities/overview#sample-projects).
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -27,9 +26,7 @@ If this is your first time learning about Activities, check out the [Activities 
 [互動活動 (Activities)](/developers/zh-tw/activities/overview) 是可以在 Discord 內執行的網頁版遊戲與應用程式。互動活動會嵌入在 Discord 用戶端的 iframe 中，並可從應用程式啟動器 (App Launcher) 啟動，或是作為對互動 (Interaction) 的回應來啟動。
 
 如果這是您第一次了解互動活動，請先閱讀 [互動活動概述](/developers/zh-tw/activities/overview) 以獲取更多資訊，以及一組更進階的 [範例專案](/developers/zh-tw/activities/overview#sample-projects)。
-
 </div>
-
 </div>
 
 ---
@@ -58,7 +55,6 @@ It assumes an understanding of [JavaScript](https://developer.mozilla.org/en-US/
 - **[Vite](https://vite.dev/)**, a build tool for modern JavaScript projects that will make your application easier to serve
 - **[cloudflared](https://github.com/cloudflare/cloudflared?tab=readme-ov-file#installing-cloudflared)**, for bridging your local development server to the internet
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -83,9 +79,7 @@ It assumes an understanding of [JavaScript](https://developer.mozilla.org/en-US/
 - **[Vite](https://vite.dev/)**：現代 JavaScript 專案的建置工具，可以讓您的應用程式更容易部署
 - **[cloudflared](https://github.com/cloudflare/cloudflared?tab=readme-ov-file#installing-cloudflared)**：用於將您的本地開發伺服器橋接到網際網路
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -99,7 +93,6 @@ It assumes an understanding of [JavaScript](https://developer.mozilla.org/en-US/
 Before getting started, you need to enable Developer Mode for your Discord account if you don't already have it enabled. Developer Mode will allow you to run in-development Activities and expose resource IDs (like users, channels, and servers) in the client which can simplify testing. To enable Developer Mode:
 1. Go to your **User Settings** in your Discord client. On Desktop, you can access **User Settings** by clicking on the cogwheel icon near the bottom-left, next to your username.
 2. Click on **Advanced** tab from the left-hand sidebar and toggle on `Developer Mode`.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -109,9 +102,7 @@ Before getting started, you need to enable Developer Mode for your Discord accou
 在開始之前，如果您的 Discord 帳戶尚未啟用開發者模式，則需要先將其啟用。開發者模式允許您執行開發中的互動活動，並在用戶端中顯示資源 ID（如使用者、頻道和伺服器 ID），這可以簡化測試。要啟用開發者模式：
 1. 進入 Discord 用戶端中的 **使用者設定**。在電腦版上，您可以點擊左下角您的使用者名稱旁邊的齒輪圖示來進入。
 2. 點擊左側面板中的 **進階** 分頁，然後開啟 `開發者模式` 的切換開關。
-
 </div>
-
 </div>
 
 ---
@@ -150,7 +141,6 @@ The sample project you cloned is broken into two parts:
 ```
 
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -185,9 +175,7 @@ git clone git@github.com:discord/getting-started-activity.git
 ```
 
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -228,7 +216,6 @@ By the end of Step 1, you should have:
 - Cloned the [sample project](https://github.com/discord/getting-started-activity) to your development environment
 - Installed the front-end dependencies (in the `client` folder)
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -265,9 +252,7 @@ npm run dev
 - 將 [範例專案](https://github.com/discord/getting-started-activity) 複製到您的開發環境中
 - 安裝了前端相依性（在 `client` 資料夾中）
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -291,7 +276,6 @@ Launching a non-distributed Activity is limited to you or members of the develop
 </Info>
 
 After you create your app, you'll land on the **General Information** page of the app's settings, where you can update basic information about your app like its description and icon.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -311,9 +295,7 @@ After you create your app, you'll land on the **General Information** page of th
 </Info>
 
 建立 App 後，您將進入 App 設定的 **General Information** 頁面，您可以在其中更新 App 的基本資訊（如說明和圖示）。
-
 </div>
-
 </div>
 
 ---
@@ -339,7 +321,6 @@ Details about installation contexts is in the [Application documentation](/devel
 </Accordion>
 
 Click on [**Installation**](https://discord.com/developers/applications/select/installation) in the left sidebar, then under **Installation Contexts** make sure both "User Install" and "Guild Install" are selected. This will make sure users can launch our app's Activity across Discord servers, DMs, and Group DMs.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -361,9 +342,7 @@ Discord 中的 App 可以安裝至不同的 **[安裝內容 (installation contex
 </Accordion>
 
 點擊左側邊欄中的 [**Installation**](https://discord.com/developers/applications/select/installation)，接著在 **Installation Contexts** 下確保同時勾選「User Install」與「Guild Install」。這將確保使用者可以在整個 Discord 伺服器、私訊與群組私訊中啟動我們 App 的互動活動。
-
 </div>
-
 </div>
 
 ---
@@ -381,7 +360,6 @@ You can learn more about the OAuth flow and redirect URIs in the [OAuth2 documen
 Click on [**OAuth2**](https://discord.com/developers/applications/select/oauth2) in your app's settings. Under **Redirects**, enter `https://127.0.0.1` as a placeholder value then click **Save Changes**.
 
 ![Redirect URI in Activity Settings](/images/activities/oauth2-redirect.png)
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -395,9 +373,7 @@ Click on [**OAuth2**](https://discord.com/developers/applications/select/oauth2)
 點選您 App 設定中的 [**OAuth2**](https://discord.com/developers/applications/select/oauth2)。在 **Redirects** 下方，輸入 `https://127.0.0.1` 作為預留值，然後點選 **Save Changes**。
 
 ![重新導向 URI 設定畫面](/images/activities/oauth2-redirect.png)
-
 </div>
-
 </div>
 
 ---
@@ -442,7 +418,6 @@ By the end of Step 2, make sure you have:
 - Set up a placeholder Redirect URI
 - Added your app's Client ID and Client Secret to your project's `.env` file.
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -483,9 +458,7 @@ cp example.env .env
 - 設定了預留的重新導向 URI
 - 將您 App 的 Client ID 和 Client Secret 新增至專案的 `.env` 檔案中
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -503,7 +476,6 @@ The Embedded App SDK is a first-party SDK that handles the communication between
 <Info>
 The events and commands available in the Embedded App SDK are a subset of the [RPC API](/developers/en-us/topics/rpc) ones, so referencing the RPC documentation can be helpful to understand what's happening under the hood when developing Activities.
 </Info>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -517,9 +489,7 @@ The events and commands available in the Embedded App SDK are a subset of the [R
 <Info>
 嵌入式 App SDK 中可用的事件和指令是 [RPC API](/developers/zh-tw/topics/rpc) 事件和指令的子集，因此在開發互動活動時，參考 RPC 說明文件有助於了解其背後的運作原理。
 </Info>
-
 </div>
-
 </div>
 
 ---
@@ -572,7 +542,6 @@ document.querySelector('#app').innerHTML = `
 <div>
     <img src="${rocketLogo}" class="logo" alt="Discord" />
     <h1>Hello, World!</h1>
-
 </div>
 `;
 ```
@@ -590,7 +559,6 @@ By the end of Step 3, make sure you have:
 - Installed the Embedded App SDK to your project
 - Imported the SDK in your project's `client/main.js` file
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -639,7 +607,6 @@ document.querySelector('#app').innerHTML = `
 <div>
     <img src="${rocketLogo}" class="logo" alt="Discord" />
     <h1>哈囉，世界！</h1>
-
 </div>
 `;
 ```
@@ -657,9 +624,7 @@ document.querySelector('#app').innerHTML = `
 - 在您的專案中安裝了嵌入式 App SDK
 - 在您專案的 `client/main.js` 檔案中導入了 SDK
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -692,7 +657,6 @@ VITE v5.0.12 ready in 100 ms
 ```
 
 We'll use the Local URL as our publicly-accessible URL in the next step.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -721,9 +685,7 @@ VITE v5.0.12 ready in 100 ms
 ```
 
 我們將在下一個步驟中使用此本地網址作為我們公開存取的網址。
-
 </div>
-
 </div>
 
 ---
@@ -750,7 +712,6 @@ https://funky-jogging-bunny.trycloudflare.com
 ```
 
 Copy the URL from the output, as we'll need to add it to our app's settings.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -773,9 +734,7 @@ https://funky-jogging-bunny.trycloudflare.com
 ```
 
 從輸出中複製該網址，因為我們需要將其新增至我們的 App 設定中。
-
 </div>
-
 </div>
 
 ---
@@ -797,7 +756,6 @@ Back in your app's settings, click on the [**URL Mappings** page](https://discor
 | `/`    | `funky-jogging-bunny.trycloudflare.com` |
 
 Read details about URL Mapping [in the development guide](/developers/en-us/activities/development-guides/local-development#url-mapping).
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -815,9 +773,7 @@ Read details about URL Mapping [in the development guide](/developers/en-us/acti
 | `/`    | `funky-jogging-bunny.trycloudflare.com` |
 
 您可以在 [開發指南](/developers/zh-tw/activities/development-guides/local-development#url-mapping) 中閱讀關於網址映射的詳細細節。
-
 </div>
-
 </div>
 
 ---
@@ -839,7 +795,6 @@ Find the first checkbox, labeled `Enable Activities`. Turn it on 🎉
 When you enable Activities for your app, a [default Entry Point command](/developers/en-us/interactions/application-commands#default-entry-point-command) called "Launch" is automatically created. This [Entry Point command](/developers/en-us/interactions/application-commands#entry-point-commands) is the primary way for users to launch your Activity in Discord.
 
 By default, interactions with this command will result in Discord opening your Activity for the user and posting a message in the channel where it was launched from. However, if you prefer to handle the interactions in your app, you can update the [`handler` field](/developers/en-us/interactions/application-commands#entry-point-handlers) or create your own. Additional details are in the Entry Point command [documentation](/developers/en-us/interactions/application-commands#entry-point-commands) and [development guide](/developers/en-us/activities/development-guides/user-actions#setting-up-an-entry-point-command).
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -857,9 +812,7 @@ By default, interactions with this command will result in Discord opening your A
 當您為 App 啟用互動活動時，系統會自動為您的 App 建立一個名為「Launch」的 [預設進入點指令](/developers/zh-tw/interactions/application-commands#default-entry-point-command)。此 [進入點指令 (Entry Point command)](/developers/zh-tw/interactions/application-commands#entry-point-commands) 是使用者在 Discord 中啟動您的互動活動的主要方式。
 
 預設情況下，與此指令的互動會導致 Discord 為使用者開啟您的互動活動，並在活動啟動的頻道中傳送一條訊息。不過，如果您希望在您自己的 App 中處理互動，您可以更新 [`handler` 欄位](/developers/zh-tw/interactions/application-commands#entry-point-handlers) 或建立您自己的處理常式。詳細的附加資訊可在進入點指令 [說明文件](/developers/zh-tw/interactions/application-commands#entry-point-commands) 以及 [開發指南](/developers/zh-tw/activities/development-guides/user-actions#setting-up-an-entry-point-command) 中找到。
-
 </div>
-
 </div>
 
 ---
@@ -894,7 +847,6 @@ By the end of Step 4, make sure you have:
 - Enabled Activities for your app
 - Successfully launched your Activity in Discord
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -925,9 +877,7 @@ By the end of Step 4, make sure you have:
 - 啟用了您 App 的互動活動功能
 - 成功在 Discord 中啟動了您的互動活動
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -964,7 +914,6 @@ npm install
 ```
 
 We aren't going to edit the server code here, but it consists of a single POST route for `/api/token` that allows us to perform the OAuth2 flow from the server securely.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -997,9 +946,7 @@ npm install
 ```
 
 我們不需要在此編輯後端伺服器程式碼，它主要包含一個用於 `/api/token` 的 POST 路由，該路由允許我們安全地在伺服器端執行 OAuth2 流程。
-
 </div>
-
 </div>
 
 ---
@@ -1058,7 +1005,6 @@ Now, start the project's backend server:
 ```bash
 npm run dev
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1113,9 +1059,7 @@ app.listen(port, () => {
 ```bash
 npm run dev
 ```
-
 </div>
-
 </div>
 
 ---
@@ -1139,7 +1083,6 @@ We're almost there! Now, we need our client application to communicate with our 
 
 To allow our frontend app to call our Express server, Vite requires us to set up a proxy for `/api/*` to our backend server, which is running on port 3001. In their docs, you can learn more about [Vite](https://vitejs.dev/).
 </Info>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1159,9 +1102,7 @@ To allow our frontend app to call our Express server, Vite requires us to set up
 
 為了允許我們的前端 App 呼叫 Express 後端，Vite 要求我們設定將 `/api/*` 轉發到我們執行在連接埠 3001 的後端伺服器的代理。在他們的說明文件中，您可以了解更多關於 [Vite](https://vitejs.dev/) 的資訊。
 </Info>
-
 </div>
-
 </div>
 
 ---
@@ -1235,7 +1176,6 @@ document.querySelector('#app').innerHTML = `
 <div>
     <img src="${rocketLogo}" class="logo" alt="Discord" />
     <h1>Hello, World!</h1>
-
 </div>
 `;
 ```
@@ -1257,7 +1197,6 @@ By the end of Step 5, make sure you have:
 - Updated your `client/main.js` to call the backend to support user authorization and authentication
 - Been able to successfully complete the authorization flow for your app when opening your Activity
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1327,7 +1266,6 @@ document.querySelector('#app').innerHTML = `
 <div>
     <img src="${rocketLogo}" class="logo" alt="Discord" />
     <h1>哈囉，世界！</h1>
-
 </div>
 `;
 ```
@@ -1349,9 +1287,7 @@ document.querySelector('#app').innerHTML = `
 - 更新了您的 `client/main.js` 以呼叫後端，從而支援使用者授權與身分驗證
 - 當開啟您的互動活動時，能夠成功為您的 App 完成授權流程
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -1416,7 +1352,6 @@ By the end of Step 6, make sure you have:
 - Updated your `client/main.js` code to fetch the channel name using the SDK
 - Added a call to the new function in the callback for `setupDiscordSdk()`
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1477,9 +1412,7 @@ setupDiscordSdk().then(() => {
 - 更新了您的 `client/main.js` 程式碼，以使用 SDK 獲取頻道名稱
 - 在 `setupDiscordSdk()` 的回呼函數中加入了對新函數的呼叫
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -1559,7 +1492,6 @@ At this point, you should have your Activity up and running. For Step 7, you sho
 - Updated your `client/main.js` code to fetch the guild information using the [`GET /users/@me/guilds`](/developers/en-us/resources/user#get-current-user-guilds) API endpoint
 - Added a call to the new function in the callback for `setupDiscordSdk()`
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1635,9 +1567,7 @@ setupDiscordSdk().then(() => {
 - 更新了您的 `client/main.js` 程式碼，使用 [`GET /users/@me/guilds`](/developers/zh-tw/resources/user#get-current-user-guilds) API 端點獲取伺服器資訊
 - 在 `setupDiscordSdk()` 的回呼函數中加入了對新函數的呼叫
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -1663,7 +1593,6 @@ This is an intentionally simple example to get you started with the communicatio
     Join our community to ask questions about the API, attend events hosted by the Discord platform team, and interact with other Activities developers
   </Card>
 </CardGroup>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1685,7 +1614,5 @@ This is an intentionally simple example to get you started with the communicatio
     加入我們的社群以提出有關 API 的問題、參加由 Discord 平台團隊主辦的活動，並與其他互動活動開發者交流
   </Card>
 </CardGroup>
-
 </div>
-
 </div>

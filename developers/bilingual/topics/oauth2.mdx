@@ -14,15 +14,12 @@ import { Route } from '/snippets/route.jsx'
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 OAuth2 enables application developers to build applications that utilize authentication and data from the Discord API. Within Discord, there are multiple types of OAuth2 authentication. We support the authorization code grant, the implicit grant, client credentials, and some modified special-for-Discord flows for Bots and Webhooks.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 OAuth2 允許應用程式開發者建置整合 Discord API 進行驗證與資料獲取的應用程式。在 Discord 中，有多種 OAuth2 驗證類型。我們支援授權碼憑證 (Authorization Code Grant)、隱式憑證 (Implicit Grant)、用戶端憑證 (Client Credentials Grant)，以及針對 Bot 和 Webhook 的一些 Discord 特殊修改流程。
-
 </div>
-
 </div>
 
 ---
@@ -47,7 +44,6 @@ The first step in implementing OAuth2 is [registering a developer application](h
 <Warning>
 In accordance with the relevant RFCs, the token and token revocation URLs will **only** accept a content type of `application/x-www-form-urlencoded`. JSON content is not permitted and will return an error.
 </Warning>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -59,18 +55,16 @@ In accordance with the relevant RFCs, the token and token revocation URLs will *
 <ManualAnchor id="shared-resources-oauth2-urls" />
 ###### OAuth2 網址 (OAuth2 URLs)
 
-| 網址 (URL)                                  | 說明 (Description)                                          |
-|---------------------------------------------|-------------------------------------------------------------|
-| https://discord.com/oauth2/authorize        | 基礎授權網址                                                |
-| https://discord.com/api/oauth2/token        | 憑證 (Token) 網址                                           |
+| 網址 (URL)                                  | 說明 (Description)                                                      |
+|---------------------------------------------|-----------------------------------------------------------------------|
+| https://discord.com/oauth2/authorize        | 基礎授權網址                                                            |
+| https://discord.com/api/oauth2/token        | 憑證 (Token) 網址                                                       |
 | https://discord.com/api/oauth2/token/revoke | [憑證撤銷 (Token Revocation)](https://tools.ietf.org/html/rfc7009) 網址 |
 
 <Warning>
 根據相關 RFC，憑證 (Token) 和憑證撤銷網址**僅**接受 `application/x-www-form-urlencoded` 的內容類型。JSON 格式的內容是不被允許的，且會傳回錯誤。
 </Warning>
-
 </div>
-
 </div>
 
 ---
@@ -92,24 +86,24 @@ These are a list of all the OAuth2 scopes that Discord supports. Some scopes req
 | Name                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
 |------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | activities.read                          | allows your app to fetch data from a user's "Now Playing/Recently Played" list — not currently available for apps                                                                                                                                                                                                                                                                                                          |
-| activities.write                         | allows your app to update a user's activity - not currently available for apps (NOT REQUIRED FOR [GAMESDK ACTIVITY MANAGER](/developers/en-us/developer-tools/game-sdk#activities))                                                                                                                                                                                                                                              |
+| activities.write                         | allows your app to update a user's activity - not currently available for apps (NOT REQUIRED FOR [GAMESDK ACTIVITY MANAGER](/developers/en-us/developer-tools/game-sdk#activities))                                                                                                                                                                                                                                        |
 | applications.builds.read                 | allows your app to read build data for a user's applications                                                                                                                                                                                                                                                                                                                                                               |
 | applications.builds.upload               | allows your app to upload/update builds for a user's applications - only available to approved partners                                                                                                                                                                                                                                                                                                                    |
-| applications.commands                    | allows your app to add [commands](/developers/en-us/interactions/application-commands) to a guild - included by default with the `bot` scope                                                                                                                                                                                                                                                                                     |
-| applications.commands.update             | allows your app to update its [commands](/developers/en-us/interactions/application-commands) using a Bearer token - [client credentials grant](/developers/en-us/topics/oauth2#client-credentials-grant) only                                                                                                                                                                                                                         |
-| applications.commands.permissions.update | allows your app to update [permissions for its commands](/developers/en-us/interactions/application-commands#permissions) in a guild a user has permissions to                                                                                                                                                                                                                                                                   |
+| applications.commands                    | allows your app to add [commands](/developers/en-us/interactions/application-commands) to a guild - included by default with the `bot` scope                                                                                                                                                                                                                                                                               |
+| applications.commands.update             | allows your app to update its [commands](/developers/en-us/interactions/application-commands) using a Bearer token - [client credentials grant](/developers/en-us/topics/oauth2#client-credentials-grant) only                                                                                                                                                                                                             |
+| applications.commands.permissions.update | allows your app to update [permissions for its commands](/developers/en-us/interactions/application-commands#permissions) in a guild a user has permissions to                                                                                                                                                                                                                                                             |
 | applications.entitlements                | allows your app to read entitlements for a user's applications                                                                                                                                                                                                                                                                                                                                                             |
 | applications.store.update                | allows your app to read and update store data (SKUs, store listings, achievements, etc.) for a user's applications                                                                                                                                                                                                                                                                                                         |
 | bot                                      | for oauth2 bots, this puts the bot in the user's selected guild by default                                                                                                                                                                                                                                                                                                                                                 |
-| connections                              | allows [`/users/@me/connections`](/developers/en-us/resources/user#get-current-user-connections) to return linked third-party accounts                                                                                                                                                                                                                                                                                           |
+| connections                              | allows [`/users/@me/connections`](/developers/en-us/resources/user#get-current-user-connections) to return linked third-party accounts                                                                                                                                                                                                                                                                                     |
 | dm_channels.read                         | allows your app to see information about the user's DMs and group DMs - only available to approved partners                                                                                                                                                                                                                                                                                                                |
-| email                                    | enables [`/users/@me`](/developers/en-us/resources/user#get-current-user) to return an `email`                                                                                                                                                                                                                                                                                                                                   |
-| gdm.join                                 | allows your app to [join users to a group dm](/developers/en-us/resources/channel#group-dm-add-recipient)                                                                                                                                                                                                                                                                                                                        |
-| guilds                                   | allows [`/users/@me/guilds`](/developers/en-us/resources/user#get-current-user-guilds) to return basic information about all of a user's guilds                                                                                                                                                                                                                                                                                  |
-| guilds.join                              | allows [`/guilds/{guild.id}/members/{user.id}`](/developers/en-us/resources/guild#add-guild-member) to be used for joining users to a guild                                                                                                                                                                                                                                                                                      |
-| guilds.members.read                      | allows [`/users/@me/guilds/{guild.id}/member`](/developers/en-us/resources/user#get-current-user-guild-member) to return a user's member information in a guild                                                                                                                                                                                                                                                                  |
-| identify                                 | allows [`/users/@me`](/developers/en-us/resources/user#get-current-user) without `email`                                                                                                                                                                                                                                                                                                                                         |
-| identify.premium                         | allows your app to read a user's Nitro subscription type as defined by `premium_type` on the [User object](/developers/en-us/resources/user#user-object-user-structure) - only available to approved partners                                                                                                                                                                                                                    |
+| email                                    | enables [`/users/@me`](/developers/en-us/resources/user#get-current-user) to return an `email`                                                                                                                                                                                                                                                                                                                             |
+| gdm.join                                 | allows your app to [join users to a group dm](/developers/en-us/resources/channel#group-dm-add-recipient)                                                                                                                                                                                                                                                                                                                  |
+| guilds                                   | allows [`/users/@me/guilds`](/developers/en-us/resources/user#get-current-user-guilds) to return basic information about all of a user's guilds                                                                                                                                                                                                                                                                            |
+| guilds.join                              | allows [`/guilds/{guild.id}/members/{user.id}`](/developers/en-us/resources/guild#add-guild-member) to be used for joining users to a guild                                                                                                                                                                                                                                                                                |
+| guilds.members.read                      | allows [`/users/@me/guilds/{guild.id}/member`](/developers/en-us/resources/user#get-current-user-guild-member) to return a user's member information in a guild                                                                                                                                                                                                                                                            |
+| identify                                 | allows [`/users/@me`](/developers/en-us/resources/user#get-current-user) without `email`                                                                                                                                                                                                                                                                                                                                   |
+| identify.premium                         | allows your app to read a user's Nitro subscription type as defined by `premium_type` on the [User object](/developers/en-us/resources/user#user-object-user-structure) - only available to approved partners                                                                                                                                                                                                              |
 | messages.read                            | for local rpc server api access, this allows you to read messages from all client channels (otherwise restricted to channels/guilds your app creates)                                                                                                                                                                                                                                                                      |
 | relationships.read                       | Allows your app to access a user’s Discord Friends list, their pending requests, and blocked users. This scope is part of our Social SDK - [submit for access here](https://discord.com/developers/applications/select/social-sdk/getting-started). [Social SDK Terms apply](https://support-dev.discord.com/hc/en-us/articles/30225844245271-Discord-Social-SDK-Terms), including Section 5(a)(ii) to the data you obtain |
 | role_connections.write                   | allows your app to update a user's connection and metadata for the app                                                                                                                                                                                                                                                                                                                                                     |
@@ -124,7 +118,6 @@ These are a list of all the OAuth2 scopes that Discord supports. Some scopes req
 <Info>
 In order to add a user to a guild, your bot has to already belong to that guild. `role_connections.write` cannot be used with the [Implicit grant type](/developers/en-us/topics/oauth2#implicit-grant).
 </Info>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -138,44 +131,42 @@ In order to add a user to a guild, your bot has to already belong to that guild.
     若要洽詢僅開放給經核准合作夥伴之權限範圍的存取權限，請聯絡您的 Discord 帳戶代表，以確認它們是否符合您的需求。
 </Note>
 
-| 名稱 (Name)                              | 說明 (Description)                                                                                                                                                                                                                                                                                                                                                                                                                |
-|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| activities.read                          | 允許您的應用程式從使用者的「正在遊玩 / 最近遊玩」列表中獲取資料 —— 目前不對一般應用程式開放 |
-| activities.write                         | 允許您的應用程式更新使用者的活動狀態 —— 目前不對一般應用程式開放 (使用 [GAMESDK 互動活動管理員](/developers/bilingual/developer-tools/game-sdk#activities) 時並不需要此 Scope) |
-| applications.builds.read                 | 允許您的應用程式讀取使用者應用程式的建置版本資料 |
-| applications.builds.upload               | 允許您的應用程式為使用者的應用程式上傳/更新建置版本 —— 僅開放給經核准的合作夥伴 |
-| applications.commands                    | 允許您的應用程式向伺服器新增 [指令 (commands)](/developers/bilingual/interactions/application-commands) —— 預設包含在 `bot` 權限範圍中 |
-| applications.commands.update             | 允許您的應用程式使用 Bearer 權杖更新其 [指令 (commands)](/developers/bilingual/interactions/application-commands) —— 僅限於 [用戶端憑證授權 (client-credentials grant)](/developers/bilingual/topics/oauth2#client-credentials-grant) |
-| applications.commands.permissions.update | 允許您的應用程式在使用者擁有權限的伺服器中更新其 [指令權限 (permissions for its commands)](/developers/bilingual/interactions/application-commands#permissions) |
-| applications.entitlements                | 允許您的應用程式讀取使用者應用程式的權利 (entitlements) 資訊 |
-| applications.store.update                | 允許您的應用程式為使用者應用程式讀取和更新商店資料（SKU、商店品項、成就等） |
-| bot                                      | 用於 OAuth2 Bot，預設會將 Bot 置入使用者選擇的伺服器中 |
-| connections                              | 允許 [`/users/@me/connections`](/developers/bilingual/resources/user#get-current-user-connections) 傳回連結的第三方帳戶 |
-| dm_channels.read                         | 允許您的應用程式查看使用者私訊和群組私訊的資訊 —— 僅開放給經核准的合作夥伴 |
-| email                                    | 啟用 [`/users/@me`](/developers/bilingual/resources/user#get-current-user) 以傳回使用者的 `email` 欄位 |
-| gdm.join                                 | 允許您的應用程式將 [使用者加入群組私訊 (GDM)](/developers/bilingual/resources/channel#group-dm-add-recipient) |
-| guilds                                   | 允許 [`/users/@me/guilds`](/developers/bilingual/resources/user#get-current-user-guilds) 傳回使用者所在的所有伺服器的基本資訊 |
-| guilds.join                              | 允許使用 [`/guilds/{guild.id}/members/{user.id}`](/developers/bilingual/resources/guild#add-guild-member) 將使用者加入某個伺服器 |
-| guilds.members.read                      | 允許 [`/users/@me/guilds/{guild.id}/member`](/developers/bilingual/resources/user#get-current-user-guild-member) 傳回使用者在伺服器中的成員資訊 |
-| identify                                 | 允許 [`/users/@me`](/developers/bilingual/resources/user#get-current-user) 但不包含 `email` 欄位 |
-| identify.premium                         | 允許您的應用程式讀取使用者的 Nitro 訂閱類型（定義於 [User 物件](/developers/bilingual/resources/user#user-object-user-structure) 上的 `premium_type`） —— 僅開放給經核准的合作夥伴 |
-| messages.read                            | 用於本地 RPC 伺服器 API 存取，這允許您讀取所有用戶端頻道的訊息（否則將限制於您應用程式建立的頻道/伺服器） |
+| 名稱 (Name)                              | 說明 (Description)                                                                                                                                                                                                                                                                                                                                                                 |
+|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| activities.read                          | 允許您的應用程式從使用者的「正在遊玩 / 最近遊玩」列表中獲取資料 —— 目前不對一般應用程式開放                                                                                                                                                                                                                                                                                          |
+| activities.write                         | 允許您的應用程式更新使用者的活動狀態 —— 目前不對一般應用程式開放 (使用 [GAMESDK 互動活動管理員](/developers/bilingual/developer-tools/game-sdk#activities) 時並不需要此 Scope)                                                                                                                                                                                                     |
+| applications.builds.read                 | 允許您的應用程式讀取使用者應用程式的建置版本資料                                                                                                                                                                                                                                                                                                                                   |
+| applications.builds.upload               | 允許您的應用程式為使用者的應用程式上傳/更新建置版本 —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                                                                                                                    |
+| applications.commands                    | 允許您的應用程式向伺服器新增 [指令 (commands)](/developers/bilingual/interactions/application-commands) —— 預設包含在 `bot` 權限範圍中                                                                                                                                                                                                                                             |
+| applications.commands.update             | 允許您的應用程式使用 Bearer 權杖更新其 [指令 (commands)](/developers/bilingual/interactions/application-commands) —— 僅限於 [用戶端憑證授權 (client-credentials grant)](/developers/bilingual/topics/oauth2#client-credentials-grant)                                                                                                                                              |
+| applications.commands.permissions.update | 允許您的應用程式在使用者擁有權限的伺服器中更新其 [指令權限 (permissions for its commands)](/developers/bilingual/interactions/application-commands#permissions)                                                                                                                                                                                                                    |
+| applications.entitlements                | 允許您的應用程式讀取使用者應用程式的權利 (entitlements) 資訊                                                                                                                                                                                                                                                                                                                       |
+| applications.store.update                | 允許您的應用程式為使用者應用程式讀取和更新商店資料（SKU、商店品項、成就等）                                                                                                                                                                                                                                                                                                            |
+| bot                                      | 用於 OAuth2 Bot，預設會將 Bot 置入使用者選擇的伺服器中                                                                                                                                                                                                                                                                                                                              |
+| connections                              | 允許 [`/users/@me/connections`](/developers/bilingual/resources/user#get-current-user-connections) 傳回連結的第三方帳戶                                                                                                                                                                                                                                                            |
+| dm_channels.read                         | 允許您的應用程式查看使用者私訊和群組私訊的資訊 —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                                                                                                                         |
+| email                                    | 啟用 [`/users/@me`](/developers/bilingual/resources/user#get-current-user) 以傳回使用者的 `email` 欄位                                                                                                                                                                                                                                                                             |
+| gdm.join                                 | 允許您的應用程式將 [使用者加入群組私訊 (GDM)](/developers/bilingual/resources/channel#group-dm-add-recipient)                                                                                                                                                                                                                                                                      |
+| guilds                                   | 允許 [`/users/@me/guilds`](/developers/bilingual/resources/user#get-current-user-guilds) 傳回使用者所在的所有伺服器的基本資訊                                                                                                                                                                                                                                                      |
+| guilds.join                              | 允許使用 [`/guilds/{guild.id}/members/{user.id}`](/developers/bilingual/resources/guild#add-guild-member) 將使用者加入某個伺服器                                                                                                                                                                                                                                                   |
+| guilds.members.read                      | 允許 [`/users/@me/guilds/{guild.id}/member`](/developers/bilingual/resources/user#get-current-user-guild-member) 傳回使用者在伺服器中的成員資訊                                                                                                                                                                                                                                    |
+| identify                                 | 允許 [`/users/@me`](/developers/bilingual/resources/user#get-current-user) 但不包含 `email` 欄位                                                                                                                                                                                                                                                                                   |
+| identify.premium                         | 允許您的應用程式讀取使用者的 Nitro 訂閱類型（定義於 [User 物件](/developers/bilingual/resources/user#user-object-user-structure) 上的 `premium_type`） —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                   |
+| messages.read                            | 用於本地 RPC 伺服器 API 存取，這允許您讀取所有用戶端頻道的訊息（否則將限制於您應用程式建立的頻道/伺服器）                                                                                                                                                                                                                                                                             |
 | relationships.read                       | 允許您的應用程式存取使用者的 Discord 好友列表、待處理的請求以及被封鎖的使用者。此權限範圍屬於我們的 Social SDK 的一部分 —— [在此提交存取申請](https://discord.com/developers/applications/select/social-sdk/getting-started)。適用 [Social SDK 條款](https://support-dev.discord.com/hc/en-us/articles/30225844245271-Discord-Social-SDK-Terms), 包括對您所獲取之資料的第 5(a)(ii) 節 |
-| role_connections.write                   | 允許您的應用程式更新使用者的連線與應用程式的中繼資料 |
-| rpc                                      | 用於本地 RPC 伺服器存取，這允許您控制使用者的本地 Discord 用戶端 —— 僅開放給經核准的合作夥伴 |
-| rpc.activities.write                     | 用於本地 RPC 伺服器存取，這允許您更新使用者的活動狀態 —— 僅開放給經核准的合作夥伴 |
-| rpc.notifications.read                   | 用於本地 RPC 伺服器存取，這允許您接收推送給使用者的通知 —— 僅開放給經核准的合作夥伴 |
-| rpc.voice.read                           | 用於本地 RPC 伺服器存取，這允許您讀取使用者的語音設定並監聽語音事件 —— 僅開放給經核准的合作夥伴 |
-| rpc.voice.write                          | 用於本地 RPC 伺服器存取，這允許您更新使用者的語音設定 —— 僅開放給經核准的合作夥伴 |
-| voice                                    | 允許您的應用程式代表使用者連線至語音並查看所有語音成員 —— 僅開放給經核准的合作夥伴 |
-| webhook.incoming                         | 這會生成一個 Webhook，並在授權碼憑證流程的 OAuth 權杖回應中傳回 |
+| role_connections.write                   | 允許您的應用程式更新使用者的連線與應用程式的中繼資料                                                                                                                                                                                                                                                                                                                               |
+| rpc                                      | 用於本地 RPC 伺服器存取，這允許您控制使用者的本地 Discord 用戶端 —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                                                                                                        |
+| rpc.activities.write                     | 用於本地 RPC 伺服器存取，這允許您更新使用者的活動狀態 —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                                                                                                                   |
+| rpc.notifications.read                   | 用於本地 RPC 伺服器存取，這允許您接收推送給使用者的通知 —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                                                                                                                 |
+| rpc.voice.read                           | 用於本地 RPC 伺服器存取，這允許您讀取使用者的語音設定並監聽語音事件 —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                                                                                                     |
+| rpc.voice.write                          | 用於本地 RPC 伺服器存取，這允許您更新使用者的語音設定 —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                                                                                                                   |
+| voice                                    | 允許您的應用程式代表使用者連線至語音並查看所有語音成員 —— 僅開放給經核准的合作夥伴                                                                                                                                                                                                                                                                                                 |
+| webhook.incoming                         | 這會生成一個 Webhook，並在授權碼憑證流程的 OAuth 權杖回應中傳回                                                                                                                                                                                                                                                                                                                     |
 
 <Info>
 為了將使用者加入伺服器，您的 Bot 必須已屬於該伺服器。`role_connections.write` 不能與 [隱式授權類型 (Implicit grant type)](/developers/bilingual/topics/oauth2#implicit-grant) 一併使用。
 </Info>
-
 </div>
-
 </div>
 
 ---
@@ -191,7 +182,6 @@ Before we dive into the semantics of the different OAuth2 grants, we should stop
 When a user begins an authorization flow on the client, a `state` is generated that is unique to that user's request. This value is stored somewhere only accessible to the client and the user, i.e. protected by the [same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy). When the user is redirected, the `state` parameter is returned. The client validates the request by checking that the `state` returned matches the stored value. If they match, it is a valid authorization request. If they do not match, it's possible that someone intercepted the request or otherwise falsely authorized themselves to another user's resources, and the request should be denied.
 
 While Discord does not require the use of the `state` parameter, we support it and highly recommend that you implement it for the security of your own applications and data.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -203,9 +193,7 @@ While Discord does not require the use of the `state` parameter, we support it a
 當使用者在用戶端開始授權流程時，會產生一個該使用者請求專屬的 `state`。此數值儲存在只有用戶端和使用者才能存取的地方，即受到[同源政策 (same-origin policy)](https://en.wikipedia.org/wiki/Same-origin_policy)保護。當使用者被重新導向時，會傳回 `state` 參數。用戶端藉由檢查傳回的 `state` 是否與儲存的數值相符來驗證該請求。如果相符，則是有效的授權請求。如果不相符，則可能有人攔截了請求，或者以其他方式將自己錯誤地授權給了另一位使用者的資源，該請求應被拒絕。
 
 雖然 Discord 不強制要求使用 `state` 參數，但我們支援此功能，並強烈建議您為您自己應用程式和資料的安全性實作此參數。
-
 </div>
-
 </div>
 
 ---
@@ -234,7 +222,6 @@ When someone navigates to this URL, they will be prompted to authorize your appl
 `prompt` controls how the authorization flow handles existing authorizations. If a user has previously authorized your application with the requested scopes and prompt is set to `consent`, it will request them to reapprove their authorization. If set to `none`, it will skip the authorization screen and redirect them back to your redirect URI without requesting their authorization. For passthrough scopes, like `bot` and `webhook.incoming`, authorization is always required.
 
 The `integration_type` parameter specifies the [installation context](/developers/en-us/resources/application#installation-context) for the authorization. The installation context determines where the application will be installed, and is only relevant when `scope` contains `applications.commands`. When set to 0 (GUILD_INSTALL) the application will be authorized for installation to a server, and when set to 1 (USER_INSTALL) the application will be authorized for installation to a user. The application must be configured in the Developer Portal to support the provided `integration_type`.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -259,9 +246,7 @@ https://discord.com/oauth2/authorize?response_type=code&client_id=15773059049219
 `prompt` 控制授權流程如何處理現有的授權。如果使用者先前已為您的應用程式授權了請求的權限範圍，且 prompt 設定為 `consent`，系統將要求他們重新批准其授權。如果設定為 `none`，它將跳過授權畫面，並將其重新導向回您的重新導向 URI，而不需要求他們授權。對於像 `bot` 和 `webhook.incoming` 這樣的傳遞 (passthrough) 權限範圍，則一律需要授權。
 
 `integration_type` 參數指定了授權的 [安裝上下文 (installation context)](/developers/bilingual/resources/application#installation-context)。安裝上下文決定了應用程式的安裝位置，且僅在 `scope` 包含 `applications.commands` 時才相關。當設定為 0 (GUILD_INSTALL) 時，應用程式將被授權安裝到伺服器；當設定為 1 (USER_INSTALL) 時，應用程式將被授權安裝到使用者帳戶。應用程式必須在開發者入口網站中進行設定以支援所提供的 `integration_type`。
-
 </div>
-
 </div>
 
 ---
@@ -307,7 +292,6 @@ def exchange_code(code):
   r.raise_for_status()
   return r.json()
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -349,9 +333,7 @@ def exchange_code(code):
   r.raise_for_status()
   return r.json()
 ```
-
 </div>
-
 </div>
 
 ---
@@ -404,7 +386,6 @@ def refresh_token(refresh_token):
 ```
 
 Boom; fresh [access token response](/developers/en-us/topics/oauth2#authorization-code-grant-access-token-response)!
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -453,9 +434,7 @@ def refresh_token(refresh_token):
 ```
 
 完成；這將會取得全新的 [存取權杖回應](/developers/bilingual/topics/oauth2#authorization-code-grant-access-token-response)！
-
 </div>
-
 </div>
 
 ---
@@ -495,7 +474,6 @@ def revoke_access_token(access_token):
 ```
 
 Boom; the tokens are safely revoked.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -531,9 +509,7 @@ def revoke_access_token(access_token):
 ```
 
 完成；這些權杖已安全撤銷。
-
 </div>
-
 </div>
 
 ---
@@ -563,7 +539,6 @@ https://findingfakeurlsisprettyhard.tv/#access_token=RTfP0OK99U3kbRtHOoKLmJbOn45
 ```
 
 There are tradeoffs in using the implicit grant flow. It is both quicker and easier to implement, but rather than exchanging a code and getting a token returned in a secure HTTP body, the access token is returned in the URI fragment, which makes it possibly exposed to unauthorized parties. **You also are not returned a refresh token, so the user must explicitly re-authorize once their token expires.**
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -589,9 +564,7 @@ https://findingfakeurlsisprettyhard.tv/#access_token=RTfP0OK99U3kbRtHOoKLmJbOn45
 ```
 
 使用隱式憑證流程是有利有弊的。它的實作更快速且更容易，但與兌換授權碼並在安全的 HTTP 主體中傳回權杖不同，存取權杖是在 URI 片段中傳回的，這使其有可能暴露給未經授權的第三方。**此外，您不會收到更新權杖，因此一旦權杖過期，使用者必須明確重新進行授權。**
-
 </div>
-
 </div>
 
 ---
@@ -646,7 +619,6 @@ In return, you will receive an access token (without a refresh token):
   "scope": "identify connections"
 }
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -697,9 +669,7 @@ def get_token():
   "scope": "identify connections"
 }
 ```
-
 </div>
-
 </div>
 
 ---
@@ -724,7 +694,6 @@ Bot users have a few differences compared to standard Discord users:
 2. Bots cannot have friends or be added to or join Group DMs.
 3. [Verified bots](https://support-dev.discord.com/hc/en-us/articles/23926564536471-How-Do-I-Get-My-App-Verified) do not have a maximum number of guilds.
 4. Bots have an entirely separate set of [rate limits](/developers/en-us/topics/rate-limits#rate-limits).
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -745,9 +714,7 @@ Discord 的 API 提供了 Bot 使用者，這是一種專門用於自動化處�
 2. Bot 不能擁有好友，也不能被加入或主動加入群組私訊 (Group DMs)。
 3. [經驗證的 Bot (Verified bots)](https://support-dev.discord.com/hc/en-us/articles/23926564536471-How-Do-I-Get-My-App-Verified) 沒有伺服器加入數量的上限。
 4. Bot 擁有一套完全獨立的 [速率限制](/developers/bilingual/topics/rate-limits#rate-limits)。
-
 </div>
-
 </div>
 
 ---
@@ -763,13 +730,13 @@ Bot authorization is a special server-less and callback-less OAuth2 flow that ma
 <ManualAnchor id="bot-authorization-flow-bot-auth-parameters" />
 ###### Bot Auth Parameters
 
-| name                  | description                                                                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| client_id             | your app's client id                                                                                                                 |
-| scope?                | needs to include `bot` for the bot flow                                                                                              |
+| name                  | description                                                                                                                                |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| client_id             | your app's client id                                                                                                                       |
+| scope?                | needs to include `bot` for the bot flow                                                                                                    |
 | permissions?          | the [permissions](/developers/en-us/topics/permissions) you're requesting                                                                  |
-| guild_id?             | pre-fills the dropdown picker with a guild for the user                                                                              |
-| disable_guild_select? | `true` or `false`—disallows the user from changing the guild dropdown                                                                |
+| guild_id?             | pre-fills the dropdown picker with a guild for the user                                                                                    |
+| disable_guild_select? | `true` or `false`—disallows the user from changing the guild dropdown                                                                      |
 | integration_type?     | the [installation context](/developers/en-us/resources/application#application-object-application-integration-types) for the authorization |
 
 <ManualAnchor id="bot-authorization-flow-url-example" />
@@ -789,7 +756,6 @@ When the authorization page loads, that guild will be preselected in the dialog 
 If you only provide the `client_id` parameter (with optionally `permissions`, `guild_id`, or `disable_guild_select`), the authorization will use the [default install settings](/developers/en-us/resources/application#configuring-an-install-link-and-default-install-settings) configured in the developer portal. Specifying `scope`, `integration_type`, or `redirect_uri` will override this behavior.
 
 If your bot is super specific to your private clubhouse, or you just don't like sharing, you can leave the `Public Bot` option unchecked in your application's settings. If unchecked, only you can add the bot to guilds. If marked as public, anyone with your bot's URL can add it to guilds in which they have proper permissions.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -801,13 +767,13 @@ Bot 授權是一種特殊的無伺服器與無回呼的 OAuth2 流程，使使�
 <ManualAnchor id="bot-authorization-flow-bot-auth-parameters" />
 ###### Bot 授權參數 (Bot Auth Parameters)
 
-| 名稱 (Name)           | 說明 (Description)                                                                                                                          |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| client_id             | 您的應用程式用戶端 ID                                                                                                                 |
-| scope?                | 對於 Bot 授權流程，需要包含 `bot` |
-| permissions?          | 您所請求的 [權限 (permissions)](/developers/bilingual/topics/permissions)                                                                  |
-| guild_id?             | 為使用者預先填入伺服器下拉式選單 |
-| disable_guild_select? | `true` 或 `false` —— 禁止使用者變更下拉式選單中的伺服器選項 |
+| 名稱 (Name)           | 說明 (Description)                                                                                                                       |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| client_id             | 您的應用程式用戶端 ID                                                                                                                    |
+| scope?                | 對於 Bot 授權流程，需要包含 `bot`                                                                                                         |
+| permissions?          | 您所請求的 [權限 (permissions)](/developers/bilingual/topics/permissions)                                                                |
+| guild_id?             | 為使用者預先填入伺服器下拉式選單                                                                                                         |
+| disable_guild_select? | `true` 或 `false` —— 禁止使用者變更下拉式選單中的伺服器選項                                                                              |
 | integration_type?     | 授權的 [安裝上下文 (installation context)](/developers/bilingual/resources/application#application-object-application-integration-types) |
 
 <ManualAnchor id="bot-authorization-flow-url-example" />
@@ -826,9 +792,7 @@ https://discord.com/oauth2/authorize?client_id=157730590492196864&scope=bot&perm
 如果您僅提供 `client_id` 參數（可選填 `permissions`、`guild_id` 或 `disable_guild_select`），授權將使用在開發者入口網站中設定的 [預設安裝設定](/developers/bilingual/resources/application#configuring-an-install-link-and-default-install-settings)。指定 `scope`、`integration_type` 或 `redirect_uri` 將會覆寫此預設行為。
 
 如果您的 Bot 非常特定於您的私人群組，或者您只是不喜歡與人分享，您可以在您應用程式的設定中取消勾選 `Public Bot` 選項。如果未勾選，則只有您可以將該 Bot 新增至伺服器。如果標記為公開，則任何擁有您 Bot 網址的人都可以將其新增至他們擁有適當權限的伺服器中。
-
 </div>
-
 </div>
 
 ---
@@ -906,7 +870,6 @@ When receiving the access code on redirect, there will be additional querystring
 ### Two-Factor Authentication Requirement
 
 For bots with [elevated permissions](/developers/en-us/topics/permissions#permissions-bitwise-permission-flags) (permissions with a `*` next to them), we enforce two-factor authentication on the owner's account when added to guilds that have server-wide 2FA enabled.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -980,9 +943,7 @@ For bots with [elevated permissions](/developers/en-us/topics/permissions#permis
 ### 雙重身分驗證 (2FA) 要求 (Two-Factor Authentication Requirement)
 
 對於具有 [較高權限](/developers/bilingual/topics/permissions#permissions-bitwise-permission-flags) 的 Bot（名稱旁帶有 `*` 的權限），當它們被新增至啟用了全伺服器 2FA 的伺服器中時，我們將對擁有者的帳戶強制實施雙重身分驗證。
-
 </div>
-
 </div>
 
 ---
@@ -1031,7 +992,6 @@ When the user navigates to this URL, they will be prompted to select a channel i
 From this object, you should store the `webhook.token` and `webhook.id`. See the [execute webhook](/developers/en-us/resources/webhook#execute-webhook) documentation for how to send messages with the webhook.
 
 Any user that wishes to add your webhook to their channel will need to go through the full OAuth2 flow. A new webhook is created each time, so you will need to save the token and id. If you wish to send a message to all your webhooks, you'll need to iterate over each stored id:token combination and make `POST` requests to each one. Be mindful of our [Rate Limits](/developers/en-us/topics/rate-limits#rate-limits)!
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1076,9 +1036,7 @@ https://discord.com/oauth2/authorize?response_type=code&client_id=15773059049219
 從此物件中，您應該儲存 `webhook.token` 和 `webhook.id`。有關如何使用 Webhook 發送訊息，請參閱 [執行 Webhook (execute webhook)](/developers/bilingual/resources/webhook#execute-webhook) 說明文件。
 
 任何使用者若是想將您的 Webhook 新增至其頻道，都需要經歷完整的 OAuth2 流程。每次都會建立一個新的 Webhook，因此您需要儲存 token 與 id。如果您希望向所有 Webhook 發送訊息，您將需要遍歷每個儲存的 id:token 組合，並向每一個發送 `POST` 請求。請注意我們的 [速率限制 (Rate Limits)](/developers/bilingual/topics/rate-limits#rate-limits)！
-
 </div>
-
 </div>
 
 ---
@@ -1100,11 +1058,11 @@ Returns info about the current authorization. Requires authentication with a bea
 <ManualAnchor id="get-current-authorization-information-response-structure" />
 ###### Response Structure
 
-| Field       | Type                                                                               | Description                                                                       |
-|-------------|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| Field       | Type                                                                                     | Description                                                                       |
+|-------------|------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
 | application | partial [application](/developers/en-us/resources/application#application-object) object | the current application                                                           |
-| scopes      | array of strings                                                                   | the scopes the user has authorized the application for                            |
-| expires     | ISO8601 timestamp                                                                  | when the access token expires                                                     |
+| scopes      | array of strings                                                                         | the scopes the user has authorized the application for                            |
+| expires     | ISO8601 timestamp                                                                        | when the access token expires                                                     |
 | user?       | [user](/developers/en-us/resources/user#user-object) object                              | the user who has authorized, if the user has authorized with the `identify` scope |
 
 <ManualAnchor id="get-current-authorization-information-example-authorization-information" />
@@ -1129,7 +1087,6 @@ Returns info about the current authorization. Requires authentication with a bea
     "text": "..."
 }
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1147,11 +1104,11 @@ Returns info about the current authorization. Requires authentication with a bea
 <ManualAnchor id="get-current-authorization-information-response-structure" />
 ###### 回應結構 (Response Structure)
 
-| 欄位 | 類型 | 說明 |
-|-------------|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| application | partial [application](/developers/bilingual/resources/application#application-object) 物件 | 當前的應用程式 |
-| scopes      | array of strings                                                                   | 使用者已授權給該應用程式的 Scope 權限範圍 |
-| expires     | ISO8601 timestamp                                                                  | 存取權杖失效時間 |
+| 欄位        | 類型                                                                                       | 說明                                                      |
+|-------------|--------------------------------------------------------------------------------------------|---------------------------------------------------------|
+| application | partial [application](/developers/bilingual/resources/application#application-object) 物件 | 當前的應用程式                                            |
+| scopes      | array of strings                                                                           | 使用者已授權給該應用程式的 Scope 權限範圍                 |
+| expires     | ISO8601 timestamp                                                                          | 存取權杖失效時間                                          |
 | user?       | [user](/developers/bilingual/resources/user#user-object) 物件                              | 授權的使用者資訊，如果使用者是使用 `identify` 權限範圍授權 |
 
 <ManualAnchor id="get-current-authorization-information-example-authorization-information" />
@@ -1176,7 +1133,5 @@ Returns info about the current authorization. Requires authentication with a bea
     "text": "..."
 }
 ```
-
 </div>
-
 </div>

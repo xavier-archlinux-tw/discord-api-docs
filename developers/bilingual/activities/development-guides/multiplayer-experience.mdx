@@ -35,7 +35,6 @@ The `instanceId` should be used as a key to save and load the shared data releva
 ##### Semantics of instanceId
 
 Instance IDs are generated when a user launches an application. Any users joining the same application will receive the same `instanceId`. When all the users of an application in a channel leave or close the application, that instance has finished its lifecycle, and will not be used again. The next time a user opens the application in that channel, a new `instanceId` will be generated.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -64,9 +63,7 @@ const instanceId = discordSdk.instanceId;
 ##### instanceId 的語義
 
 實例 ID 在使用者啟動應用程式時生成。加入同一應用程式的使用者將收到相同的 `instanceId`。當一個頻道中所有使用者離開或關閉應用程式後，該實例即結束其生命週期，不會再被使用。下次有使用者在該頻道開啟應用程式時，將產生新的 `instanceId`。
-
 </div>
-
 </div>
 
 ---
@@ -96,7 +93,6 @@ discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updatePartici
 // Unsubscribe
 discordSdk.unsubscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -122,9 +118,7 @@ discordSdk.subscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updatePartici
 // 取消訂閱 (Unsubscribe)
 discordSdk.unsubscribe(Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE, updateParticipants);
 ```
-
 </div>
-
 </div>
 
 ---
@@ -159,7 +153,6 @@ const username = user.global_name ?? `${user.username}#${user.discriminator}`;
 <img alt="avatar" src={avatarSrc} />
 <p>{username}</p>
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -190,9 +183,7 @@ const username = user.global_name ?? `${user.username}#${user.discriminator}`;
 <img alt="avatar" src={avatarSrc} />
 <p>{username}</p>
 ```
-
 </div>
-
 </div>
 
 ---
@@ -246,7 +237,6 @@ This example is being done entirely on the client, however, a more common patter
 - Store the user's access token on the application server
 - Retrieve the user's guild-specific avatar and nickname via the application's server
 - Serve all of the application's avatar/nicknames via the application's server
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -296,9 +286,7 @@ fetch(`https://discord.com/api/users/@me/guilds/${discordSdk.guildId}/member`, {
 - 將使用者的存取憑證 (Access Token) 儲存在應用程式伺服器端。
 - 透過應用程式伺服器獲取使用者的伺服器專屬大頭貼與暱稱。
 - 透過應用程式伺服器提供所有應用程式的使用者大頭貼/暱稱。
-
 </div>
-
 </div>
 
 ---
@@ -326,7 +314,6 @@ curl https://discord.com/api/applications/1215413995645968394/activity-instances
 ```
 
 With this API, the activity's backend can verify that a client is in fact in an instance of that activity before allowing the client to participate in any meaningful gameplay. How an activity implements "session verification" is left to the developer's discretion. The solution can be as granular as gating specific features or as binary as not returning the activity HTML except for valid sessions.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -350,9 +337,7 @@ curl https://discord.com/api/applications/1215413995645968394/activity-instances
 ```
 
 透過此 API，活動的後端可以在允許用戶端參與任何實質性遊戲內容之前，驗證該用戶端是否確實處於該活動的實例中。活動如何實作「階段驗證」由開發者自行決定。解決方案可以細緻到限制特定功能，也可以二分到只為有效的連線階段傳回活動 HTML。
-
 </div>
-
 </div>
 
 ---
@@ -372,7 +357,6 @@ Each proxy-authenticated request is sent with the following headers:
 - `X-Discord-Proxy-Payload` as a base64-encoded payload containing user context
 
 If you choose to use proxy authentication, you can validate these headers to ensure requests are legitimate. If the signature fails validation, your app should respond with a `401` error code.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -388,9 +372,7 @@ If you choose to use proxy authentication, you can validate these headers to ens
 - `X-Discord-Proxy-Payload`：作為包含使用者上下文且經 Base64 編碼的 Payload
 
 如果您選擇使用代理伺服器驗證，您可以驗證這些標頭以確保請求合法。如果簽章驗證失敗，您的 App 應以 `401` 錯誤碼回應。
-
 </div>
-
 </div>
 
 ---
@@ -478,7 +460,6 @@ except BadSignatureError:
     abort(401, 'invalid request signature')
 ```
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -562,9 +543,7 @@ except BadSignatureError:
     abort(401, 'invalid request signature')
 ```
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -576,7 +555,6 @@ except BadSignatureError:
 Proxy authentication is entirely optional and provided as an additional security layer for apps that choose to implement it.
 
 In the below flow diagram, we show how the server can deliver the activity website, only for valid users in a valid activity instance:
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -584,9 +562,7 @@ In the below flow diagram, we show how the server can deliver the activity websi
 代理伺服器驗證完全是選用的，旨在為選擇實作的 App 提供額外的安全層級。
 
 在下方的流程圖中，我們展示了伺服器如何僅為有效活動實例中的有效使用者提供活動網站：
-
 </div>
-
 </div>
 
 ![activity-instance-validation](/images/activities/activity-instance-validation.jpg)

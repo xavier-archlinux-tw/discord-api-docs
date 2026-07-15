@@ -692,9 +692,9 @@
           {
             "group": "Discovery",
             "pages": [
-              "developers/en-us/discovery/overview",
-              "developers/en-us/discovery/enabling-discovery",
-              "developers/en-us/discovery/best-practices"
+              "developers/en-us/activities/discovery/overview",
+              "developers/en-us/activities/discovery/enabling-discovery",
+              "developers/en-us/activities/discovery/best-practices"
             ]
           },
           {
@@ -1009,12 +1009,12 @@
             "group": "探索發現 (Discovery)",
             "hidden": true,
             "pages": [
-              "developers/zh-tw/discovery/overview",
-              "developers/zh-tw/discovery/enabling-discovery",
-              "developers/zh-tw/discovery/best-practices",
-              "developers/bilingual/discovery/overview",
-              "developers/bilingual/discovery/enabling-discovery",
-              "developers/bilingual/discovery/best-practices"
+              "developers/zh-tw/activities/discovery/overview",
+              "developers/zh-tw/activities/discovery/enabling-discovery",
+              "developers/zh-tw/activities/discovery/best-practices",
+              "developers/bilingual/activities/discovery/overview",
+              "developers/bilingual/activities/discovery/enabling-discovery",
+              "developers/bilingual/activities/discovery/best-practices"
             ]
           },
           {

@@ -63,26 +63,26 @@ description: 專用於 Discord API 說明文件的繁體中文翻譯與語系切
 
 翻譯時必須嚴格使用台灣在地的專業技術用語，嚴禁簡轉繁不自然的中國用語。對照表如下：
 
-| 英文原文 | 台灣習慣用語 (應使用) | 避免使用 (中國用語) |
-| :--- | :--- | :--- |
-| Repository | 儲存庫 / 專案儲存庫 | 倉庫 |
-| Plan | 實作計畫 / 計畫 | 實現 / 計劃 |
-| Walkthrough | 工作歷程 / 導覽 | 演示 / 走查 |
-| Task | 任務 / 工作項目 | 任務 |
-| Code | 程式碼 / 原始碼 | 代碼 / 源碼 |
-| Build | 建置 / 編譯 | 構建 / 編譯 |
-| Database | 資料庫 | 數據庫 |
-| Network / Internet | 網路 / 網際網路 | 網絡 / 互聯網 |
-| Software / Program | 軟體 / 程式 | 軟件 / 程序 |
-| Context | 上下文 / 語境 | 上下文 |
-| Project | 專案 | 項目 |
-| Client / Server | 用戶端 / 伺服器 | 客戶端 / 服務端 |
-| App / Application | 應用程式 / App | 應用 / 程序 |
-| User / Member | 使用者 / 成員 | 用戶 / 成員 |
-| Channel / Message | 頻道 / 訊息 | 通道 / 消息 |
-| Guild | 伺服器 | 公會 / 伺服器 |
-| Bot | 機器人 | 機械人 / 機器人 |
-| Permission / Role | 權限 / 身分組 | 權限 / 角色 |
+| 英文原文           | 台灣習慣用語 (應使用) | 避免使用 (中國用語) |
+|:-------------------|:--------------------|:------------------|
+| Repository         | 儲存庫 / 專案儲存庫   | 倉庫                |
+| Plan               | 實作計畫 / 計畫       | 實現 / 計劃         |
+| Walkthrough        | 工作歷程 / 導覽       | 演示 / 走查         |
+| Task               | 任務 / 工作項目       | 任務                |
+| Code               | 程式碼 / 原始碼       | 代碼 / 源碼         |
+| Build              | 建置 / 編譯           | 構建 / 編譯         |
+| Database           | 資料庫                | 數據庫              |
+| Network / Internet | 網路 / 網際網路       | 網絡 / 互聯網       |
+| Software / Program | 軟體 / 程式           | 軟件 / 程序         |
+| Context            | 上下文 / 語境         | 上下文              |
+| Project            | 專案                  | 項目                |
+| Client / Server    | 用戶端 / 伺服器       | 客戶端 / 服務端     |
+| App / Application  | 應用程式 / App        | 應用 / 程序         |
+| User / Member      | 使用者 / 成員         | 用戶 / 成員         |
+| Channel / Message  | 頻道 / 訊息           | 通道 / 消息         |
+| Guild              | 伺服器                | 公會 / 伺服器       |
+| Bot                | 機器人                | 機械人 / 機器人     |
+| Permission / Role  | 權限 / 身分組         | 權限 / 角色         |
 
 ---
 

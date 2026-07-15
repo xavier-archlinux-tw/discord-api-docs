@@ -17,7 +17,6 @@ import { Route } from '/snippets/route.jsx'
 Application commands are native ways to interact with apps in the Discord client. There are 3 types of commands accessible in different interfaces: the chat input, a message's context menu (top-right menu or right-clicking in a message), and a user's context menu (right-clicking on a user).
 
 ![Client interfaces showing the different types of application commands](/images/command-types.png)
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -25,9 +24,7 @@ Application commands are native ways to interact with apps in the Discord client
 應用程式指令是與 Discord 用戶端中應用程式進行原生互動的方式。有 3 種指令類型可在不同的介面中存取：聊天輸入框、訊息的快顯功能表（點擊訊息右上角的選單或按右鍵），以及使用者的快顯功能表（右鍵點擊使用者）。
 
 ![顯示不同類型應用程式指令的用戶端介面](/images/command-types.png)
-
 </div>
-
 </div>
 
 ---
@@ -46,30 +43,29 @@ Application commands are native ways to interact with apps in the Discord client
 <ManualAnchor id="application-command-object-application-command-structure" />
 ###### Application Command Structure
 
-| Field                      | Type                                                                                                                                       | Description                                                                                                                                                                                                                                                                | Valid Types         |
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
-| id                         | snowflake                                                                                                                                  | Unique ID of command                                                                                                                                                                                                                                                       | all                 |
-| type?                      | one of [command types](/developers/en-us/interactions/application-commands#application-command-object-application-command-types)                 | [Type of command](/developers/en-us/interactions/application-commands#application-command-object-application-command-types), defaults to `1`                                                                                                                                     | all                 |
-| application_id             | snowflake                                                                                                                                  | ID of the parent application                                                                                                                                                                                                                                               | all                 |
-| guild_id?                  | snowflake                                                                                                                                  | Guild ID of the command, if not global                                                                                                                                                                                                                                     | all                 |
-| name                       | string                                                                                                                                     | [Name of command](/developers/en-us/interactions/application-commands#application-command-object-application-command-naming), 1-32 characters                                                                                                                                    | all                 |
-| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                | Localization dictionary for `name` field. Values follow the same restrictions as `name`                                                                                                                                                                                    | all                 |
-| description                | string                                                                                                                                     | Description for `CHAT_INPUT` commands, 1-100 characters. Empty string for `USER` and `MESSAGE` commands                                                                                                                                                                    | all                 |
-| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                | Localization dictionary for `description` field. Values follow the same restrictions as `description`                                                                                                                                                                      | all                 |
+| Field                      | Type                                                                                                                                             | Description                                                                                                                                                                                                                                                                | Valid Types         |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| id                         | snowflake                                                                                                                                        | Unique ID of command                                                                                                                                                                                                                                                       | all                 |
+| type?                      | one of [command types](/developers/en-us/interactions/application-commands#application-command-object-application-command-types)                 | [Type of command](/developers/en-us/interactions/application-commands#application-command-object-application-command-types), defaults to `1`                                                                                                                               | all                 |
+| application_id             | snowflake                                                                                                                                        | ID of the parent application                                                                                                                                                                                                                                               | all                 |
+| guild_id?                  | snowflake                                                                                                                                        | Guild ID of the command, if not global                                                                                                                                                                                                                                     | all                 |
+| name                       | string                                                                                                                                           | [Name of command](/developers/en-us/interactions/application-commands#application-command-object-application-command-naming), 1-32 characters                                                                                                                              | all                 |
+| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                      | Localization dictionary for `name` field. Values follow the same restrictions as `name`                                                                                                                                                                                    | all                 |
+| description                | string                                                                                                                                           | Description for `CHAT_INPUT` commands, 1-100 characters. Empty string for `USER` and `MESSAGE` commands                                                                                                                                                                    | all                 |
+| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                      | Localization dictionary for `description` field. Values follow the same restrictions as `description`                                                                                                                                                                      | all                 |
 | options? \*                | array of [command options](/developers/en-us/interactions/application-commands#application-command-object-application-command-option-structure)  | Parameters for the command, max of 25                                                                                                                                                                                                                                      | CHAT_INPUT          |
-| default_member_permissions | ?string                                                                                                                                    | Set of [permissions](/developers/topics/permissions) represented as a bit set                                                                                                                                                                                              | all                 |
-| dm_permission?             | boolean                                                                                                                                    | **Deprecated (use `contexts` instead)**; Indicates whether the command is available in DMs with the app, only for globally-scoped commands. By default, commands are visible.                                                                                              | all                 |
-| default_permission?        | ?boolean                                                                                                                                   | Not recommended for use as field will soon be deprecated. Indicates whether the command is enabled by default when the app is added to a guild, defaults to `true`                                                                                                         | all                 |
-| nsfw?                      | boolean                                                                                                                                    | Indicates whether the command is [age-restricted](/developers/en-us/interactions/application-commands#agerestricted-commands), defaults to `false`                                                                                                                               | all                 |
-| integration_types?         | list of [integration types](/developers/resources/application#application-object-application-integration-types)                            | [Installation contexts](/developers/resources/application#installation-context) where the command is available, only for globally-scoped commands. Defaults to your app's [configured contexts](/developers/resources/application#setting-supported-installation-contexts) | all                 |
-| contexts?                  | ?list of [interaction context types](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types)       | [Interaction context(s)](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types) where the command can be used, only for globally-scoped commands.                                                                                 | all                 |
-| version                    | snowflake                                                                                                                                  | Autoincrementing version identifier updated during substantial record changes                                                                                                                                                                                              | all                 |
+| default_member_permissions | ?string                                                                                                                                          | Set of [permissions](/developers/topics/permissions) represented as a bit set                                                                                                                                                                                              | all                 |
+| dm_permission?             | boolean                                                                                                                                          | **Deprecated (use `contexts` instead)**; Indicates whether the command is available in DMs with the app, only for globally-scoped commands. By default, commands are visible.                                                                                              | all                 |
+| default_permission?        | ?boolean                                                                                                                                         | Not recommended for use as field will soon be deprecated. Indicates whether the command is enabled by default when the app is added to a guild, defaults to `true`                                                                                                         | all                 |
+| nsfw?                      | boolean                                                                                                                                          | Indicates whether the command is [age-restricted](/developers/en-us/interactions/application-commands#agerestricted-commands), defaults to `false`                                                                                                                         | all                 |
+| integration_types?         | list of [integration types](/developers/resources/application#application-object-application-integration-types)                                  | [Installation contexts](/developers/resources/application#installation-context) where the command is available, only for globally-scoped commands. Defaults to your app's [configured contexts](/developers/resources/application#setting-supported-installation-contexts) | all                 |
+| contexts?                  | ?list of [interaction context types](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types)       | [Interaction context(s)](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types) where the command can be used, only for globally-scoped commands.                                                                           | all                 |
+| version                    | snowflake                                                                                                                                        | Autoincrementing version identifier updated during substantial record changes                                                                                                                                                                                              | all                 |
 | handler?                   | one of [command handler types](/developers/en-us/interactions/application-commands#application-command-object-entry-point-command-handler-types) | Determines whether the interaction is handled by the app's interactions handler or by Discord                                                                                                                                                                              | PRIMARY_ENTRY_POINT |
 
 <Danger>
 `default_permission` will soon be deprecated. You can instead set `default_member_permissions` to `"0"` to disable the command for everyone except admins by default, and/or use `contexts` to disable globally-scoped commands inside of DMs with your app
 </Danger>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -84,32 +80,30 @@ Application commands are native ways to interact with apps in the Discord client
 <ManualAnchor id="application-command-object-application-command-structure" />
 ###### 應用程式指令結構 (Application Command Structure)
 
-| 欄位 | 類型 | 說明 | 適用類型 |
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
-| id                         | snowflake | 指令的唯一 ID | 所有類型 |
-| type?                      | [command types](/developers/bilingual/interactions/application-commands#application-command-object-application-command-types) 之一 | [指令類型](/developers/bilingual/interactions/application-commands#application-command-object-application-command-types)，預設為 `1` | 所有類型 |
-| application_id             | snowflake | 父應用程式的 ID | 所有類型 |
-| guild_id?                  | snowflake | 指令的伺服器 ID（如果不是全域指令） | 所有類型 |
-| name                       | string | [指令名稱](/developers/bilingual/interactions/application-commands#application-command-object-application-command-naming)，長度為 1-32 個字元 | 所有類型 |
-| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales) | `name` 欄位的本地化對照字典。值需遵循與 `name` 相同的限制 | 所有類型 |
-| description                | string | `CHAT_INPUT` 指令的說明，長度為 1-100 個字元。對於 `USER` 和 `MESSAGE` 指令，此值需為空字串 | 所有類型 |
-| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales) | `description` 欄位的本地化對照字典。值需遵循與 `description` 相同的限制 | 所有類型 |
-| options? \*                | array of [command options](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-structure) | 指令的參數，最多 25 個 | CHAT_INPUT          |
-| default_member_permissions | ?string | 以位元集表示的預設成員[權限設定](/developers/bilingual/topics/permissions) | 所有類型 |
-| dm_permission?             | boolean | **已棄用（請改用 `contexts`）**；指出該指令是否可在與 App 的私訊 (DM) 中使用，僅適用於全域範圍的指令。預設情況下，指令是顯示的。 | 所有類型 |
-| default_permission?        | ?boolean | 不建議使用，此欄位即將被棄用。指出當 App 被加入伺服器時是否預設啟用該指令，預設為 `true` | 所有類型 |
-| nsfw?                      | boolean | 指出該指令是否為[年齡限制指令](/developers/bilingual/interactions/application-commands#agerestricted-commands)，預設為 `false` | 所有類型 |
-| integration_types?         | list of [integration types](/developers/resources/application#application-object-application-integration-types) | 可使用該指令的[安裝上下文](/developers/resources/application#installation-context)（僅適用於全域範圍指令）。預設為您 App [配置的上下文](/developers/resources/application#setting-supported-installation-contexts) | 所有類型 |
-| contexts?                  | ?list of [interaction context types](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types) | 可使用該指令的[互動上下文](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types)（僅限於全域範圍指令）。 | 所有類型 |
-| version                    | snowflake | 當發生實質性記錄變更時更新的自動遞增版本識別碼 | 所有類型 |
-| handler?                   | [command handler types](/developers/bilingual/interactions/application-commands#application-command-object-entry-point-command-handler-types) 之一 | 決定該互動是由 App 的互動處理常式處理，還是由 Discord 直接處理 | PRIMARY_ENTRY_POINT |
+| 欄位                       | 類型                                                                                                                                                | 說明                                                                                                                                                                                                            | 適用類型            |
+|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|
+| id                         | snowflake                                                                                                                                           | 指令的唯一 ID                                                                                                                                                                                                   | 所有類型            |
+| type?                      | [command types](/developers/bilingual/interactions/application-commands#application-command-object-application-command-types) 之一                  | [指令類型](/developers/bilingual/interactions/application-commands#application-command-object-application-command-types)，預設為 `1`                                                                             | 所有類型            |
+| application_id             | snowflake                                                                                                                                           | 父應用程式的 ID                                                                                                                                                                                                 | 所有類型            |
+| guild_id?                  | snowflake                                                                                                                                           | 指令的伺服器 ID（如果不是全域指令）                                                                                                                                                                               | 所有類型            |
+| name                       | string                                                                                                                                              | [指令名稱](/developers/bilingual/interactions/application-commands#application-command-object-application-command-naming)，長度為 1-32 個字元                                                                    | 所有類型            |
+| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                         | `name` 欄位的本地化對照字典。值需遵循與 `name` 相同的限制                                                                                                                                                        | 所有類型            |
+| description                | string                                                                                                                                              | `CHAT_INPUT` 指令的說明，長度為 1-100 個字元。對於 `USER` 和 `MESSAGE` 指令，此值需為空字串                                                                                                                        | 所有類型            |
+| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                         | `description` 欄位的本地化對照字典。值需遵循與 `description` 相同的限制                                                                                                                                          | 所有類型            |
+| options? \*                | array of [command options](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-structure) | 指令的參數，最多 25 個                                                                                                                                                                                           | CHAT_INPUT          |
+| default_member_permissions | ?string                                                                                                                                             | 以位元集表示的預設成員[權限設定](/developers/bilingual/topics/permissions)                                                                                                                                      | 所有類型            |
+| dm_permission?             | boolean                                                                                                                                             | **已棄用（請改用 `contexts`）**；指出該指令是否可在與 App 的私訊 (DM) 中使用，僅適用於全域範圍的指令。預設情況下，指令是顯示的。                                                                                       | 所有類型            |
+| default_permission?        | ?boolean                                                                                                                                            | 不建議使用，此欄位即將被棄用。指出當 App 被加入伺服器時是否預設啟用該指令，預設為 `true`                                                                                                                           | 所有類型            |
+| nsfw?                      | boolean                                                                                                                                             | 指出該指令是否為[年齡限制指令](/developers/bilingual/interactions/application-commands#agerestricted-commands)，預設為 `false`                                                                                   | 所有類型            |
+| integration_types?         | list of [integration types](/developers/resources/application#application-object-application-integration-types)                                     | 可使用該指令的[安裝上下文](/developers/resources/application#installation-context)（僅適用於全域範圍指令）。預設為您 App [配置的上下文](/developers/resources/application#setting-supported-installation-contexts) | 所有類型            |
+| contexts?                  | ?list of [interaction context types](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types)      | 可使用該指令的[互動上下文](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types)（僅限於全域範圍指令）。                                                       | 所有類型            |
+| version                    | snowflake                                                                                                                                           | 當發生實質性記錄變更時更新的自動遞增版本識別碼                                                                                                                                                                  | 所有類型            |
+| handler?                   | [command handler types](/developers/bilingual/interactions/application-commands#application-command-object-entry-point-command-handler-types) 之一  | 決定該互動是由 App 的互動處理常式處理，還是由 Discord 直接處理                                                                                                                                                   | PRIMARY_ENTRY_POINT |
 
 <Danger>
 `default_permission` 即將被棄用。您可以改為將 `default_member_permissions` 設定為 `"0"`，以預設對管理員之外的所有人停用該指令，和/或使用 `contexts` 來停用與您 App 私訊中全域範圍指令的顯示。
 </Danger>
-
 </div>
-
 </div>
 
 ---
@@ -121,11 +115,11 @@ Application commands are native ways to interact with apps in the Discord client
 <ManualAnchor id="application-command-object-application-command-types" />
 ###### Application Command Types
 
-| Name                | Type | Description                                                                                                       |
-|---------------------|------|-------------------------------------------------------------------------------------------------------------------|
-| CHAT_INPUT          | 1    | Slash commands; a text-based command that shows up when a user types `/`                                          |
-| USER                | 2    | A UI-based command that shows up when you right click or tap on a user                                            |
-| MESSAGE             | 3    | A UI-based command that shows up when you right click or tap on a message                                         |
+| Name                | Type | Description                                                                                                             |
+|---------------------|------|-------------------------------------------------------------------------------------------------------------------------|
+| CHAT_INPUT          | 1    | Slash commands; a text-based command that shows up when a user types `/`                                                |
+| USER                | 2    | A UI-based command that shows up when you right click or tap on a user                                                  |
+| MESSAGE             | 3    | A UI-based command that shows up when you right click or tap on a message                                               |
 | PRIMARY_ENTRY_POINT | 4    | A UI-based command that represents the primary way to invoke an app's [Activity](/developers/en-us/activities/overview) |
 
 <ManualAnchor id="application-command-object-application-command-option-structure" />
@@ -135,23 +129,22 @@ Application commands are native ways to interact with apps in the Discord client
 Required `options` must be listed before optional options
 </Warning>
 
-| Field                      | Type                                                                                                                                                               | Description                                                                                                                               | Valid Option Types                            |
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| Field                      | Type                                                                                                                                                                     | Description                                                                                                                               | Valid Option Types                            |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
 | type                       | one of [application command option type](/developers/en-us/interactions/application-commands#application-command-object-application-command-option-type)                 | Type of option                                                                                                                            | all                                           |
-| name \*                    | string                                                                                                                                                             | [1-32 character name](/developers/en-us/interactions/application-commands#application-command-object-application-command-naming)                | all                                           |
-| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                                        | Localization dictionary for the `name` field. Values follow the same restrictions as `name`                                               | all                                           |
-| description                | string                                                                                                                                                             | 1-100 character description                                                                                                               | all                                           |
-| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                                        | Localization dictionary for the `description` field. Values follow the same restrictions as `description`                                 | all                                           |
-| required?                  | boolean                                                                                                                                                            | Whether the parameter is required or optional, default `false`                                                                            | all but `SUB_COMMAND` and `SUB_COMMAND_GROUP` |
+| name \*                    | string                                                                                                                                                                   | [1-32 character name](/developers/en-us/interactions/application-commands#application-command-object-application-command-naming)          | all                                           |
+| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                                              | Localization dictionary for the `name` field. Values follow the same restrictions as `name`                                               | all                                           |
+| description                | string                                                                                                                                                                   | 1-100 character description                                                                                                               | all                                           |
+| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                                              | Localization dictionary for the `description` field. Values follow the same restrictions as `description`                                 | all                                           |
+| required?                  | boolean                                                                                                                                                                  | Whether the parameter is required or optional, default `false`                                                                            | all but `SUB_COMMAND` and `SUB_COMMAND_GROUP` |
 | choices?                   | array of [application command option choice](/developers/en-us/interactions/application-commands#application-command-object-application-command-option-choice-structure) | Choices for the user to pick from, max 25                                                                                                 | `STRING`, `INTEGER`, `NUMBER`                 |
 | options?                   | array of [application command option](/developers/en-us/interactions/application-commands#application-command-object-application-command-option-structure)               | If the option is a subcommand or subcommand group type, these nested options will be the parameters or subcommands respectively; up to 25 | `SUB_COMMAND` , `SUB_COMMAND_GROUP`           |
-| channel_types?             | array of [channel types](/developers/resources/channel#channel-object-channel-types)                                                                               | The channels shown will be restricted to these types                                                                                      | `CHANNEL`                                     |
-| min_value?                 | integer for `INTEGER` options, double for `NUMBER` options | The minimum value permitted | `INTEGER` , `NUMBER` |
-| max_value?                 | integer for `INTEGER` options, double for `NUMBER` options | The maximum value permitted | `INTEGER` , `NUMBER` |
-| min_length?                | integer | The minimum allowed length (minimum of `0`, maximum of `6000`) | `STRING` |
-| max_length?                | integer | The maximum allowed length (minimum of `1`, maximum of `6000`) | `STRING` |
-| autocomplete? \*\*         | boolean | If autocomplete interactions are enabled for this option | `STRING`, `INTEGER`, `NUMBER` |
-
+| channel_types?             | array of [channel types](/developers/resources/channel#channel-object-channel-types)                                                                                     | The channels shown will be restricted to these types                                                                                      | `CHANNEL`                                     |
+| min_value?                 | integer for `INTEGER` options, double for `NUMBER` options                                                                                                               | The minimum value permitted                                                                                                               | `INTEGER` , `NUMBER`                          |
+| max_value?                 | integer for `INTEGER` options, double for `NUMBER` options                                                                                                               | The maximum value permitted                                                                                                               | `INTEGER` , `NUMBER`                          |
+| min_length?                | integer                                                                                                                                                                  | The minimum allowed length (minimum of `0`, maximum of `6000`)                                                                            | `STRING`                                      |
+| max_length?                | integer                                                                                                                                                                  | The maximum allowed length (minimum of `1`, maximum of `6000`)                                                                            | `STRING`                                      |
+| autocomplete? \*\*         | boolean                                                                                                                                                                  | If autocomplete interactions are enabled for this option                                                                                  | `STRING`, `INTEGER`, `NUMBER`                 |
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -159,12 +152,12 @@ Required `options` must be listed before optional options
 <ManualAnchor id="application-command-object-application-command-types" />
 ###### 應用程式指令類型 (Application Command Types)
 
-| 名稱 (Name)         | 類型 (Type) | 說明 (Description)                                                                                                       |
-|---------------------|------|-------------------------------------------------------------------------------------------------------------------|
-| CHAT_INPUT          | 1    | 斜線指令 (Slash commands)；當使用者輸入 `/` 時顯示的文字指令 |
-| USER                | 2    | UI 導向的指令；當您右鍵點擊或點按使用者時顯示 |
-| MESSAGE             | 3    | UI 導向的指令；當您右鍵點擊或點按訊息時顯示 |
-| PRIMARY_ENTRY_POINT | 4    | UI 導向的指令；代表啟動應用程式 [互動活動 (Activity)](/developers/bilingual/activities/overview) 的主要方式 |
+| 名稱 (Name)         | 類型 (Type) | 說明 (Description)                                                                                         |
+|---------------------|-------------|----------------------------------------------------------------------------------------------------------|
+| CHAT_INPUT          | 1           | 斜線指令 (Slash commands)；當使用者輸入 `/` 時顯示的文字指令                                                |
+| USER                | 2           | UI 導向的指令；當您右鍵點擊或點按使用者時顯示                                                               |
+| MESSAGE             | 3           | UI 導向的指令；當您右鍵點擊或點按訊息時顯示                                                                 |
+| PRIMARY_ENTRY_POINT | 4           | UI 導向的指令；代表啟動應用程式 [互動活動 (Activity)](/developers/bilingual/activities/overview) 的主要方式 |
 
 <ManualAnchor id="application-command-object-application-command-option-structure" />
 ###### 應用程式指令選項結構 (Application Command Option Structure)
@@ -173,25 +166,23 @@ Required `options` must be listed before optional options
 必填的 `options` 必須列在選填的選項之前
 </Warning>
 
-| 欄位 | 類型 | 說明 | 適用選項類型 |
-|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
-| type                       | [application command option type](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-type) 之一 | 選項類型 | 所有類型 |
-| name \*                    | string | [1-32 個字元的名稱](/developers/bilingual/interactions/application-commands#application-command-object-application-command-naming) | 所有類型 |
-| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales) | `name` 欄位的本地化對照字典。值需遵循與 `name` 相同的限制 | 所有類型 |
-| description                | string | 1-100 個字元的說明 | 所有類型 |
-| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales) | `description` 欄位的本地化對照字典。值需遵循與 `description` 相同的限制 | 所有類型 |
-| required?                  | boolean | 該參數是必填還是選填，預設為 `false` | 除 `SUB_COMMAND` 和 `SUB_COMMAND_GROUP` 之外的所有類型 |
-| choices?                   | array of [application command option choice](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-choice-structure) | 供使用者挑選的選項清單，最多 25 個 | `STRING`, `INTEGER`, `NUMBER`                 |
-| options?                   | array of [application command option](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-structure) | 如果該選項是子指令或子指令群組類型，這些巢狀選項將分別是參數或子指令；最多 25 個 | `SUB_COMMAND` , `SUB_COMMAND_GROUP`           |
-| channel_types?             | array of [channel types](/developers/resources/channel#channel-object-channel-types) | 顯示的頻道將會被限制為這些類型 | `CHANNEL`                                     |
-| min_value?                 | integer for `INTEGER` options, double for `NUMBER` options | 允許的最小值 | `INTEGER` , `NUMBER`                          |
-| max_value?                 | integer for `INTEGER` options, double for `NUMBER` options | 允許的最大值 | `INTEGER` , `NUMBER`                          |
-| min_length?                | integer | 允許的最小長度（最小為 `0`，最大為 `6000`） | `STRING`                                      |
-| max_length?                | integer | 允許的最大長度（最小為 `1`，最大為 `6000`） | `STRING`                                      |
-| autocomplete? \*\*         | boolean | 是否為此選項啟用自動完成互動功能 | `STRING`, `INTEGER`, `NUMBER`                 |
-
+| 欄位                       | 類型                                                                                                                                                                         | 說明                                                                                                                               | 適用選項類型                                           |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| type                       | [application command option type](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-type) 之一                   | 選項類型                                                                                                                           | 所有類型                                               |
+| name \*                    | string                                                                                                                                                                       | [1-32 個字元的名稱](/developers/bilingual/interactions/application-commands#application-command-object-application-command-naming) | 所有類型                                               |
+| name_localizations?        | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                                                  | `name` 欄位的本地化對照字典。值需遵循與 `name` 相同的限制                                                                           | 所有類型                                               |
+| description                | string                                                                                                                                                                       | 1-100 個字元的說明                                                                                                                 | 所有類型                                               |
+| description_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales)                                                                                                  | `description` 欄位的本地化對照字典。值需遵循與 `description` 相同的限制                                                             | 所有類型                                               |
+| required?                  | boolean                                                                                                                                                                      | 該參數是必填還是選填，預設為 `false`                                                                                                | 除 `SUB_COMMAND` 和 `SUB_COMMAND_GROUP` 之外的所有類型 |
+| choices?                   | array of [application command option choice](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-choice-structure) | 供使用者挑選的選項清單，最多 25 個                                                                                                  | `STRING`, `INTEGER`, `NUMBER`                          |
+| options?                   | array of [application command option](/developers/bilingual/interactions/application-commands#application-command-object-application-command-option-structure)               | 如果該選項是子指令或子指令群組類型，這些巢狀選項將分別是參數或子指令；最多 25 個                                                     | `SUB_COMMAND` , `SUB_COMMAND_GROUP`                    |
+| channel_types?             | array of [channel types](/developers/resources/channel#channel-object-channel-types)                                                                                         | 顯示的頻道將會被限制為這些類型                                                                                                     | `CHANNEL`                                              |
+| min_value?                 | integer for `INTEGER` options, double for `NUMBER` options                                                                                                                   | 允許的最小值                                                                                                                       | `INTEGER` , `NUMBER`                                   |
+| max_value?                 | integer for `INTEGER` options, double for `NUMBER` options                                                                                                                   | 允許的最大值                                                                                                                       | `INTEGER` , `NUMBER`                                   |
+| min_length?                | integer                                                                                                                                                                      | 允許的最小長度（最小為 `0`，最大為 `6000`）                                                                                           | `STRING`                                               |
+| max_length?                | integer                                                                                                                                                                      | 允許的最大長度（最小為 `1`，最大為 `6000`）                                                                                           | `STRING`                                               |
+| autocomplete? \*\*         | boolean                                                                                                                                                                      | 是否為此選項啟用自動完成互動功能                                                                                                   | `STRING`, `INTEGER`, `NUMBER`                          |
 </div>
-
 </div>
 
 ---
@@ -203,18 +194,18 @@ Required `options` must be listed before optional options
 <ManualAnchor id="application-command-object-application-command-option-type" />
 ###### Application Command Option Type
 
-| Name              | Value | Note                                                                 |
-|-------------------|-------|----------------------------------------------------------------------|
-| SUB_COMMAND       | 1     |                                                                      |
-| SUB_COMMAND_GROUP | 2     |                                                                      |
-| STRING            | 3     |                                                                      |
-| INTEGER           | 4     | Any integer between -2^53+1 and 2^53-1                               |
-| BOOLEAN           | 5     |                                                                      |
-| USER              | 6     |                                                                      |
-| CHANNEL           | 7     | Includes all channel types + categories                              |
-| ROLE              | 8     |                                                                      |
-| MENTIONABLE       | 9     | Includes users and roles                                             |
-| NUMBER            | 10    | Any double between -2^53 and 2^53                                    |
+| Name              | Value | Note                                                                       |
+|-------------------|-------|----------------------------------------------------------------------------|
+| SUB_COMMAND       | 1     |                                                                            |
+| SUB_COMMAND_GROUP | 2     |                                                                            |
+| STRING            | 3     |                                                                            |
+| INTEGER           | 4     | Any integer between -2^53+1 and 2^53-1                                     |
+| BOOLEAN           | 5     |                                                                            |
+| USER              | 6     |                                                                            |
+| CHANNEL           | 7     | Includes all channel types + categories                                    |
+| ROLE              | 8     |                                                                            |
+| MENTIONABLE       | 9     | Includes users and roles                                                   |
+| NUMBER            | 10    | Any double between -2^53 and 2^53                                          |
 | ATTACHMENT        | 11    | [attachment](/developers/en-us/resources/message#attachment-object) object |
 
 <ManualAnchor id="application-command-object-application-command-option-choice-structure" />
@@ -237,7 +228,6 @@ If you specify `choices` for an option, they are the **only** valid values for a
 |-------------------------|-------|----------------------------------------------------------------------------------------------------------------------------|
 | APP_HANDLER             | 1     | The app handles the interaction using an interaction token                                                                 |
 | DISCORD_LAUNCH_ACTIVITY | 2     | Discord handles the interaction by launching an Activity and sending a follow-up message without coordinating with the app |
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -245,19 +235,19 @@ If you specify `choices` for an option, they are the **only** valid values for a
 <ManualAnchor id="application-command-object-application-command-option-type" />
 ###### 應用程式指令選項類型 (Application Command Option Type)
 
-| 名稱 (Name)       | 數值 (Value) | 備註 (Note)                                                          |
-|-------------------|-------|----------------------------------------------------------------------|
-| SUB_COMMAND       | 1     | 子指令 |
-| SUB_COMMAND_GROUP | 2     | 子指令群組 |
-| STRING            | 3     | 字串 |
-| INTEGER           | 4     | 介於 -2^53+1 與 2^53-1 之間的任何整數 |
-| BOOLEAN           | 5     | 布林值 |
-| USER              | 6     | 使用者 |
-| CHANNEL           | 7     | 包含所有頻道類型與類別 |
-| ROLE              | 8     | 身分組 |
-| MENTIONABLE       | 9     | 包括使用者和身分組 |
-| NUMBER            | 10    | 介於 -2^53 與 2^53 之間的任何雙倍精確度實數 |
-| ATTACHMENT        | 11    | [附件 (attachment)](/developers/bilingual/resources/message#attachment-object) 物件 |
+| 名稱 (Name)       | 數值 (Value) | 備註 (Note)                                                                         |
+|-------------------|--------------|-----------------------------------------------------------------------------------|
+| SUB_COMMAND       | 1            | 子指令                                                                              |
+| SUB_COMMAND_GROUP | 2            | 子指令群組                                                                          |
+| STRING            | 3            | 字串                                                                                |
+| INTEGER           | 4            | 介於 -2^53+1 與 2^53-1 之間的任何整數                                               |
+| BOOLEAN           | 5            | 布林值                                                                              |
+| USER              | 6            | 使用者                                                                              |
+| CHANNEL           | 7            | 包含所有頻道類型與類別                                                              |
+| ROLE              | 8            | 身分組                                                                              |
+| MENTIONABLE       | 9            | 包括使用者和身分組                                                                  |
+| NUMBER            | 10           | 介於 -2^53 與 2^53 之間的任何雙倍精確度實數                                         |
+| ATTACHMENT        | 11           | [附件 (attachment)](/developers/bilingual/resources/message#attachment-object) 物件 |
 
 <ManualAnchor id="application-command-object-application-command-option-choice-structure" />
 ###### 應用程式指令選項選擇結構 (Application Command Option Choice Structure)
@@ -266,22 +256,20 @@ If you specify `choices` for an option, they are the **only** valid values for a
 如果您為某個選項指定了 `choices`，它們將是使用者**唯一**可以選擇的有效數值
 </Info>
 
-| 欄位 | 類型 | 說明 |
-|---------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| name                | string | 1-100 個字元的選項名稱 |
+| 欄位                | 類型                                                                        | 說明                                                     |
+|---------------------|-----------------------------------------------------------------------------|--------------------------------------------------------|
+| name                | string                                                                      | 1-100 個字元的選項名稱                                   |
 | name_localizations? | ?dictionary with keys in [available locales](/developers/reference#locales) | `name` 欄位的本地化對照字典。值需遵循與 `name` 相同的限制 |
-| value               | string, integer, or double \*                                               | 選項的數值，如果是字串，最多 100 個字元 |
+| value               | string, integer, or double \*                                               | 選項的數值，如果是字串，最多 100 個字元                    |
 
 <ManualAnchor id="application-command-object-entry-point-command-handler-types" />
 ###### 進入點指令處理常式類型 (Entry Point Command Handler Types)
 
-| 名稱 (Name)             | 數值 (Value) | 備註 (Note)                                                                                                                       |
-|-------------------------|-------|----------------------------------------------------------------------------------------------------------------------------|
-| APP_HANDLER             | 1     | App 使用互動權杖處理互動功能 |
-| DISCORD_LAUNCH_ACTIVITY | 2     | Discord 藉由啟動互動活動並發送後續訊息來自動處理互動，而無需與 App 進行協調 |
-
+| 名稱 (Name)             | 數值 (Value) | 備註 (Note)                                                                |
+|-------------------------|--------------|--------------------------------------------------------------------------|
+| APP_HANDLER             | 1            | App 使用互動權杖處理互動功能                                               |
+| DISCORD_LAUNCH_ACTIVITY | 2            | Discord 藉由啟動互動活動並發送後續訊息來自動處理互動，而無需與 App 進行協調 |
 </div>
-
 </div>
 
 ---
@@ -297,7 +285,6 @@ Application commands do not depend on a bot user in the guild; they use the [int
 When requesting this scope, we "shortcut" the OAuth2 flow similar to adding a bot. You don't need to complete the flow, exchange for a token, or any of that.
 
 If your application does not require a bot user in the guild for its commands to work, **you don't need to add the bot scope or a permission bitfield to the URL**.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -309,9 +296,7 @@ If your application does not require a bot user in the guild for its commands to
 當請求此 Scope 時，我們「簡化」了 OAuth2 流程，類似於新增 Bot。您不需要完成整個流程、兌換權杖，或執行任何此類操作。
 
 如果您的應用程式的指令運作不需要伺服器中的 Bot 使用者，**您不需要在網址中新增 bot 權限範圍或權限位元欄位**。
-
 </div>
-
 </div>
 
 ---
@@ -350,7 +335,6 @@ For all command types except `PRIMARY_ENTRY_POINT`, you can have the same amount
 <Danger>
 There is a global rate limit of 200 application command creates per day, per guild
 </Danger>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -385,9 +369,7 @@ There is a global rate limit of 200 application command creates per day, per gui
 <Danger>
 每個伺服器、每天有 200 個應用程式指令建立次數的全域速率限制
 </Danger>
-
 </div>
-
 </div>
 
 ---
@@ -457,7 +439,6 @@ headers = {
 
 r = requests.post(url, headers=headers, json=json)
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -523,9 +504,7 @@ headers = {
 
 r = requests.post(url, headers=headers, json=json)
 ```
-
 </div>
-
 </div>
 
 ---
@@ -564,7 +543,6 @@ headers = {
 
 r = requests.post(url, headers=headers, json=json)
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -599,9 +577,7 @@ headers = {
 
 r = requests.post(url, headers=headers, json=json)
 ```
-
 </div>
-
 </div>
 
 ---
@@ -620,7 +596,6 @@ Commands can be deleted and updated by making `DELETE` and `PATCH` calls to the 
 Because commands have unique names within a type and scope, we treat `POST` requests for new commands as upserts. That means **making a new command with an already-used name for your application will update the existing command**.
 
 Detailed documentation about application command endpoints and their parameters are [in the endpoints section](/developers/en-us/interactions/application-commands#endpoints).
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -635,9 +610,7 @@ Detailed documentation about application command endpoints and their parameters 
 由於指令在類型和範圍內具有唯一的名稱，因此我們將新指令的 `POST` 請求視為更新或新增 (upsert)。這意味著**以已在您應用程式中使用的名稱建立新指令將會更新現有的指令**。
 
 有關應用程式指令端點及其參數的詳細文件位於[端點章節](/developers/bilingual/interactions/application-commands#endpoints)。
-
 </div>
-
 </div>
 
 ---
@@ -671,7 +644,6 @@ A command's value for `integration_types` may affect which [interaction contexts
 The interaction contexts for a command determines where in the Discord client it can be used, and can be configured by setting the [`contexts` field](/developers/en-us/interactions/application-commands#application-command-object-application-command-structure) when creating or updating a command.
 
 There are three [interaction context types](/developers/en-us/interactions/receiving-and-responding#interaction-object-interaction-context-types) that correspond to different surfaces: `GUILD` (`0`), `BOT_DM` (`1`), and `PRIVATE_CHANNEL` (`2`). However, the `PRIVATE_CHANNEL` interaction context is only meaningful for commands installed to a user (when the command's `integration_types` includes `USER_INSTALL`).
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -701,9 +673,7 @@ There are three [interaction context types](/developers/en-us/interactions/recei
 指令的互動上下文決定了它在 Discord 用戶端的何處可以使用，且可以藉由在建立或更新指令時設定 [`contexts` 欄位](/developers/bilingual/interactions/application-commands#application-command-object-application-command-structure) 來配置。
 
 有三種 [互動上下文類型](/developers/bilingual/interactions/receiving-and-responding#interaction-object-interaction-context-types) 對應於不同的介面：`GUILD` (`0`)、`BOT_DM` (`1`) 以及 `PRIVATE_CHANNEL` (`2`)。然而，`PRIVATE_CHANNEL` 互動上下文僅對安裝到使用者的指令有意義（當該指令的 `integration_types` 包含 `USER_INSTALL` 時）。
-
 </div>
-
 </div>
 
 ---
@@ -732,7 +702,6 @@ Command permissions can be updated with the [`PUT /applications/{application.id}
 The command permissions interface can be accessed in the client by navigating to `Server Settings` > `Integrations`, then clicking `Manage` to the right of an installed app. At the top of the interface, users can edit permissions for a specific user, role, or channel. By default, these top-level permissions will apply to all of an app's commands. However, each permission can also be unsynced and customized for individual commands to provide more granular control.
 
 When the permissions for a specific command are unsynced, meaning it doesn't align with the top-level permissions, the interface will display "Not Synced" to users.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -757,9 +726,7 @@ When the permissions for a specific command are unsynced, meaning it doesn't ali
 可以在用戶端中透過導覽至 `伺服器設定` > `整合`，然後點擊已安裝 App 右側的 `管理` 來存取指令權限介面。在介面最上方，使用者可以編輯特定使用者、身分組或頻道的權限。預設情況下，這些最上層的權限會套用到 App 的所有指令。然而，每項權限也都可以取消同步，並為個別指令進行自訂，以提供更細緻的控制。
 
 當特定指令的權限與最上層權限不同（即去同步）時，介面會向使用者顯示「未同步」。
-
 </div>
-
 </div>
 
 ---
@@ -775,11 +742,11 @@ When the permissions for a specific command are unsynced, meaning it doesn't ali
 
 Returned when fetching the permissions for an app's command(s) in a guild.
 
-| Field          | Type                                                                                                                                                                       | Description                                          |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
-| id             | snowflake                                                                                                                                                                  | ID of the command or the application ID              |
-| application_id | snowflake                                                                                                                                                                  | ID of the application the command belongs to         |
-| guild_id       | snowflake                                                                                                                                                                  | ID of the guild                                      |
+| Field          | Type                                                                                                                                                                             | Description                                          |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| id             | snowflake                                                                                                                                                                        | ID of the command or the application ID              |
+| application_id | snowflake                                                                                                                                                                        | ID of the application the command belongs to         |
+| guild_id       | snowflake                                                                                                                                                                        | ID of the guild                                      |
 | permissions    | array of [application command permissions](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure) | Permissions for the command in the guild, max of 100 |
 
 When the `id` field is the application ID instead of a command ID, the permissions apply to all commands that do not contain explicit overwrites.
@@ -789,11 +756,11 @@ When the `id` field is the application ID instead of a command ID, the permissio
 
 Application command permissions allow you to enable or disable commands for specific users, roles, or channels within a guild.
 
-| Field      | Type                                                                                                                                                            | Description                                                                                                                                                                                              |
-|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| id         | snowflake                                                                                                                                                       | ID of the role, user, or channel. It can also be a [permission constant](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permissions-constants) |
-| type       | [application command permission type](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permission-type) | role (`1`), user (`2`), or channel (`3`)                                                                                                                                                                 |
-| permission | boolean                                                                                                                                                         | `true` to allow, `false`, to disallow                                                                                                                                                                    |
+| Field      | Type                                                                                                                                                                  | Description                                                                                                                                                                                                    |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id         | snowflake                                                                                                                                                             | ID of the role, user, or channel. It can also be a [permission constant](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permissions-constants) |
+| type       | [application command permission type](/developers/en-us/interactions/application-commands#application-command-permissions-object-application-command-permission-type) | role (`1`), user (`2`), or channel (`3`)                                                                                                                                                                       |
+| permission | boolean                                                                                                                                                               | `true` to allow, `false`, to disallow                                                                                                                                                                          |
 
 ###### Application Command Permissions Constants
 
@@ -820,7 +787,6 @@ Similar to how threads [inherit user and role permissions from the parent channe
 <Info>
 If you don't have permission to use a command, it will not show up in the command picker. Members with the Administrator permission can use all commands.
 </Info>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -832,12 +798,12 @@ If you don't have permission to use a command, it will not show up in the comman
 
 在伺服器中獲取 App 指令的權限時傳回。
 
-| 欄位 | 類型 | 說明 |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
-| id             | snowflake | ID of the command or the application ID |
-| application_id | snowflake | ID of the application the command belongs to |
-| guild_id       | snowflake | ID of the guild |
-| permissions    | array of [application command permissions](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure) | 指令在伺服器中的權限設定，最多 100 個 |
+| 欄位           | 類型                                                                                                                                                                                 | 說明                                         |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
+| id             | snowflake                                                                                                                                                                            | ID of the command or the application ID      |
+| application_id | snowflake                                                                                                                                                                            | ID of the application the command belongs to |
+| guild_id       | snowflake                                                                                                                                                                            | ID of the guild                              |
+| permissions    | array of [application command permissions](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure) | 指令在伺服器中的權限設定，最多 100 個         |
 
 當 `id` 欄位是應用程式 ID 而非指令 ID 時，權限將套用到所有不包含明確覆寫設定的指令。
 
@@ -846,17 +812,17 @@ If you don't have permission to use a command, it will not show up in the comman
 
 應用程式指令權限允許您在伺服器中為特定使用者、身分組或頻道啟用或停用指令。
 
-| 欄位 | 類型 | 說明 |
-|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| id         | snowflake | ID of the role, user, or channel. It can also be a [permission constant](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permissions-constants) |
-| type       | [application command permission type](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permission-type) | role (`1`), user (`2`), or channel (`3`) |
-| permission | boolean | `true` to allow, `false`, to disallow |
+| 欄位       | 類型                                                                                                                                                                      | 說明                                                                                                                                                                                                               |
+|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id         | snowflake                                                                                                                                                                 | ID of the role, user, or channel. It can also be a [permission constant](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permissions-constants) |
+| type       | [application command permission type](/developers/bilingual/interactions/application-commands#application-command-permissions-object-application-command-permission-type) | role (`1`), user (`2`), or channel (`3`)                                                                                                                                                                           |
+| permission | boolean                                                                                                                                                                   | `true` to allow, `false`, to disallow                                                                                                                                                                              |
 
 ###### 應用程式指令權限常數 (Application Command Permissions Constants)
 
 以下常數可用於指令權限 payload 的 `id` 欄位。
 
-| 權限 | 數值 | 類型 | 說明 |
+| 權限         | 數值           | 類型      | 說明                    |
 |--------------|----------------|-----------|-------------------------|
 | `@everyone`  | `guild_id`     | snowflake | All members in a guild  |
 | All Channels | `guild_id - 1` | snowflake | All channels in a guild |
@@ -865,10 +831,10 @@ If you don't have permission to use a command, it will not show up in the comman
 ###### 應用程式指令權限類型 (Application Command Permission Type)
 
 | 名稱 (Name) | 數值 (Value) |
-|---------|-------|
-| ROLE    | 1     |
-| USER    | 2     |
-| CHANNEL | 3     |
+|-------------|--------------|
+| ROLE        | 1            |
+| USER        | 2            |
+| CHANNEL     | 3            |
 
 為了提供對指令的微調存取權限，所有類型的伺服器和全域指令都支援應用程式指令權限。具有 [必要權限](/developers/bilingual/interactions/application-commands#permissions) 的伺服器成員和 App 可以允許或拒絕特定使用者和身分組使用某個指令，或者為整個頻道切換指令的啟用狀態。
 
@@ -877,9 +843,7 @@ If you don't have permission to use a command, it will not show up in the comman
 <Info>
 如果您沒有使用某個指令的權限，它將不會顯示在指令選取器中。具有 Administrator 權限的成員可以使用所有指令。
 </Info>
-
 </div>
-
 </div>
 
 ---
@@ -944,7 +908,6 @@ headers = {
 
 r = requests.put(url, headers=headers, json=json)
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1005,9 +968,7 @@ headers = {
 
 r = requests.put(url, headers=headers, json=json)
 ```
-
 </div>
-
 </div>
 
 ---
@@ -1112,7 +1073,6 @@ When someone uses a slash command, your application will receive an interaction:
 ```
 
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1213,9 +1173,7 @@ When someone uses a slash command, your application will receive an interaction:
 ```
 
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -1459,7 +1417,6 @@ Now, we need some arguments! If we chose `user`, we need to be able to pick a us
 ```
 
 ![A command with grouped subcommands and parameters. It says /permissions user get with arguments for a user and a channel.](/images/command-with-groups-subcommands-parameters.png)
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1699,9 +1656,7 @@ Now we have a command named `permissions`. We want this command to be able to af
 ```
 
 ![具有分組子指令和參數的指令。上面寫著 /permissions user get 並帶有 user 和 channel 的參數。](/images/command-with-groups-subcommands-parameters.png)
-
 </div>
-
 </div>
 
 ---
@@ -1806,7 +1761,6 @@ When someone uses a user command, your application will receive an interaction:
 ```
 
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -1907,9 +1861,7 @@ When someone uses a user command, your application will receive an interaction:
 ```
 
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -2014,7 +1966,6 @@ When someone uses a message command, your application will receive an interactio
 ```
 
 </Accordion>
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -2115,9 +2066,7 @@ When someone uses a message command, your application will receive an interactio
 ```
 
 </Accordion>
-
 </div>
-
 </div>
 
 ---
@@ -2156,7 +2105,6 @@ When a user invokes an app's Entry Point command, the value of [`handler`](/deve
 ### Default Entry Point command
 
 When you enable Activities, an Entry Point command (named "Launch") is automatically created for your app with  `DISCORD_LAUNCH_ACTIVITY` set as the [Entry Point handler](/developers/en-us/interactions/application-commands#entry-point-handlers).
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -2191,9 +2139,7 @@ When you enable Activities, an Entry Point command (named "Launch") is automatic
 ### 預設進入點指令 (Default Entry Point Command)
 
 當您啟用互動活動時，系統會自動為您的 App 建立一個名為 "Launch" 的進入點指令，並將 `DISCORD_LAUNCH_ACTIVITY` 設定為其 [進入點處理常式](/developers/bilingual/interactions/application-commands#entry-point-handlers)。
-
 </div>
-
 </div>
 
 ---
@@ -2300,7 +2246,6 @@ For example, if a batch `GET` request were made with locale `zh-CN`, including t
   ]
 }
 ```
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -2374,10 +2319,10 @@ For example, if a batch `GET` request were made with locale `zh-CN`, including t
 </Warning>
 
 | 語言語系 | 退回語系 |
-|--------|----------|
-| en-US  | en-GB    |
-| en-GB  | en-US    |
-| es-419 | es-ES    |
+|----------|----------|
+| en-US    | en-GB    |
+| en-GB    | en-US    |
+| es-419   | es-ES    |
 
 ### 獲取本地化指令 (Retrieving localized commands)
 
@@ -2403,9 +2348,7 @@ For example, if a batch `GET` request were made with locale `zh-CN`, including t
   ]
 }
 ```
-
 </div>
-
 </div>
 
 ---
@@ -2443,7 +2386,6 @@ Deletes a global command. Returns `204 No Content` on success.
 <Route method="PUT">/applications/[\{application.id\}](/developers/en-us/resources/application#application-object)/commands</Route>
 
 Takes a list of application commands, overwriting the existing global command list for this application. Returns `200` and a list of [application command](/developers/en-us/interactions/application-commands#application-command-object) objects.
-
 </div>
 <div>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -2477,7 +2419,5 @@ Takes a list of application commands, overwriting the existing global command li
 <Route method="PUT">/applications/[\{application.id\}](/developers/bilingual/resources/application#application-object)/commands</Route>
 
 接受一個應用程式指令列表，覆寫此應用程式現有的全域指令列表。傳回 `200` 和一個 [應用程式指令](/developers/bilingual/interactions/application-commands#application-command-object) 物件清單。
-
 </div>
-
 </div>

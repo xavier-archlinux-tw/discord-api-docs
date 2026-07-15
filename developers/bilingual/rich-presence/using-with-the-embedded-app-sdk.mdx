@@ -7,7 +7,7 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 
 <LanguageSelector current="bilingual" path="/developers/bilingual/rich-presence/using-with-the-embedded-app-sdk" />
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 When developing an [Activity](/developers/activities/overview), the [Embedded App SDK](/developers/developer-tools/embedded-app-sdk) makes it easy to integrate Rich Presence to display details about what a user is up to inside of your game or social experience.
@@ -18,7 +18,7 @@ Rich Presence data can be thought of as an extension of your Activity—and leve
 Not sure if you should be building with the Embedded App SDK? Read through [Choosing an SDK](/developers/rich-presence/overview#choosing-an-sdk) to understand your options when integrating Rich Presence with your app.
 </Info>
 
-The rest of the guide assumes you've already developed an [app](/developers/quick-start/overview-of-apps) that can launch an Activity. If you aren't at that point quite yet, you should follow the guide on [building your first Activity](/developers/activities/building-an-activity) before continuing.</div><div>
+The rest of the guide assumes you've already developed an [app](/developers/quick-start/overview-of-apps) that can launch an Activity. If you aren't at that point quite yet, you should follow the guide on [building your first Activity](/developers/activities/building-an-activity) before continuing.</div><div>v>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 開發 [互動活動 (Activity)](/developers/zh-tw/activities/overview) 時，[嵌入式 App SDK (Embedded App SDK)](/developers/zh-tw/developer-tools/embedded-app-sdk) 可讓您輕鬆整合豐富狀態 (Rich Presence)，以展示使用者在您遊戲或社交體驗中的最新動態。
@@ -29,11 +29,11 @@ The rest of the guide assumes you've already developed an [app](/developers/quic
 不確定是否應使用嵌入式 App SDK 進行開發？請閱讀 [選擇 SDK](/developers/zh-tw/rich-presence/overview#choosing-an-sdk) 以了解將豐富狀態與應用程式整合時的各項選擇。
 </Info>
 
-本指南的後續部分均假設您已經開發了一個可以啟動互動活動的 [應用程式](/developers/zh-tw/quick-start/overview-of-apps)。如果您尚未進行到此步驟，您應該在繼續之前，遵循 [建置您的第一個互動活動](/developers/zh-tw/activities/building-an-activity) 指南進行。</div></div>
+本指南的後續部分均假設您已經開發了一個可以啟動互動活動的 [應用程式](/developers/zh-tw/quick-start/overview-of-apps)。如果您尚未進行到此步驟，您應該在繼續之前，遵循 [建置您的第一個互動活動](/developers/zh-tw/activities/building-an-activity) 指南進行。</div></div>v>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Understanding Rich Presence Data
@@ -55,7 +55,7 @@ Now let's see what custom presence data can look like when a user joins your Act
 A few small things to note about the above image:
 1. `large_image` and `small_image` are both in the `assets` object, which you can see below in the [table below](/developers/rich-presence/using-with-the-embedded-app-sdk#activity-partial-object). They're labeled with the object's keys to make it more clear how they appear in a Discord profile.
 2. You can't set App Name when setting presence—it's always the name configured in your [app's settings](https://discord.com/developers/applications).
-3. The state `(1 of max_party)` badge will only render when a party field is provided. Otherwise, state will be shown in a line of text below details.</div><div>
+3. The state `(1 of max_party)` badge will only render when a party field is provided. Otherwise, state will be shown in a line of text below details.</div><div>v>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 理解豐富狀態資料 (Understanding Rich Presence Data)
@@ -77,11 +77,11 @@ A few small things to note about the above image:
 關於上圖，有幾點需要注意：
 1. `large_image` 和 `small_image` 都位於 `assets` 物件中，您可以在下方的 [表格](/developers/zh-tw/rich-presence/using-with-the-embedded-app-sdk#activity-partial-object) 中檢視。這些項目以物件的 key 來標示，以便更清楚說明它們在 Discord 個人檔案中的顯示方式。
 2. 設定狀態時，您無法設定「應用程式名稱 (App Name)」——它一律顯示您在 [應用程式設定](https://discord.com/developers/applications) 中所設定的名稱。
-3. `(1 of max_party)` 狀態勳章只會在提供了 party (隊伍) 欄位時渲染。否則，該狀態將會以一行文字的形式顯示在詳細資訊下方。</div></div>
+3. `(1 of max_party)` 狀態勳章只會在提供了 party (隊伍) 欄位時渲染。否則，該狀態將會以一行文字的形式顯示在詳細資訊下方。</div></div>v>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Updating Presence
@@ -117,7 +117,7 @@ const { code } = await discordSdk.commands.authorize({
   ],
 });
 ```
-</Accordion></div><div>
+</Accordion></div><div>v>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 更新狀態 (Updating Presence)
@@ -153,11 +153,11 @@ const { code } = await discordSdk.commands.authorize({
   ],
 });
 ```
-</Accordion></div></div>
+</Accordion></div></div>v>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ### setActivity Fields
@@ -212,7 +212,7 @@ await discordSdk.commands.setActivity({
   }
 });
 ```
-</Accordion></div><div>
+</Accordion></div><div>v>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ### setActivity 欄位 (setActivity Fields)
@@ -227,14 +227,14 @@ await discordSdk.commands.setActivity({
 部分物件上的所有欄位均為選填且可為 null。
 </Info>
 
-| 欄位 | 類型 | 說明 |
-| :--- | :--- | :--- |
-| type | integer | [Activity 類型](/developers/zh-tw/events/gateway-events#activity-object-activity-types)，用以決定豐富狀態資料的標頭文字 |
-| state | string | 使用者目前的隊伍狀態 (Party status) |
-| details | string | 玩家目前在您的互動活動中在做些什麼 |
-| timestamps | [timestamps](/developers/zh-tw/events/gateway-events#activity-object-activity-timestamps) 物件 | Unix 時間戳記，用以顯示開始和/或結束時間 |
-| assets | [assets](/developers/zh-tw/events/gateway-events#activity-object-activity-assets) 物件 | 豐富狀態資料所使用的圖片（及其懸停提示文字） |
-| party | [party](/developers/zh-tw/events/gateway-events#activity-object-activity-party) 物件 | 玩家當前隊伍的相關資訊 |
+| 欄位       | 類型                                                                                           | 說明                                                                                                                   |
+|:-----------|:-----------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------|
+| type       | integer                                                                                        | [Activity 類型](/developers/zh-tw/events/gateway-events#activity-object-activity-types)，用以決定豐富狀態資料的標頭文字 |
+| state      | string                                                                                         | 使用者目前的隊伍狀態 (Party status)                                                                                    |
+| details    | string                                                                                         | 玩家目前在您的互動活動中在做些什麼                                                                                     |
+| timestamps | [timestamps](/developers/zh-tw/events/gateway-events#activity-object-activity-timestamps) 物件 | Unix 時間戳記，用以顯示開始和/或結束時間                                                                                |
+| assets     | [assets](/developers/zh-tw/events/gateway-events#activity-object-activity-assets) 物件         | 豐富狀態資料所使用的圖片（及其懸停提示文字）                                                                             |
+| party      | [party](/developers/zh-tw/events/gateway-events#activity-object-activity-party) 物件           | 玩家當前隊伍的相關資訊                                                                                                 |
 
 ### setActivity 範例 (setActivity Example)
 
@@ -267,11 +267,11 @@ await discordSdk.commands.setActivity({
   }
 });
 ```
-</Accordion></div></div>
+</Accordion></div></div>v>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Uploading Custom Assets
@@ -282,7 +282,7 @@ When uploading assets, the asset keys will automatically be changed to lowercase
 
 <Info>
 For tips on choosing assets, take a look at the [Rich Presence best practices guide](/developers/rich-presence/best-practices#have-interesting-expressive-art).
-</Info></div><div>
+</Info></div><div>v>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 上傳自訂美術資源 (Uploading Custom Assets)
@@ -293,11 +293,11 @@ For tips on choosing assets, take a look at the [Rich Presence best practices gu
 
 <Info>
 關於選擇資源的技巧，請參閱 [豐富狀態最佳實踐指南](/developers/zh-tw/rich-presence/best-practices#have-interesting-expressive-art)。
-</Info></div></div>
+</Info></div></div>v>
 
 ---
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8"><div>>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
 
 ## Using External Custom Assets
@@ -327,7 +327,7 @@ await discordSdk.commands.setActivity({
 Uploaded assets (added via the developer portal) support PNG, JPEG, and WebP only — animated images are not supported for uploaded assets.
 
 Unlike uploaded assets, external URLs also support GIF, animated WebP, and AVIF. See [Activity Asset Image](/developers/events/gateway-events#activity-object-activity-asset-image) for details.
-</Note></div><div>
+</Note></div><div>v>
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
 
 ## 使用外部自訂美術資源 (Using External Custom Assets)
@@ -357,4 +357,4 @@ await discordSdk.commands.setActivity({
 上傳的資源（透過開發者入口網站新增）僅支援 PNG、JPEG 與 WebP——上傳的資源不支援動態圖片。
 
 與上傳的資源不同，外部 URL 還支援 GIF、動態 WebP 與 AVIF。詳情請參閱 [Activity Asset Image](/developers/zh-tw/events/gateway-events#activity-object-activity-asset-image)。
-</Note></div></div>
+</Note></div></div>v>
