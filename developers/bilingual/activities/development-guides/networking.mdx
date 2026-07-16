@@ -8,7 +8,6 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/networking" />
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -26,9 +25,7 @@ While we currently only support websockets, we're working with our upstream prov
 #### WebRTC
 
 WebRTC is not supported.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -46,15 +43,12 @@ WebRTC is not supported.
 #### WebRTC
 
 目前不支援 WebRTC。
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -83,9 +77,7 @@ In other words, given an application client id of `12345678`:
 | Relative Path | Full Path                                    |
 |---------------|----------------------------------------------|
 | /foo/bar.jpg  | https://12345678.discordsays.com/foo/bar.jpg |
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -114,15 +106,12 @@ const url = new URL(`${protocol}://${clientId}.${proxyDomain}${resourcePath}`);
 | Relative Path | Full Path                                    |
 |---------------|----------------------------------------------|
 | /foo/bar.jpg  | https://12345678.discordsays.com/foo/bar.jpg |
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -166,9 +155,7 @@ async function setupApp() {
 <Info>
 Note: `patchUrlMappings` is modifying your browser's `fetch`, `WebSocket`, and `XMLHttpRequest.prototype.open` global variables. Depending on the library, you may see side effects from using this helper function. It should be used only when necessary.
 </Info>
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -212,15 +199,12 @@ async function setupApp() {
 <Info>
 注意：`patchUrlMappings` 會修改瀏覽器的 `fetch`、`WebSocket` 與 `XMLHttpRequest.prototype.open` 等全域變數。根據您使用的函式庫，使用此輔助函數可能會產生副作用。請僅在必要時使用。
 </Info>
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -238,9 +222,7 @@ Furthermore, data coming from the Discord client is not sanitized beforehand. Th
 To set a cookie for your activity to use in network requests through the proxy, make sure the cookie's domain matches your app's full `{clientId}.discordsays.com` domain. You will also need to explicitly set `SameSite=None; Partitioned` on the cookie. `SameSite=None` is needed as browsers refuse to store or send cookies with higher restriction levels for any navigation within an iframe. `Partitioned` then limits the use of that cookie to only Discord's iframes.
 
 Rest assured: other activities will not be able to make requests with your activity's cookie, thanks to the Content Security Policy (CSP) limiting requests only to your own app's proxy.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -258,7 +240,5 @@ Rest assured: other activities will not be able to make requests with your activ
 若要為您的互動活動設定 Cookie，以便在透過代理伺服器的網路請求中使用，請確保 Cookie 的網域 (Domain) 與您 App 的完整 `{clientId}.discordsays.com` 網域相符。您還需要明確地在 Cookie 上設定 `SameSite=None; Partitioned`。`SameSite=None` 是必須的，因為瀏覽器會拒絕在 iframe 內存取更嚴格限制級別的 Cookie。`Partitioned` 則會將該 Cookie 的使用限制在僅限 Discord 的 iframe 內。
 
 請放心：由於內容安全政策 (CSP) 會限制請求僅發送到您自己 App 的代理伺服器，其他互動活動將無法使用您互動活動的 Cookie 發送請求。
-
 </div>
-
 </div>

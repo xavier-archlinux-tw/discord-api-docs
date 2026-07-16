@@ -10,7 +10,6 @@ import { ManualAnchor } from '/snippets/manualanchor.jsx'
 <LanguageSelector current="bilingual" path="/developers/bilingual/topics/rate-limits" />
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -20,9 +19,7 @@ Rate limits exist across Discord's APIs to prevent spam, abuse, and service over
 <Info>
 Because rate limits depend on a variety of factors and are subject to change, **rate limits should not be hard coded into your app**. Instead, your app should parse [response headers](/developers/en-us/topics/rate-limits#header-format-rate-limit-header-examples) to prevent hitting the limit, and to respond accordingly in case you do.
 </Info>
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -32,15 +29,12 @@ Discord 的 API 設有速率限制，以防止垃圾訊息、惡意濫用以及�
 <Info>
 由於速率限制取決於多種因素且可能會有所變動，**因此請勿將速率限制數值寫死 (hard-coded) 在您的應用程式中**。相反地，您的應用程式應該解析 [回應標頭 (response headers)](/developers/bilingual/topics/rate-limits#header-format-rate-limit-header-examples) 以防止觸發限制，並在觸發限制時做出相對應的處理。
 </Info>
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -54,9 +48,7 @@ During calculation, per-route rate limits often account for top-level resources 
 <Warning>
 [Routes for controlling emojis](/developers/en-us/resources/emoji#list-guild-emojis) do not follow the normal rate limit conventions. These routes are specifically limited on a per-guild basis to prevent abuse. This means that the quota returned by our APIs may be inaccurate, and you may encounter 429s.
 </Warning>
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -70,15 +62,12 @@ During calculation, per-route rate limits often account for top-level resources 
 <Warning>
 [用來控制表情符號 (emojis) 的路由](/developers/bilingual/resources/emoji#list-guild-emojis) 並不遵循一般的速率限制慣例。為了防止濫用，這些路由是針對單一伺服器進行特別限制的。這意味著我們的 API 傳回的配額可能會不準確，且您可能會遇到 429 錯誤。
 </Warning>
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -105,9 +94,7 @@ X-RateLimit-Bucket: abcd1234
 - **X-RateLimit-Bucket** - A unique string denoting the rate limit being encountered (non-inclusive of top-level resources in the path)
 - **X-RateLimit-Global** - Returned only on HTTP 429 responses if the rate limit encountered is the global rate limit (not per-route)
 - **X-RateLimit-Scope** - Returned only on HTTP 429 responses. Value can be `user` (per bot or user limit), `global` (per bot or user global limit), or `shared` (per resource limit)
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -134,15 +121,12 @@ X-RateLimit-Bucket: abcd1234
 - **X-RateLimit-Bucket** - 表示所遇到之速率限制的唯一字串（不包含路徑中的頂層資源）
 - **X-RateLimit-Global** - 僅在 HTTP 429 回應中傳回，如果遇到的限制是全域速率限制（而非單一路由）
 - **X-RateLimit-Scope** - 僅在 HTTP 429 回應中傳回。數值可以為 `user`（Bot 或使用者限制）、`global`（Bot 或使用者全域限制）或 `shared`（資源共享限制）
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -182,9 +166,7 @@ Note that normal route rate-limiting headers will also be sent in this response.
   "global": false
 }
 ```
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -224,15 +206,12 @@ Note that normal route rate-limiting headers will also be sent in this response.
   "global": false
 }
 ```
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -272,9 +251,7 @@ Note that normal route rate-limiting headers will also be sent in this response.
   "global": true
 }
 ```
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -314,15 +291,12 @@ Note that normal route rate-limiting headers will also be sent in this response.
   "global": true
 }
 ```
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -336,9 +310,7 @@ Global rate limit issues generally show up as repeatedly getting banned from the
 If you are experiencing repeated Cloudflare bans from the Discord API within normal operations of your bot, you can reach out to support to see if you qualify for increased global rate limits. You can contact Discord support using [https://dis.gd/rate-limit](https://dis.gd/rate-limit).
 
 [Interaction endpoints](/developers/en-us/interactions/receiving-and-responding#endpoints) are not bound to the bot's Global Rate Limit.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -352,15 +324,12 @@ If you are experiencing repeated Cloudflare bans from the Discord API within nor
 如果您在 Bot 的正常運行中反覆遇到 Cloudflare 對 Discord API 的封鎖，您可以聯絡支援團隊以了解您是否符合提高全域速率限制的資格。您可以使用 [https://dis.gd/rate-limit](https://dis.gd/rate-limit) 聯絡 Discord 支援團隊。
 
 [互動 (Interaction) 端點](/developers/bilingual/interactions/receiving-and-responding#endpoints) 並不受 Bot 全域速率限制的約束。
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -378,9 +347,7 @@ All applications should make reasonable attempts to avoid making invalid request
 Large applications, especially those that can potentially make 10,000 requests per 10 minutes (a sustained 16 to 17 requests per second), should consider logging and tracking the rate of invalid requests to avoid reaching this hard limit.
 
 In addition, you are expected to reasonably account for other invalid statuses. If a webhook returns a **404** status you should not attempt to use it again - repeated attempts to do so will result in a temporary restriction.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -398,7 +365,5 @@ In addition, you are expected to reasonably account for other invalid statuses. 
 大型應用程式，尤其是那些每 10 分鐘可能發送 10,000 次請求的應用程式（持續每秒 16 到 17 次請求），應考慮記錄並追蹤無效請求的速率，以避免達到此硬性限制。
 
 此外，您應合理解決其他無效狀態。如果 Webhook 傳回 **404** 狀態，您不應再次嘗試使用它——反覆嘗試將導致暫時性限制。
-
 </div>
-
 </div>

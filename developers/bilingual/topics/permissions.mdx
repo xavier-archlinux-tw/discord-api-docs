@@ -10,7 +10,6 @@ import { ManualAnchor } from '/snippets/manualanchor.jsx'
 <LanguageSelector current="bilingual" path="/developers/bilingual/topics/permissions" />
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -20,9 +19,7 @@ Permissions are a way to limit and grant certain abilities to users in Discord. 
 <Info>
 [Application command permissions](/developers/en-us/interactions/application-commands#permissions) allow you to enable or disable specific commands for entire channels in addition to individual roles or users.
 </Info>
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -32,15 +29,12 @@ Permissions are a way to limit and grant certain abilities to users in Discord. 
 <Info>
 [應用程式指令權限 (Application command permissions)](/developers/bilingual/interactions/application-commands#permissions) 允許您除了設定特定身分組或使用者之外，還能為整個頻道阻擋或允許特定指令。
 </Info>
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -66,9 +60,7 @@ permissions = 0x40 | 0x800 # 2112
 ```
 
 Additional logic is required when permission overwrites are involved; this is further explained below. For more information about bitwise operations and flags, see [this page](https://en.wikipedia.org/wiki/Bit_field).
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -94,15 +86,12 @@ permissions = 0x40 | 0x800 # 2112
 ```
 
 當涉及頻道覆寫權限時，需要額外的邏輯；這將在下文進一步解釋。有關位元運算和標記的更多資訊，請參閱[此頁面](https://en.wikipedia.org/wiki/Bit_field)。
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -177,9 +166,7 @@ Below is a table of all current permissions, their integer values in hexadecimal
 **\*\* See [Permissions for Timed Out Members](/developers/en-us/topics/permissions#permissions-for-timed-out-members) to understand how permissions are temporarily modified for timed out users.**
 
 Note that permission names may be referred to differently in the Discord client. For example, "Manage Permissions" refers to MANAGE_ROLES, "Use Voice Activity" refers to USE_VAD, and "Timeout Members" refers to MODERATE_MEMBERS.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -254,15 +241,12 @@ Note that permission names may be referred to differently in the Discord client.
 **\*\* 請參閱 [被停權成員的權限](/developers/bilingual/topics/permissions#permissions-for-timed-out-members) 以了解如何暫時修改被停權使用者的權限。**
 
 請注意，權限名稱在 Discord 用戶端中可能會以不同的方式顯示。例如，「管理權限」是指 MANAGE_ROLES，「使用語音活動」是指 USE_VAD，而「將成員停權」是指 MODERATE_MEMBERS。
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -277,9 +261,7 @@ How permissions apply may at first seem intuitive, but there are some hidden res
 - A bot can only kick, ban, and edit nicknames for users whose highest role is lower than the bot's highest role.
 
 Otherwise, permissions do not obey the role hierarchy. For example, a user has two roles: A and B. A denies the `VIEW_CHANNEL` permission on a #coolstuff channel. B allows the `VIEW_CHANNEL` permission on the same #coolstuff channel. The user would ultimately be able to view the #coolstuff channel, regardless of the role positions.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -294,15 +276,12 @@ Otherwise, permissions do not obey the role hierarchy. For example, a user has t
 - Bot 只能對其最高身分組低於 Bot 最高身分組的使用者執行剔除、封鎖以及編輯暱稱的操作。
 
 除此之外，權限並不服從身分組階層。例如，使用者擁有兩個身分組：A 和 B。A 在 #coolstuff 頻道上拒絕了 `VIEW_CHANNEL` 權限。B 在同一個 #coolstuff 頻道上允許了 `VIEW_CHANNEL` 權限。不論身分組位置如何，使用者最終都能檢視 #coolstuff 頻道。
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -376,9 +355,7 @@ def compute_permissions(member, channel):
     base_permissions = compute_base_permissions(member, channel.guild)
     return compute_overwrites(base_permissions, member, channel)
 ```
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -452,15 +429,12 @@ def compute_permissions(member, channel):
     base_permissions = compute_base_permissions(member, channel.guild)
     return compute_overwrites(base_permissions, member, channel)
 ```
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -474,9 +448,7 @@ Denying `SEND_MESSAGES` implicitly denies `MENTION_EVERYONE`, `SEND_TTS_MESSAGES
 For voice and stage channels, denying the `CONNECT` permission also implicitly denies other permissions such as `MANAGE_CHANNEL`.
 
 There may be other cases in which certain permissions implicitly deny or allow other permissions. In all cases, it is based on logical conclusions about how a user with certain permissions should or should not interact with Discord.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -490,15 +462,12 @@ There may be other cases in which certain permissions implicitly deny or allow o
 對於語音和講台頻道，拒絕 `CONNECT` 權限也會隱含地拒絕其他權限，例如 `MANAGE_CHANNEL`。
 
 在其他情況下，某些權限也可能會隱含地拒絕或允許其他權限。在所有情況下，這都是基於對擁有特定權限的使用者應如何或不應如何與 Discord 互動的邏輯推論。
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -512,9 +481,7 @@ Users must have the `VIEW_CHANNEL` permission to view _any_ threads in the chann
 ## Permission Syncing
 
 Permissions with regards to categories and channels within categories are a bit tricky. Rather than inheritance, permissions are calculated by means of what we call Permission Syncing. If a child channel has the same permissions and overwrites (or lack thereof) as its parent category, the channel is considered "synced" to the category. Any further changes to a **parent category** will be reflected in its synced child channels. Any further changes to a **child channel** will cause it to become de-synced from its parent category, and its permissions will no longer change with changes to its parent category.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -528,15 +495,12 @@ Permissions with regards to categories and channels within categories are a bit 
 ## 權限同步 (Permission Syncing)
 
 關於類別 (categories) 以及類別中頻道的權限運作會有些微妙。這並非單純的繼承，而是透過我們稱為「權限同步 (Permission Syncing)」的方式計算。如果子頻道具有與其父類別相同的權限和覆寫權限（或兩者皆無），則該頻道被視為與該類別「同步」。對**父類別**進行的任何進一步變更都會反映在其已同步的子頻道中。對**子頻道**進行的任何進一步變更都會導致其與父類別「去同步 (de-synced)」，其權限將不再隨父類別的變更而變動。
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -567,9 +531,7 @@ Roles represent a set of permissions attached to a group of users. Roles have na
 Roles without colors (`colors.primary_color == 0`) do not count towards the final computed color in the user list.
 
 \* `color` will still be returned by the API, but using the `colors` field is recommended when doing requests.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -600,15 +562,12 @@ Roles without colors (`colors.primary_color == 0`) do not count towards the fina
 沒有顏色的身分組 (`colors.primary_color == 0`) 不會計入使用者列表中最終計算出的顏色。
 
 \* `color` 仍會被 API 傳回，但建議在發送請求時使用 `colors` 欄位。
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -642,9 +601,7 @@ This object will always be filled with `primary_color` being the role's `color`.
 When sending `tertiary_color` the API enforces the role color to be a holographic style with values of:
 `primary_color = 11127295`, `secondary_color = 16759788`, and `tertiary_color = 16761760`.
 </Info>
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -678,15 +635,12 @@ When sending `tertiary_color` the API enforces the role color to be a holographi
 發送 `tertiary_color` 時，API 會強制身分組顏色為特定全像風格數值：
 `primary_color = 11127295`、`secondary_color = 16759788`、且 `tertiary_color = 16761760`。
 </Info>
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -736,9 +690,7 @@ When sending `tertiary_color` the API enforces the role color to be a holographi
 ## Permissions For Timed Out Members
 
 Timed out members will temporarily lose all permissions except `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY`. Owners and admin users with `ADMINISTRATOR` permissions are exempt.
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -788,7 +740,5 @@ Timed out members will temporarily lose all permissions except `VIEW_CHANNEL` an
 ## 被停權成員的權限 (Permissions For Timed Out Members)
 
 被停權成員（禁言成員）將暫時失去除了 `VIEW_CHANNEL` 和 `READ_MESSAGE_HISTORY` 之外的所有權限。擁有 `ADMINISTRATOR` 權限的伺服器擁有者與管理員除外。
-
 </div>
-
 </div>

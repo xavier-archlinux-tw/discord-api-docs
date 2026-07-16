@@ -8,7 +8,6 @@ import { LanguageSelector } from '/snippets/LanguageSelector.jsx'
 <LanguageSelector current="bilingual" path="/developers/bilingual/activities/development-guides/layout" />
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -36,9 +35,7 @@ discordSdk.commands.setOrientationLockState({
   grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
 });
 ```
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -66,15 +63,12 @@ discordSdk.commands.setOrientationLockState({
   grid_lock_state: Common.OrientationLockStateTypeObject.LANDSCAPE,
 });
 ```
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -84,9 +78,7 @@ discordSdk.commands.setOrientationLockState({
 It's also possible to configure an application with a default orientation lock state via the Developer Portal. Using this method, the Discord app will apply the orientation lock when launching the application before the SDK has been initialized. This can create a smoother application launch flow where the application starts in the correct orientation rather than switching to the correct orientation after some delay after the application requests an orientation lock via the SDK. The Developer Portal supports setting a different default orientation lock states for phones versus tablets.
 
 ![default-orientation-lock-state](/images/activities/default_orientation_lock_state.png)
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -96,15 +88,12 @@ It's also possible to configure an application with a default orientation lock s
 也可以在開發者入口網站中，為應用程式設定預設的方向鎖定狀態。使用此方法，Discord App 在啟動應用程式時（SDK 初始化之前）就會套用方向鎖定。這可以創造更流暢的應用程式啟動流程，使應用程式一開始就以正確的方向啟動，而不是在應用程式透過 SDK 請求方向鎖定之後，經過些許延遲才切換至正確方向。開發者入口網站支援為手機和平板電腦設定不同的預設方向鎖定狀態。
 
 ![default-orientation-lock-state](/images/activities/default_orientation_lock_state.png)
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -127,9 +116,7 @@ const handleOrientationUpdate = (update: {screen_orientation: number}) => {
 
 discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
 ```
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -152,15 +139,12 @@ const handleOrientationUpdate = (update: {screen_orientation: number}) => {
 
 discordSdk.subscribe('ORIENTATION_UPDATE', handleOrientationUpdate);
 ```
-
 </div>
-
 </div>
 
 ---
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇬🇧 English</div>
@@ -183,9 +167,7 @@ export default function LayoutMode() {
   }, [handleLayoutModeUpdate]);
 }
 ```
-
 </div>
-
 <div>
 
     <div style={{ borderBottom: "2px solid #5865f2", paddingBottom: "8px", marginBottom: "16px", fontWeight: "bold", fontSize: "18px" }}>🇹🇼 繁體中文</div>
@@ -208,7 +190,5 @@ export default function LayoutMode() {
   }, [handleLayoutModeUpdate]);
 }
 ```
-
 </div>
-
 </div>
